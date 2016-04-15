@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Narwhals-rule-the-world/client-app/issues"
   },
-  "homepage": "https://github.com/Narwhals-rule-the-world/client-app#readme"
+  "homepage": "https://github.com/Narwhals-rule-the-world/client-app#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
 }
