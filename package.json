@@ -1,0 +1,19 @@
+{
+  "name": "client-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Narwhals-rule-the-world/client-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Narwhals-rule-the-world/client-app/issues"
+  },
+  "homepage": "https://github.com/Narwhals-rule-the-world/client-app#readme"
+}
