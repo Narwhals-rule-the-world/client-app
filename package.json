@@ -21,6 +21,7 @@
     "body-parser": "^1.15.0",
     "cors": "^2.7.1",
     "express": "^4.13.4",
+    "google-maps": "^3.2.1",
     "lodash": "^4.11.1",
     "react": "^15.0.1",
     "react-dom": "^15.0.1"
