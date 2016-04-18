@@ -1,7 +1,7 @@
 // require dependencies
 // --------------------
 require('dotenv').config();
-var GooglePlaces     = require('google-places'),
+var GooglePlaces     = require('google-locations'),
     express    = require('express'),
     bodyParser = require('body-parser'),
     cors       = require('cors'),
@@ -27,14 +27,24 @@ app.get('/', function(req, res, next){
   res.sendFile(__dirname + '/public/views/index.html');
 })
 
+
+
 app.post('/location', function(req, res, next){
   console.log(req.body.place);
-  places.search({ keyword: req.body.place }, function(err, data){
-    if (err) console.log(err);
+  var result;
 
-    console.log(data);
-  })
-  res.send('hiiiii');
+  places.autocomplete({input: req.body.place, types: "geocode"}, function(err, response) {
+    console.log("autocomplete: ", response.predictions[0].description);
+
+    // var success = function(err, response) {
+    //   console.log("did you mean: ", response.result.name);
+    // };
+    result = response.predictions[0].description;
+    res.send(result);
+  });
+
+
+
 })
 
 
