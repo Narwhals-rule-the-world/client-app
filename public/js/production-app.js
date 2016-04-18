@@ -35456,6 +35456,7 @@ var AddressSearch = React.createClass({
         url: '/location',
         data: { place: $('#address-search').val() },
         success: function success(data) {
+
           GMaps.geocode({
             address: data,
             callback: function callback(results, status) {
@@ -35466,7 +35467,6 @@ var AddressSearch = React.createClass({
               }
             }
           });
-          console.log(data);
         },
         error: function error(err) {
           console.log(err);
