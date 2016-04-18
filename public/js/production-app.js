@@ -35403,7 +35403,32 @@ var GmapsMap = React.createClass({
   displayName: 'GmapsMap',
 
   componentDidMount: function componentDidMount() {
-    console.log('mounted');
+    console.log('the map mounted!');
+    // set up the map
+    var map = new GMaps({
+      div: '#map',
+      lat: 41.890663,
+      lng: -87.626958
+    });
+
+    // show "loading" here
+
+    // find user's position
+    GMaps.geolocate({
+      success: function success(position) {
+        // hide "loading" here
+        map.setCenter(position.coords.latitude, position.coords.longitude);
+      },
+      error: function error(_error) {
+        console.log('Geolocation failed: ' + _error.message);
+      },
+      not_supported: function not_supported() {
+        console.log("Your browser does not support geolocation");
+      },
+      always: function always() {
+        console.log("Done!");
+      }
+    });
   },
 
   render: function render() {
