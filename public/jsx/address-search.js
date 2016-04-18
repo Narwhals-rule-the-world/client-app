@@ -7,7 +7,10 @@ var AddressSearch = React.createClass({
     return(
       <form>
         <input id="address-search" type="text"></input>
+        <button type="button">Seach by Address</button>
       </form>
     )
   }
 })
+
+ReactDOM.render(<AddressSearch />, document.getElementById('search-container'));
