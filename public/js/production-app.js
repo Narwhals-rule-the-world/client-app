@@ -35406,7 +35406,7 @@ var AddressSearch = React.createClass({
     return React.createElement(
       'form',
       null,
-      React.createElement('input', { id: 'address-search', type: 'text' }),
+      React.createElement('input', { id: 'address-search', 'class': 'four columns', type: 'text' }),
       React.createElement(
         'button',
         { type: 'button' },

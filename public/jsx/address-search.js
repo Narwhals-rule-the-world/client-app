@@ -6,7 +6,7 @@ var AddressSearch = React.createClass({
   render: function(){
     return(
       <form>
-        <input id="address-search" type="text"></input>
+        <input id="address-search" class="four columns" type="text"></input>
         <button type="button">Seach by Address</button>
       </form>
     )
