@@ -1,6 +1,7 @@
 // require dependencies
 // --------------------
-var express = require('express'),
+var
+    express = require('express'),
     bodyParser = require('body-parser'),
     cors = require('cors'),
     app = express();
@@ -22,6 +23,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // ------------------
 app.get('/', function(req, res, next){
   res.sendFile(__dirname + '/public/views/index.html');
+})
+
+app.post('/location', function(req, res, next){
+  console.log(req.body);
+  res.send('hiiiii');
 })
 
 

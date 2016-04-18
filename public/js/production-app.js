@@ -35402,6 +35402,22 @@ var React = require('react'),
 var AddressSearch = React.createClass({
   displayName: 'AddressSearch',
 
+  componentDidMount: function componentDidMount() {
+    $('#address-search-button').click(function (e) {
+      e.preventDefault();
+      $.ajax({
+        method: 'post',
+        url: '/location',
+        data: { place: $('#address-search').val() },
+        success: function success(data) {
+          console.log(data);
+        },
+        error: function error(err) {
+          console.log(err);
+        }
+      });
+    });
+  },
   render: function render() {
     return React.createElement(
       'form',
@@ -35409,7 +35425,7 @@ var AddressSearch = React.createClass({
       React.createElement('input', { id: 'address-search', type: 'text' }),
       React.createElement(
         'button',
-        { type: 'button' },
+        { id: 'address-search-button', type: 'button' },
         'Seach by Address'
       )
     );
