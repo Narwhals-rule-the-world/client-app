@@ -1,7 +1,7 @@
 .container {
   position: relative;
   width: 100%;
-  max-width: 960px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
@@ -206,6 +206,8 @@ input[type="button"].button-primary:focus {
   border: 2px solid blue;
   position: relative;
   float: left;
+  padding: 20px;
+  marign: 5px;
 }
 #search-container {
   text-align: center;
@@ -232,9 +234,14 @@ input[type="button"].button-primary:focus {
   padding: 10px;
   border-radius: 4px;
 }
-.register {
-  text-align: right;
+#register {
+  border: 3px solid pink;
 }
 a {
   text-align: right;
+}
+.input-row {
+  color: red;
+  margin-top: 25px;
+  text-align: center;
 }
