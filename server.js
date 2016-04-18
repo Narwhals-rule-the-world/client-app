@@ -1,11 +1,13 @@
 // require dependencies
 // --------------------
-var
-    express = require('express'),
+require('dotenv').config();
+var GooglePlaces     = require('google-places'),
+    express    = require('express'),
     bodyParser = require('body-parser'),
-    cors = require('cors'),
-    app = express();
+    cors       = require('cors'),
+    app        = express();
 
+var places = new GooglePlaces(process.env.GOOGLE_API_KEY_SERVER);
 
 // set the location for our public and view folders
 // ------------------------------------------------
@@ -26,7 +28,12 @@ app.get('/', function(req, res, next){
 })
 
 app.post('/location', function(req, res, next){
-  console.log(req.body);
+  console.log(req.body.place);
+  places.search({ keyword: req.body.place }, function(err, data){
+    if (err) console.log(err);
+
+    console.log(data);
+  })
   res.send('hiiiii');
 })
 
