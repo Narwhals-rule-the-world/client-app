@@ -33,4 +33,4 @@ gulp.task('watch', function() {
   gulp.watch(['./public/less/**/*.less'], ['less']);
 });
 
-gulp.task('default', ['react']);
+gulp.task('default', ['react', 'less']);
