@@ -5,7 +5,6 @@ var gulp        = require('gulp'),
     buffer      = require('gulp-buffer'),
     gutil       = require('gulp-util'),
     uglify      = require('gulp-uglify'),
-    gls         = require('gulp-live-server'),
     less        = require('gulp-less'),
     path        = require('path')
     concat      = require('gulp-concat');;

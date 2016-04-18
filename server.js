@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // set up controllers
 // ------------------
 app.get('/', function(req, res, next){
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/public/views/index.html');
 })
 
 
