@@ -4,14 +4,15 @@ var React    = require('react'),
 
 
 var GmapsMap = React.createClass({
+  componentDidMount: function(){
+    console.log('mounted');
+  },
 
   render: function(){
     return(
-      <div id='map'>
-        <img src="http://www.whale-world.com/wp-content/uploads/Narwhal_featured-623x200.jpg" />
-      </div>
+      <div id='map'></div>
     )
   }
 })
 
-reactD
+ReactDOM.render(<GmapsMap />, document.getElementById('map-container'));

@@ -19,7 +19,7 @@ gulp.task('react', function(){
 });
 
 gulp.task('watch', function() {
-  gulp.watch(['./public/react/*.js'], ['react']); // place to watch for react changes
+  gulp.watch(['./public/jsx/*.js'], ['react']); // place to watch for react changes
 });
 
 gulp.task('default', ['react']);
