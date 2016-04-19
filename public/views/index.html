@@ -27,6 +27,16 @@
           <div id="newsfeed" class="newsfeed six columns">
               <!-- CHANGING NEWSFEED GOES HERE  -->
               NEWSFEED CONTAINER
+              <div id="homescreen-newsfeed">
+
+              </div>
+
+              <div id="register-newsfeed">
+
+              </div>
+              <div id="post-newsfeed">
+
+              </div>
           </div>
           <div class="map six columns">
             <main id="map-container"></main>
@@ -36,7 +46,39 @@
           <div id="register"></div>
       </div>
     </div>
+    <!-- IMAGE UPLOAD OPTION 1-->
+    <fieldset class="form-group">
+            <div class="col-xs-3">
+          <p><h5><strong>Add Image to Post</strong></h5></p>
+          <label class="file">
+            <input type="file" id="inputFileToLoad" onchange="readURL(this)" >
+            <input type="hidden" id="imagePost" name="image" value="">
 
+            <span class="file-custom"></span><button type="button" class="btn btn-primary btn-xs">Upload</button>
+          </label>
+        </div>
+        </fieldset>
+
+        <!-- IMAGE UPLOAD OPTION 2 -->
+        <div class="mui-container">
+        <div class="mui-panel">
+
+            <h1><i class="fa fa-cloud-upload"></i> Uploading Images</h1>
+
+            <code>image_as_base64</code>. This contains the base64 encoded file.
+
+            <form action="/api/photo" method="post"></form>
+            <h3>Upload Image</h3>
+            <input type="file" name="image" class="mui-form-control">
+            <input type="hidden" name="image_as_base64">
+            <input type="submit" class="mui-btn mui-btn-primary mui-btn-raised" value="Upload">
+            </form>
+
+            <div id="images" class="mui-form-control"></div>
+
+        </div>
+    </div>
+    <!-- END OF IMAGE OPTION UPLOADS -->
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.js"></script>
   <script type="text/javascript" src="/js/google-maps.js"></script>

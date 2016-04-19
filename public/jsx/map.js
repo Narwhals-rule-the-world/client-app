@@ -1,6 +1,6 @@
 var React    = require('react'),
     ReactDOM = require('react-dom'),
-    _        = require('lodash');
+    sampleData = require('../../sample-data-reviews.js');
 
 var AddressSearch = React.createClass({
   componentDidMount: function(){
@@ -47,6 +47,32 @@ var AddressSearch = React.createClass({
   }
 })
 
+var listResults = React.createClass({
+  getInitialState: function(){
+    // ajax to api for to get data
+    $.ajax({
+      method: 'post',
+      url: 'api',
+      data: { lat: lat, lng: lng, radius: 0 },
+      success: function(data){
+        console.log('yay');
+      },
+      error: function(err){
+        console.log('nooooo');
+      }
+    })
+    return { results: sampleData };
+  },
+  componentDidMount: function(){
+    // when one is clicked, display all for that location
+  },
+  render: function(){
+    var noDuplicates = this.results.filter( function(location))
+
+  }
+})
+
+
 var GmapsMap = React.createClass({
   getInitialState: function(){
     return { lat: 41.890663, lng: -87.626958 }
@@ -58,6 +84,22 @@ var GmapsMap = React.createClass({
         lng: lng
       })
   },
+  // function to make ajax call to api
+  // findLocations: function(lat, lng){
+  //   $.ajax({
+  //     method: 'post',
+  //     url: '', //api url
+  //     data: { lat: lat, lng: lng},
+  //     success: function(locations){
+  //       locations.forEach(function(location){
+  //         // do stuff
+  //       })
+  //     },
+  //     error: function(err){
+  //       console.log(err);
+  //     }
+  //   })
+  // },
   componentDidMount: function(){
     console.log('the map mounted!');
     var state = this.state;
