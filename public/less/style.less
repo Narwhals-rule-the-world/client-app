@@ -208,3 +208,49 @@ a{
   margin-top: 25px;
   text-align: center
 }
+
+
+// start popup css
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: 20% auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 4px;
+  width: 30%;
+  position: relative;
+  transition: all 5s ease-in-out;
+
+  .close{
+    position: absolute;
+    top: 15px;
+    right: 20px;
+  }
+
+  a{
+    text-decoration: none;
+    font-style: bold;
+    font-size: 1.5em;
+  }
+
+  fieldset{
+    display: inline-block;
+    margin: auto;
+  }
+
+} // end popup css

@@ -41,81 +41,81 @@ var Buttons = React.createClass({
 
 var Welcome = React.createClass({
   handleRegisterClick: function(event){
-    this.props.handleRegister(true)
-    this.props.handleLoggedIn(false)
+    // this.props.handleRegister(true)
+    // this.props.handleLoggedIn(false)
 
     //event.target.value will get you values of inputs
     console.log('REGISTER')
-    console.log(this.state.userRegistered)
-    console.log(this.state.userLoggedIn)
+    // console.log(this.state.userRegistered)
+    // console.log(this.state.userLoggedIn)
   },
   handleLoginClick: function(event){
-    this.props.handleRegister(false)
-    this.props.handleLoggedIn(true)
+    // this.props.handleRegister(false)
+    // this.props.handleLoggedIn(true)
     console.log('LOGIN')
-    console.log(this.state.userRegistered)
-    console.log(this.state.userLoggedIn)
+    // console.log(this.state.userRegistered)
+    // console.log(this.state.userLoggedIn)
   },
   render: function(){
     return (
       <div>
-          <button onClick={this.handleLoginClick} type="submit">LOGIN HERE</button>
+          <a href='#login-popup'><button onClick={this.handleLoginClick} type="button">LOGIN HERE</button></a>
           - OR -
-          <button onClick={this.handleRegisterClick} type="submit">REGISTER HERE</button>
+          <a href='#register-popup'><button onClick={this.handleRegisterClick} type="button">REGISTER HERE</button></a>
       </div>
     )
   }
 })
 
-var Register = React.createClass({
-  render: function(){
-    return (
-        <form>
-          <div class="input-row">
-              <label class="name">Name: </label>
-              <input class="name" type="text"></input>
-          </div>
-          <br />
-          <div class="input-row">
-              <label class="email">Email: </label>
-              <input class="email" type="text"></input>
-          </div>
-          <br />
-          <div class="input-row">
-              <label class="password">Password: </label>
-              <input class="password" type="text"></input>
-          </div>
-          <br />
-          <div class="input-row">
-              <label class="email">Re-Confirm Password: </label>
-              <input class="password" type="text"></input>
-          </div>
-          <br />
-          <div class="input-row">
-              <label class="email">Default Address: </label>
-              <input class="address" type="text"></input>
-          </div>
-          <br />
-          <div class="input-row">
-              <button type="button">Register</button>
-          </div>
-        </form>
-      )
-    }
-})
+// var Register = React.createClass({
+//   render: function(){
+//     return (
+//         <form>
+//           <div class="input-row">
+//               <label class="name">Name: </label>
+//               <input class="name" type="text"></input>
+//           </div>
+//           <br />
+//           <div class="input-row">
+//               <label class="email">Email: </label>
+//               <input class="email" type="text"></input>
+//           </div>
+//           <br />
+//           <div class="input-row">
+//               <label class="password">Password: </label>
+//               <input class="password" type="text"></input>
+//           </div>
+//           <br />
+//           <div class="input-row">
+//               <label class="email">Re-Confirm Password: </label>
+//               <input class="password" type="text"></input>
+//           </div>
+//           <br />
+//           <div class="input-row">
+//               <label class="email">Default Address: </label>
+//               <input class="address" type="text"></input>
+//           </div>
+//           <br />
+//           <div class="input-row">
+//               <button type="button">Register</button>
+//           </div>
+//         </form>
+//       )
+//     }
+// })
 //END OF REGISTER COMPONENT
 
-var LogIn = React.createClass({
-  render: function(){
-    return(
-      <div class="input-row">
-          <label class="email">Email: </label>
-          <input class="email" type="text"></input>
-          <label class="password">Password: </label>
-          <input class="password" type="text"></input>
-      </div>
-    )
-  }
-})
+// var LogIn = React.createClass({
+//   render: function(){
+//     return(
+//       <div class="input-row">
+//           <label class="email">Email: </label>
+//           <input class="email" type="text"></input>
+//           <label class="password">Password: </label>
+//           <input class="password" type="text"></input>
+//       </div>
+//     )
+//   }
+// })
 
 ReactDOM.render(<Buttons />, document.getElementById('button-group'));
