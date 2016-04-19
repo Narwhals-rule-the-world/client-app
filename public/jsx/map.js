@@ -41,7 +41,9 @@ var AddressSearch = React.createClass({
     return(
       <form>
         <input id="address-search" type="text"></input>
-        <button id="address-search-button" type="button">Seach by Address</button>
+        <br />
+        <button id="address-search-button" type="button">Seach Address</button>
+        <button id="post-button">Post at Current Address</button>
       </form>
     )
   }
