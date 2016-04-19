@@ -14,7 +14,7 @@
         <input type="password" name="password" value="" class="password" placeholder="PASSWORD">
         <button type="submit" name="button">Login</button>
         <br />
-        <a class="register" href="#">Not Registered? Sign Up!</a>
+        <a class="register" href="#register-popup">Not Registered? Sign Up!</a>
       </div>
       <div class="welcome">
         <!-- THIS IS WHERE THE WELCOME MESSAGE WILL GO WHEN SIGNED IN -->
@@ -80,22 +80,66 @@
     </div>
     <!-- END OF IMAGE OPTION UPLOADS -->
     <div id="testytest"></div>
+    <div id="button-group"></div>
 
-    <div class="overlay" id="about-popup">
+    <!-- login popup -->
+    <div class="overlay" id="login-popup">
       <div class="popup">
-        <h4>But... why?</h4>
+
+        <h4>Login</h4>
         <a class="close" href="#">&times;</a>
+        <div class="input-row">
+          <label class="email">Email: </label>
+          <input class="email" type="text"></input>
+          <label class="password">Password: </label>
+          <input class="password" type="text"></input>
+        </div>
+
       </div>
     </div>
+    <!-- end login popup -->
 
-    <div class="overlay" id="about-popup">
+    <!-- register popup -->
+    <div class="overlay" id="register-popup">
       <div class="popup">
-        <h4>But... why?</h4>
+
+        <h4>Register</h4>
         <a class="close" href="#">&times;</a>
+        <form>
+          <div class="input-row">
+              <label class="name">Name: </label>
+              <input class="name" type="text"></input>
+          </div>
+          <br />
+          <div class="input-row">
+              <label class="email">Email: </label>
+              <input class="email" type="text"></input>
+          </div>
+          <br />
+          <div class="input-row">
+              <label class="password">Password: </label>
+              <input class="password" type="text"></input>
+          </div>
+          <br />
+          <div class="input-row">
+              <label class="email">Re-Confirm Password: </label>
+              <input class="password" type="text"></input>
+          </div>
+          <br />
+          <div class="input-row">
+              <label class="email">Default Address: </label>
+              <input class="address" type="text"></input>
+          </div>
+          <br />
+          <div class="input-row">
+              <button type="button">Register</button>
+          </div>
+        </form>
+
       </div>
     </div>
+    <!-- end register popup -->
 
-    
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.js"></script>
   <script type="text/javascript" src="/js/google-maps.js"></script>

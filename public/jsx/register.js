@@ -2,7 +2,6 @@ var React    = require('react'),
     ReactDOM = require('react-dom'),
     _        = require('lodash');
 
-
 // THIS IS THE MAIN CONTAINER COMPONENT
 var Container = React.createClass({
   // set all values to false
@@ -141,54 +140,54 @@ var Post = React.createClass({
   }
 })
 
-var Register = React.createClass({
-    getInitialState: function(){
-      return {message: ''};
-    },
-    registerClickHandler: function(){
-      this.setState({message: 'register'})
-    },
-    updateClickHandler: function(){
-      this.setState({message: 'update'})
-    },
-    addPostClickHandler: function(){
-      this.setState({message: 'addpost'})
-    },
-    render: function(){
+// var Register = React.createClass({
+//     getInitialState: function(){
+//       return {message: ''};
+//     },
+//     registerClickHandler: function(){
+//       this.setState({message: 'register'})
+//     },
+//     updateClickHandler: function(){
+//       this.setState({message: 'update'})
+//     },
+//     addPostClickHandler: function(){
+//       this.setState({message: 'addpost'})
+//     },
+//     render: function(){
+//
+//           return (
+//           <form>
+//             <div class="input-row">
+//                 <label class="name">Name: </label>
+//                 <input class="name" type="text"></input>
+//             </div>
+//             <br />
+//             <div class="input-row">
+//                 <label class="email">Email: </label>
+//                 <input class="email" type="text"></input>
+//             </div>
+//             <br />
+//             <div class="input-row">
+//                 <label class="password">Password: </label>
+//                 <input class="password" type="text"></input>
+//             </div>
+//             <br />
+//             <div class="input-row">
+//                 <label class="email">Re-Confirm Password: </label>
+//                 <input class="password" type="text"></input>
+//             </div>
+//             <br />
+//             <div class="input-row">
+//                 <label class="email">Default Address: </label>
+//                 <input class="address" type="text"></input>
+//             </div>
+//             <br />
+//             <div class="input-row">
+//                 <button type="button">Register</button>
+//             </div>
+//           </form>
+//         )
+//       }
+// })
 
-          return (
-          <form>
-            <div class="input-row">
-                <label class="name">Name: </label>
-                <input class="name" type="text"></input>
-            </div>
-            <br />
-            <div class="input-row">
-                <label class="email">Email: </label>
-                <input class="email" type="text"></input>
-            </div>
-            <br />
-            <div class="input-row">
-                <label class="password">Password: </label>
-                <input class="password" type="text"></input>
-            </div>
-            <br />
-            <div class="input-row">
-                <label class="email">Re-Confirm Password: </label>
-                <input class="password" type="text"></input>
-            </div>
-            <br />
-            <div class="input-row">
-                <label class="email">Default Address: </label>
-                <input class="address" type="text"></input>
-            </div>
-            <br />
-            <div class="input-row">
-                <button type="button">Register</button>
-            </div>
-          </form>
-        )
-      }
-})
-
-ReactDOM.render(<Container />, document.getElementById('newsfeed'));
+// ReactDOM.render(<Container />, document.getElementById('newsfeed'));
