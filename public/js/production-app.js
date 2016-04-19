@@ -1,48 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-// var React    = require('react'),
-//     ReactDOM = require('react-dom'),
-//     _        = require('lodash');
-//
-// var AddressSearch = React.createClass({
-//   componentDidMount: function(){
-//     $('#address-search-button').click(function(e){
-//       e.preventDefault();
-//
-//       // GMaps.geocode({
-//       //   address: $('#address-search').val(),
-//       //   callback: function(results, status) {
-//       //     if (status == 'OK') {
-//       //       var latlng = results[0].geometry.location;
-//       //       map.setCenter(latlng.lat(), latlng.lng());
-//       //       map.addMarker({
-//       //         lat: latlng.lat(),
-//       //         lng: latlng.lng()
-//       //       });
-//       //     }
-//       //   }
-//       // });
-//
-//       $.ajax({
-//
-//       })
-//     })
-//   },
-//   render: function(){
-//     return(
-//       <form>
-//         <input id="address-search" type="text"></input>
-//         <button id="address-search-button" type="button">Seach by Address</button>
-//       </form>
-//     )
-//   }
-// })
-//
-// // ReactDOM.render(<AddressSearch />, document.getElementById('search-container'));
-"use strict";
-
-},{}]},{},[1]);
-
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -35451,12 +35407,15 @@ var AddressSearch = React.createClass({
     $('#address-search-button').click(function (e) {
       e.preventDefault();
 
+      // ajax to google places api on the server
+      // returns its best guess of a location
+      // depending on what the user enters
       $.ajax({
         method: 'post',
         url: '/location',
         data: { place: $('#address-search').val() },
         success: function success(data) {
-
+          // take the address and center the map at that location
           GMaps.geocode({
             address: data,
             callback: function callback(results, status) {
@@ -35509,7 +35468,10 @@ var GmapsMap = React.createClass({
     state.map = new GMaps({
       div: '#map',
       lat: state.lat,
-      lng: state.lng
+      lng: state.lng,
+      idle: function idle() {
+        console.log('idle!!!');
+      }
     });
 
     this.setState(state);

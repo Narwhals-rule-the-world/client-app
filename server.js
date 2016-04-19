@@ -30,17 +30,28 @@ app.get('/', function(req, res, next){
 
 
 app.post('/location', function(req, res, next){
-  console.log(req.body.place);
+  // console.log(req.body.place);
   var result;
 
   places.autocomplete({input: req.body.place, types: "geocode"}, function(err, response) {
-    console.log("autocomplete: ", response.predictions[0].description);
+    if (err) {
+      console.log(err);
+      res.send(err);
+    }else if (response.predictions[0]){
+      result = response.predictions[0].description;
+      console.log("autocomplete: ", result);
+      res.send(result);
+    } else{
+      console.log("NO RESULTS");
+      res.send('NO RESULTS');
+    }
+
 
     // var success = function(err, response) {
     //   console.log("did you mean: ", response.result.name);
     // };
-    result = response.predictions[0].description;
-    res.send(result);
+
+
   });
 
 

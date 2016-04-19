@@ -8,12 +8,16 @@ var AddressSearch = React.createClass({
     $('#address-search-button').click(function(e){
       e.preventDefault();
 
+      // ajax to google places api on the server
+      // returns its best guess of a location
+      // depending on what the user enters
       $.ajax({
         method: 'post',
         url: '/location',
         data: { place: $('#address-search').val() },
         success: function(data){
-
+          // function to make [AJAX] call and grab locations
+          // take the address and center the map at that location
           GMaps.geocode({
             address: data,
             callback: function(results, status) {
@@ -62,7 +66,11 @@ var GmapsMap = React.createClass({
     state.map = new GMaps({
       div: '#map',
       lat: state.lat,
-      lng: state.lng
+      lng: state.lng,
+      idle: function(){
+        // function to make [AJAX] call and grab locations
+        console.log('idle!!!');
+      }
     });
 
     this.setState(state);
@@ -74,6 +82,7 @@ var GmapsMap = React.createClass({
       success: function(position) {
         // hide "loading" here
         self.centerMap(position.coords.latitude, position.coords.longitude);
+        // function to make [AJAX] call and grab locations? This one might not be neccesary
       },
       error: function(error) {
         console.log('Geolocation failed: ' + error.message);
