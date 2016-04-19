@@ -9,18 +9,7 @@
   <body>
     <header>
       <div class="title five columns">PROJECT NAME</div>
-      <div class="login five columns">
-        <!-- WILL NEED TO TOGGLE DISPLAY HIDDEN ONCE LOGGED IN -->
-        <input type="text" name="email" value=""  class="email" placeholder="EMAIL">
-        <input type="password" name="password" value="" class="password" placeholder="PASSWORD">
-        <button type="submit" name="button">Login</button>
-        <br />
-        <a class="register" href="#register-popup">Not Registered? Sign Up!</a>
-      </div>
-      <div class="welcome">
-        <!-- THIS IS WHERE THE WELCOME MESSAGE WILL GO WHEN SIGNED IN -->
-        <!--  ADD JS IN THE APP.JS TO DISPLAY THIS WHEN SIGNED IN -->
-      </div>
+      <div id="button-group" class="five columns"></div>
     </header>
 
     <div class="container twelve columns">
@@ -28,123 +17,16 @@
           <div id="newsfeed" class="newsfeed six columns">
               <!-- CHANGING NEWSFEED GOES HERE  -->
               NEWSFEED CONTAINER
-              <div id="homescreen-newsfeed">
-
-              </div>
-
-              <div id="register-newsfeed">
-
-              </div>
-              <div id="post-newsfeed">
-
-              </div>
           </div>
           <div class="map six columns">
             <main id="map-container"></main>
             <aside id="search-container"></aside>
               <!-- MAP GETS PLACED  -->
           </div>
-          <div id="register"></div>
       </div>
     </div>
-    <!-- IMAGE UPLOAD OPTION 1-->
-    <fieldset class="form-group">
-            <div class="col-xs-3">
-          <p><h5><strong>Add Image to Post</strong></h5></p>
-          <label class="file">
-            <input type="file" id="inputFileToLoad" onchange="readURL(this)" >
-            <input type="hidden" id="imagePost" name="image" value="">
 
-            <span class="file-custom"></span><button type="button" class="btn btn-primary btn-xs">Upload</button>
-          </label>
-        </div>
-        </fieldset>
 
-        <!-- IMAGE UPLOAD OPTION 2 -->
-        <div class="mui-container">
-        <div class="mui-panel">
-
-            <h1><i class="fa fa-cloud-upload"></i> Uploading Images</h1>
-
-            <code>image_as_base64</code>. This contains the base64 encoded file.
-
-            <form action="/api/photo" method="post"></form>
-            <h3>Upload Image</h3>
-            <input type="file" name="image" class="mui-form-control">
-            <input type="hidden" name="image_as_base64">
-            <input type="submit" class="mui-btn mui-btn-primary mui-btn-raised" value="Upload">
-            </form>
-
-            <div id="images" class="mui-form-control"></div>
-
-        </div>
-    </div>
-    <!-- END OF IMAGE OPTION UPLOADS -->
-    <div id="testytest"></div>
-    <div id="button-group"></div>
-
-    <!-- login popup -->
-    <div class="overlay" id="login-popup">
-      <div class="popup">
-
-        <h4>Login</h4>
-        <a class="close" href="#">&times;</a>
-        <div class="input-row">
-          <label class="email">Email: </label>
-          <input class="email" type="text"></input>
-          <label class="password">Password: </label>
-          <input class="password" type="text"></input>
-        </div>
-
-      </div>
-    </div>
-    <!-- end login popup -->
-
-    <!-- register popup -->
-    <div class="overlay" id="register-popup">
-      <div class="popup">
-
-        <h4>Register</h4>
-        <a class="close" href="#">&times;</a>
-        <form>
-          <div class="input-row">
-              <label class="name">Name: </label>
-              <input class="name" type="text"></input>
-          </div>
-          <br />
-          <div class="input-row">
-              <label class="email">Email: </label>
-              <input class="email" type="text"></input>
-          </div>
-          <br />
-          <div class="input-row">
-              <label class="password">Password: </label>
-              <input class="password" type="text"></input>
-          </div>
-          <br />
-          <div class="input-row">
-              <label class="email">Re-Confirm Password: </label>
-              <input class="password" type="text"></input>
-          </div>
-          <br />
-          <div class="input-row">
-              <label class="email">Default Address: </label>
-              <input class="address" type="text"></input>
-          </div>
-          <br />
-          <div class="input-row">
-              <button type="button">Register</button>
-          </div>
-        </form>
-
-      </div>
-    </div>
-    <!-- end register popup -->
-
-<<<<<<< HEAD
-
-=======
->>>>>>> react
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.js"></script>
   <script type="text/javascript" src="/js/google-maps.js"></script>

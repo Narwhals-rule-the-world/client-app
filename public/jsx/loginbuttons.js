@@ -1,24 +1,13 @@
 var React    = require('react'),
-    ReactDOM = require('react-dom'),
-    _        = require('lodash');
+    ReactDOM = require('react-dom');
 
 var Buttons = React.createClass({
   getInitialState: function(){
     return {
       welcomeScreen: true,
       userLoggedIn: false,
-      userRegistered: false
     }
   },
-  handleRegister: function(registered){
-    if(registered){
-      var state = this.state
-      state.userRegistered = true
-      this.setState(state)
-      console.log(this.state)
-    }
-  },
-
   handleLoggedIn: function(logged){
     if(logged){
       var state = this.state
@@ -27,95 +16,102 @@ var Buttons = React.createClass({
       console.log(this.state)
     }
   },
-
+  handleLoggedOut: function(logged){
+    if(logged){
+      var state = this.state
+      state.userLoggedIn = false
+      this.setState(state)
+      console.log(this.state)
+    }
+  },
   render: function(){
     return (
         <div>
-          {this.state.welcomeScreen ? <Welcome  handleRegister={this.handleRegister} handleLoggedIn={this.handleLoggedIn} /> : null }
-          {this.state.userLoggedIn ? <LogIn /> : null }
-          {this.state.userRegistered ? <Register /> : null }
+          {this.state.userLoggedIn ? null :  <LogIn handleLoggedIn={this.handleLoggedIn} handleLoggedOut={this.handleLoggedOut}/>  }
+          <a class="register" href="#register-popup">Not Registered? Sign Up!</a>
         </div>
     )
   },
 })
 
-var Welcome = React.createClass({
-  handleRegisterClick: function(event){
-    // this.props.handleRegister(true)
-    // this.props.handleLoggedIn(false)
-
-    //event.target.value will get you values of inputs
-    console.log('REGISTER')
-    // console.log(this.state.userRegistered)
-    // console.log(this.state.userLoggedIn)
-  },
+var LogIn = React.createClass({
   handleLoginClick: function(event){
-    // this.props.handleRegister(false)
-    // this.props.handleLoggedIn(true)
-    console.log('LOGIN')
-    // console.log(this.state.userRegistered)
-    // console.log(this.state.userLoggedIn)
+    this.props.handleLoggedIn(true)
+    //event.target.value will get you values of inputs
+    //this will need to be an ajax call for users log in
+    console.log('ATTEMPTED LOGIN!')
   },
   render: function(){
-    return (
-      <div>
-          <a href='#login-popup'><button onClick={this.handleLoginClick} type="button">LOGIN HERE</button></a>
-          - OR -
-          <a href='#register-popup'><button onClick={this.handleRegisterClick} type="button">REGISTER HERE</button></a>
+    return(
+      <div class="input-row">
+          <label class="email">Email: </label>
+          <input class="email" type="text"></input>
+          <label class="password">Password: </label>
+          <input class="password" type="text"></input>
+          <button onClick={this.handleLoginClick} type="button">LOGIN</button>
       </div>
     )
   }
 })
 
-// var Register = React.createClass({
-//   render: function(){
-//     return (
-//         <form>
-//           <div class="input-row">
-//               <label class="name">Name: </label>
-//               <input class="name" type="text"></input>
-//           </div>
-//           <br />
-//           <div class="input-row">
-//               <label class="email">Email: </label>
-//               <input class="email" type="text"></input>
-//           </div>
-//           <br />
-//           <div class="input-row">
-//               <label class="password">Password: </label>
-//               <input class="password" type="text"></input>
-//           </div>
-//           <br />
-//           <div class="input-row">
-//               <label class="email">Re-Confirm Password: </label>
-//               <input class="password" type="text"></input>
-//           </div>
-//           <br />
-//           <div class="input-row">
-//               <label class="email">Default Address: </label>
-//               <input class="address" type="text"></input>
-//           </div>
-//           <br />
-//           <div class="input-row">
-//               <button type="button">Register</button>
-//           </div>
-//         </form>
-//       )
-//     }
-// })
-//END OF REGISTER COMPONENT
+var LogOut = React.createClass({
+  handleLogoutClick: function(event){
+    this.props.handleLoggedOut(true)
+    console.log('ATTEMPTED LOGOUT!')
+  },
+  render: function(){
+    return(
+      <div>
+        Welcome User
+        <button onClick={this.handleLogoutClick} type="button">LOGOUT</button>
+      </div>
+    )
+  }
+})
 
-// var LogIn = React.createClass({
-//   render: function(){
-//     return(
-//       <div class="input-row">
-//           <label class="email">Email: </label>
-//           <input class="email" type="text"></input>
-//           <label class="password">Password: </label>
-//           <input class="password" type="text"></input>
-//       </div>
-//     )
-//   }
-// })
+var Register = React.createClass({
+  render: function(){
+    return(
+      <div className="overlay" id="register-popup">
+        <div className="popup">
+
+          <h4>Register</h4>
+          <a className="close" href="#">&times;</a>
+          <form>
+            <div className="input-row">
+                <label className="name">Name: </label>
+                <input className="name" type="text"></input>
+            </div>
+            <br />
+            <div className="input-row">
+                <label className="email">Email: </label>
+                <input className="email" type="text"></input>
+            </div>
+            <br />
+            <div className="input-row">
+                <label className="password">Password: </label>
+                <input className="password" type="text"></input>
+            </div>
+            <br />
+            <div className="input-row">
+                <label className="email">Re-Confirm Password: </label>
+                <input className="password" type="text"></input>
+            </div>
+            <br />
+            <div className="input-row">
+                <label className="email">Default Address: </label>
+                <input className="address" type="text"></input>
+            </div>
+            <br />
+            <div className="input-row">
+                <button type="button">Register</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    )
+  }
+})
 
 ReactDOM.render(<Buttons />, document.getElementById('button-group'));
