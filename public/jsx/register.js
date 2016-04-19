@@ -4,7 +4,11 @@ var React    = require('react'),
 
 var Register = React.createClass({
   getInitialState: function(){
-    return(
+    return( { message: ''};
+  }
+
+
+
       <form>
         <div class="welcome">
         "Welcome to PROJECT NAME! The place to see and share what's going on in your city. Share pictures, comments and more to the interactive map where others can catch a short lived glimps of your activity. Search the map to see other posts to help you get off the couch and explore the city!"
@@ -18,9 +22,10 @@ var Register = React.createClass({
       <label class="photo">Photo: </label>
       <input class="photo" type="photo"></input>
       </div>
-      <div></div>
-      <div></div>
-      <div><div>
+      <div>
+      <label class="comment">Comment: </label>
+      <input class="comment" type="text"></input>
+      </div>
     </form>
   }
   render: function(){
