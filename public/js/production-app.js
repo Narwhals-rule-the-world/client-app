@@ -35415,6 +35415,7 @@ var AddressSearch = React.createClass({
         url: '/location',
         data: { place: $('#address-search').val() },
         success: function success(data) {
+          // function to make [AJAX] call and grab locations
           // take the address and center the map at that location
           GMaps.geocode({
             address: data,
@@ -35470,6 +35471,7 @@ var GmapsMap = React.createClass({
       lat: state.lat,
       lng: state.lng,
       idle: function idle() {
+        // function to make [AJAX] call and grab locations
         console.log('idle!!!');
       }
     });
@@ -35483,6 +35485,7 @@ var GmapsMap = React.createClass({
       success: function success(position) {
         // hide "loading" here
         self.centerMap(position.coords.latitude, position.coords.longitude);
+        // function to make [AJAX] call and grab locations? This one might not be neccesary
       },
       error: function error(_error) {
         console.log('Geolocation failed: ' + _error.message);
@@ -70912,81 +70915,252 @@ var React = require('react'),
     ReactDOM = require('react-dom'),
     _ = require('lodash');
 
-var Register = React.createClass({
-    displayName: 'Register',
+// THIS IS THE MAIN CONTAINER COMPONENT
+var Container = React.createClass({
+  displayName: 'Container',
 
-    render: function render() {
-        return React.createElement(
-            'form',
-            null,
-            React.createElement(
-                'div',
-                { 'class': 'input-row' },
-                React.createElement(
-                    'label',
-                    { 'class': 'name' },
-                    'Name: '
-                ),
-                React.createElement('input', { 'class': 'name', type: 'text' })
-            ),
-            React.createElement('br', null),
-            React.createElement(
-                'div',
-                { 'class': 'input-row' },
-                React.createElement(
-                    'label',
-                    { 'class': 'email' },
-                    'Email: '
-                ),
-                React.createElement('input', { 'class': 'email', type: 'text' })
-            ),
-            React.createElement('br', null),
-            React.createElement(
-                'div',
-                { 'class': 'input-row' },
-                React.createElement(
-                    'label',
-                    { 'class': 'password' },
-                    'Password: '
-                ),
-                React.createElement('input', { 'class': 'password', type: 'text' })
-            ),
-            React.createElement('br', null),
-            React.createElement(
-                'div',
-                { 'class': 'input-row' },
-                React.createElement(
-                    'label',
-                    { 'class': 'email' },
-                    'Re-Confirm Password: '
-                ),
-                React.createElement('input', { 'class': 'password', type: 'text' })
-            ),
-            React.createElement('br', null),
-            React.createElement(
-                'div',
-                { 'class': 'input-row' },
-                React.createElement(
-                    'label',
-                    { 'class': 'email' },
-                    'Default Address: '
-                ),
-                React.createElement('input', { 'class': 'address', type: 'text' })
-            ),
-            React.createElement('br', null),
-            React.createElement(
-                'div',
-                { 'class': 'input-row' },
-                React.createElement(
-                    'button',
-                    { type: 'button' },
-                    'Register'
-                )
-            )
-        );
+  // set all values to false
+  getInitialState: function getInitialState() {
+    return {
+      userRegistered: false,
+      userLoggedIn: false,
+      userPost: false
+    };
+  },
+  // DEFINE HANDLING REGISTER TO SWITCH USER REGISTERED TO TRUE
+  // WHEN YOU CLICK REGISTER BUTTON
+  handleRegister: function handleRegister(registered) {
+    if (registered) {
+      var state = this.state;
+      state.userRegistered = true;
+      this.setState(state);
+      console.log(this.state);
     }
+    console.log('REGISTER IS NOW TRUE');
+  },
+
+  // DEFINE HANDLING LOGIN TO SWITCH userLoggedIn TO TRUE
+  // WHEN YOU CLICK LOGIN BUTTON
+  // TAKES US TO LOGGED IN AND BRINGS UP POST BUTTON
+  handleLoggedIn: function handleLoggedIn(logged) {
+    if (logged) {
+      var state = this.state;
+      state.userLoggedIn = true;
+      this.setState(state);
+      console.log(this.state);
+    }
+    console.log('LOGGED IN IS NOW TRUE');
+  },
+
+  // DEFINE HANDLING REGISTER TO SWITCH USER REGISTERED TO TRUE
+  // WHEN YOU CLICK REGISTER BUTTON
+  // ULTIMATELY TAKES US TO POST FORM
+  handlePost: function handlePost(post) {
+    if (post) {
+      var state = this.state;
+      state.userPost = true;
+      this.setState(state);
+      console.log(this.state);
+    }
+    console.log('WE WANT TO ADD A POST');
+  },
+
+  //RENDER ALL THE FUNCTIONS IN THE NEWSFEED
+  render: function render() {
+    return React.createElement(
+      'div',
+      null,
+      this.state.userRegistered ? React.createElement(Register, null) : React.createElement(Welcome, { handleRegister: this.handleRegister, handleLoggedIn: this.handleLoggedIn }),
+      this.state.userLoggedIn ? React.createElement(Logged, { handlePost: this.handlePost }) : '',
+      this.state.userPost ? React.createElement(Post, null) : ''
+    );
+  }
 });
 
-ReactDOM.render(React.createElement(Register, null), document.getElementById('newsfeed'));
+var Welcome = React.createClass({
+  displayName: 'Welcome',
+
+  handleRegisterClick: function handleRegisterClick(event) {
+    this.props.handleRegister(true);
+    //event.target.value will get you values of inputs
+    console.log('click worked');
+  },
+
+  handleLoginClick: function handleLoginClick(event) {
+    this.props.handleLoggedIn(true);
+    //event.target.value will get you values of inputs
+    console.log(event.target.value);
+    console.log('click worked');
+  },
+
+  render: function render() {
+    return React.createElement(
+      'div',
+      null,
+      'Welcome to PROJECT NAME! The place to see and share what\'s going on in your city. Share pictures, comments and more to the interactive map where others can catch a short lived glimps of your activity. Search the map to see other posts to help you get off the couch and explore the city!',
+      React.createElement('br', null),
+      'Not a member?',
+      React.createElement('br', null),
+      React.createElement(
+        'button',
+        { onClick: this.handleRegisterClick, type: 'submit' },
+        'REGISTER HERE'
+      ),
+      React.createElement('br', null),
+      'or login',
+      React.createElement('br', null),
+      React.createElement(
+        'div',
+        { 'class': 'input-row' },
+        React.createElement('input', { type: 'text', name: 'email', value: '', 'class': 'email', placeholder: 'EMAIL' }),
+        React.createElement('input', { type: 'password', name: 'password', value: '', 'class': 'password', placeholder: 'PASSWORD' })
+      ),
+      React.createElement('br', null),
+      React.createElement(
+        'button',
+        { onClick: this.handleLoginClick, type: 'submit' },
+        'LOGIN'
+      )
+    );
+  }
+
+});
+
+var Logged = React.createClass({
+  displayName: 'Logged',
+
+  handlePostClick: function handlePostClick(event) {
+    this.props.handlePost(true);
+    //event.target.value will get you values of inputs
+    console.log('we should see post form');
+  },
+  render: function render() {
+    return React.createElement(
+      'div',
+      null,
+      'YOU ARE LOGGED IN',
+      React.createElement('br', null),
+      React.createElement(
+        'button',
+        { onClick: this.handlePostClick, type: 'submit' },
+        'ADD A POST'
+      )
+    );
+  }
+});
+
+var Post = React.createClass({
+  displayName: 'Post',
+
+  render: function render() {
+    return React.createElement(
+      'div',
+      { 'class': 'input-row' },
+      React.createElement(
+        'label',
+        { 'class': 'picture' },
+        'Upload Picture: '
+      ),
+      React.createElement('input', { 'class': 'name', type: 'text', placeholder: 'STAND IN' }),
+      React.createElement('br', null),
+      React.createElement(
+        'label',
+        { 'class': 'comment' },
+        'Comment: '
+      ),
+      React.createElement('input', { 'class': 'comment', type: 'text' })
+    );
+  }
+});
+
+var Register = React.createClass({
+  displayName: 'Register',
+
+  getInitialState: function getInitialState() {
+    return { message: '' };
+  },
+  registerClickHandler: function registerClickHandler() {
+    this.setState({ message: 'register' });
+  },
+  updateClickHandler: function updateClickHandler() {
+    this.setState({ message: 'update' });
+  },
+  addPostClickHandler: function addPostClickHandler() {
+    this.setState({ message: 'addpost' });
+  },
+  render: function render() {
+
+    return React.createElement(
+      'form',
+      null,
+      React.createElement(
+        'div',
+        { 'class': 'input-row' },
+        React.createElement(
+          'label',
+          { 'class': 'name' },
+          'Name: '
+        ),
+        React.createElement('input', { 'class': 'name', type: 'text' })
+      ),
+      React.createElement('br', null),
+      React.createElement(
+        'div',
+        { 'class': 'input-row' },
+        React.createElement(
+          'label',
+          { 'class': 'email' },
+          'Email: '
+        ),
+        React.createElement('input', { 'class': 'email', type: 'text' })
+      ),
+      React.createElement('br', null),
+      React.createElement(
+        'div',
+        { 'class': 'input-row' },
+        React.createElement(
+          'label',
+          { 'class': 'password' },
+          'Password: '
+        ),
+        React.createElement('input', { 'class': 'password', type: 'text' })
+      ),
+      React.createElement('br', null),
+      React.createElement(
+        'div',
+        { 'class': 'input-row' },
+        React.createElement(
+          'label',
+          { 'class': 'email' },
+          'Re-Confirm Password: '
+        ),
+        React.createElement('input', { 'class': 'password', type: 'text' })
+      ),
+      React.createElement('br', null),
+      React.createElement(
+        'div',
+        { 'class': 'input-row' },
+        React.createElement(
+          'label',
+          { 'class': 'email' },
+          'Default Address: '
+        ),
+        React.createElement('input', { 'class': 'address', type: 'text' })
+      ),
+      React.createElement('br', null),
+      React.createElement(
+        'div',
+        { 'class': 'input-row' },
+        React.createElement(
+          'button',
+          { type: 'button' },
+          'Register'
+        )
+      )
+    );
+  }
+});
+
+ReactDOM.render(React.createElement(Container, null), document.getElementById('newsfeed'));
 
 },{"lodash":27,"react":166,"react-dom":29}]},{},[167]);
