@@ -3,6 +3,7 @@ var React    = require('react'),
     sampleData = [{}],//require('../../sample-data-reviews.js'),
     sampleDataUpdated = [{}];//require('../../sample-data-reviews-updated.js');
 
+// hiii
 var Container = React.createClass({
   getInitialState: function(){
     return {
@@ -395,7 +396,7 @@ var LogIn = React.createClass({
     var state = this.state;
     $.ajax({
       method: 'post',
-      url: 'http://localhost:3000/login'
+      url: 'http://localhost:3000/users/login',
       data: state,
       success: function(data){
         console.log(data);
@@ -404,13 +405,13 @@ var LogIn = React.createClass({
         console.log(err);
       }
     });
-  }
+  },
   registerHandler: function(e){
     e.preventDefault();
     var state = this.state;
     $.ajax({
       method: 'post',
-      url: 'http://localhost:3000/update'
+      url: 'http://localhost:3000/users/signup',
       data: state,
       success: function(data){
         console.log(data);
@@ -424,7 +425,7 @@ var LogIn = React.createClass({
     var state = this.state;
     state[e.target.name] = e.target.value;
     this.setState(state);
-  }
+  },
   handleLoginClick: function(event){
     this.props.handleLoggedIn(true)
     //event.target.value will get you values of inputs
