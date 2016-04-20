@@ -45,10 +45,10 @@ var LogIn = React.createClass({
     return(
       <div class="input-row">
           <label class="email">Email: </label>
-          <input class="email" type="text"></input>
+          <input class="email" type="text" placeholder="ENTER YOUR EMAIL"></input>
           <label class="password">Password: </label>
-          <input class="password" type="text"></input>
-          <button onClick={this.handleLoginClick} type="button">LOGIN</button>
+          <input class="password" type="text" placeholder="ENTER YOUR PASSWORD"></input>
+          <button class="login-button" onClick={this.handleLoginClick} type="button">LOGIN</button>
           <br />
           <a class="register" href="#register-popup">Not Registered? Sign Up!</a>
           <div className="overlay" id="register-popup">

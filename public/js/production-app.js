@@ -39277,16 +39277,16 @@ var LogIn = React.createClass({
         { 'class': 'email' },
         'Email: '
       ),
-      React.createElement('input', { 'class': 'email', type: 'text' }),
+      React.createElement('input', { 'class': 'email', type: 'text', placeholder: 'ENTER YOUR EMAIL' }),
       React.createElement(
         'label',
         { 'class': 'password' },
         'Password: '
       ),
-      React.createElement('input', { 'class': 'password', type: 'text' }),
+      React.createElement('input', { 'class': 'password', type: 'text', placeholder: 'ENTER YOUR PASSWORD' }),
       React.createElement(
         'button',
-        { onClick: this.handleLoginClick, type: 'button' },
+        { 'class': 'login-button', onClick: this.handleLoginClick, type: 'button' },
         'LOGIN'
       ),
       React.createElement('br', null),
