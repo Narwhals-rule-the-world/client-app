@@ -174,7 +174,6 @@ var AddressSearch = React.createClass({
         <input id="address-search" type="text"></input>
         <br />
         <button id="address-search-button" type="button">Seach Address</button>
-        <button id="post-button">Post at Current Address</button>
       </form>
     )
   }
@@ -384,6 +383,48 @@ var Buttons = React.createClass({
 })
 
 var LogIn = React.createClass({
+  getInitialState: function(){
+    return{
+      username: '',
+      email: '',
+      password: ''
+    }
+  },
+  loginHandler: function(e){
+    e.preventDefault();
+    var state = this.state;
+    $.ajax({
+      method: 'post',
+      url: 'http://localhost:3000/login'
+      data: state,
+      success: function(data){
+        console.log(data);
+      },
+      error: function(err){
+        console.log(err);
+      }
+    });
+  }
+  registerHandler: function(e){
+    e.preventDefault();
+    var state = this.state;
+    $.ajax({
+      method: 'post',
+      url: 'http://localhost:3000/update'
+      data: state,
+      success: function(data){
+        console.log(data);
+      },
+      error: function(err){
+        console.log(err);
+      }
+    });
+  },
+  textChange: function(e){
+    var state = this.state;
+    state[e.target.name] = e.target.value;
+    this.setState(state);
+  }
   handleLoginClick: function(event){
     this.props.handleLoggedIn(true)
     //event.target.value will get you values of inputs
@@ -393,46 +434,47 @@ var LogIn = React.createClass({
   render: function(){
     return(
       <div class="input-row">
+        <form onSubmit={ this.loginHandler }>
           <label class="email">Email: </label>
-          <input class="email" type="text"></input>
+          <input class="email" type="text" name="email" onChange={ this.textChange }></input>
           <label class="password">Password: </label>
-          <input class="password" type="text"></input>
-          <button onClick={this.handleLoginClick} type="button">LOGIN</button>
+          <input class="password" type="password" name="password" onChange={ this.textChange }></input>
+          <button onClick={this.handleLoginClick} type="submit">LOGIN</button>
+        </form>
           <br />
           <a class="register" href="#register-popup">Not Registered? Sign Up!</a>
           <div className="overlay" id="register-popup">
               <div className="popup">
-
                 <h4>Register</h4>
                 <a className="close" href="#">&times;</a>
-                <form>
+                <form onSubmit={ this.registerHandler }>
                   <div className="input-row">
-                      <label className="name">Name: </label>
-                      <input className="name" type="text"></input>
+                      <label className="name">Username: </label>
+                      <input className="name" type="text" name="username" onChange={ this.textChange }></input>
                   </div>
                   <br />
                   <div className="input-row">
                       <label className="email">Email: </label>
-                      <input className="email" type="text"></input>
+                      <input className="email" type="text" name="email" onChange={ this.textChange }></input>
                   </div>
                   <br />
                   <div className="input-row">
                       <label className="password">Password: </label>
-                      <input className="password" type="text"></input>
+                      <input className="password" type="password" name="password" onChange={ this.textChange }></input>
                   </div>
                   <br />
                   <div className="input-row">
                       <label className="email">Re-Confirm Password: </label>
-                      <input className="password" type="text"></input>
+                      <input className="password" type="password" name="reconfirmpassword" onChange={ this.textChange }></input>
                   </div>
                   <br />
                   <div className="input-row">
                       <label className="email">Default Address: </label>
-                      <input className="address" type="text"></input>
+                      <input className="address" type="text" name="default_address" onChange={ this.textChange }></input>
                   </div>
                   <br />
                   <div className="input-row">
-                      <button onClick={this.handleLoginClick} type="button">REGISTER</button>
+                      <button onClick={this.handleLoginClick} type="submit">REGISTER</button>
                   </div>
                 </form>
 
