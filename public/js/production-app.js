@@ -19366,8 +19366,9 @@ module.exports = require('./lib/React');
 
 var React = require('react'),
     ReactDOM = require('react-dom'),
-    sampleData = require('../../sample-data-reviews.js'),
-    sampleDataUpdated = require('../../sample-data-reviews-updated.js');
+    sampleData = [{}],
+    //require('../../sample-data-reviews.js'),
+sampleDataUpdated = [{}]; //require('../../sample-data-reviews-updated.js');
 
 var Container = React.createClass({
   displayName: 'Container',
@@ -19390,7 +19391,7 @@ var Container = React.createClass({
       lng: state.lng,
       idle: function idle() {
         // function to make [AJAX] call and grab locations
-        console.log('idle!!!');
+        // console.log('idle!!!');
       }
     });
 
@@ -19409,17 +19410,11 @@ var Container = React.createClass({
       success: function success(returnedLocations) {
         state.locations = returnedLocations;
         self.setState(state);
-        console.log('hey! updated the global position.');
-        // console.log('the actual state of the react component ');
-        // console.log(self.state);
       },
       error: function error(err) {
         console.log(err);
       }
     });
-
-    // console.log('our variable state: ');
-    // console.log(state);
   },
 
   render: function render() {
@@ -19434,6 +19429,66 @@ var Container = React.createClass({
         setPosition: this.setPosition,
         createMap: this.createMap,
         map: this.state.map })
+    );
+  }
+});
+
+var GoogleMap = React.createClass({
+  displayName: 'GoogleMap',
+
+  centerMap: function centerMap(lat, lng) {
+    this.props.setPosition(lat, lng); // function from container to set location globally
+    this.props.map.setCenter(lat, lng);
+    this.props.map.addMarker({
+      lat: lat,
+      lng: lng
+    });
+  },
+  addMarkers: function addMarkers() {
+    var self = this;
+    this.props.locations.forEach(function (location) {
+      // console.log(location);
+      self.props.map.addMarker({
+        lat: location.lat,
+        lng: location.lng,
+        infoWindow: {
+          content: '<p><b>' + location.placeName + '</b></p><p>' + location.comment + '</p>'
+        }
+      });
+    });
+  },
+  componentDidMount: function componentDidMount() {
+    var self = this;
+    this.props.createMap();
+
+    // show "loading" here
+
+    // find user's position
+    GMaps.geolocate({
+      success: function success(position) {
+        // hide "loading" here
+        self.centerMap(position.coords.latitude, position.coords.longitude);
+      },
+      error: function error(_error) {
+        console.log('Geolocation failed: ' + _error.message);
+      },
+      not_supported: function not_supported() {
+        console.log("Your browser does not support geolocation");
+      },
+      always: function always() {
+        console.log("Done!");
+      }
+    });
+  },
+
+  render: function render() {
+    this.addMarkers();
+    return React.createElement(
+      'div',
+      null,
+      React.createElement('div', { id: 'map' }),
+      React.createElement(AddressSearch, {
+        centerMap: this.centerMap })
     );
   }
 });
@@ -19492,72 +19547,6 @@ var AddressSearch = React.createClass({
         { id: 'post-button' },
         'Post at Current Address'
       )
-    );
-  }
-});
-
-var GoogleMap = React.createClass({
-  displayName: 'GoogleMap',
-
-  centerMap: function centerMap(lat, lng) {
-    this.props.setPosition(lat, lng); // function from container to set location globally
-    this.props.map.setCenter(lat, lng);
-    this.props.map.addMarker({
-      lat: lat,
-      lng: lng
-    });
-    this.addMarkers();
-  },
-  addMarkers: function addMarkers() {
-    var self = this;
-    console.log(this.props);
-    this.props.locations.forEach(function (location) {
-      // console.log(location);
-      self.props.map.addMarker({
-        lat: location.lat,
-        lng: location.lng,
-        infoWindow: {
-          content: '<p><b>' + location.placeName + '</b></p><p>' + location.comment + '</p>'
-        }
-      });
-    });
-  },
-  // componentDidRender: function() {
-  //   var state = this.state;
-  //   state.locations = this.props.locations;
-  //   this.setState(state);
-  // },
-  componentDidMount: function componentDidMount() {
-    var self = this;
-    this.props.createMap();
-
-    // show "loading" here
-
-    // find user's position
-    GMaps.geolocate({
-      success: function success(position) {
-        // hide "loading" here
-        self.centerMap(position.coords.latitude, position.coords.longitude);
-      },
-      error: function error(_error) {
-        console.log('Geolocation failed: ' + _error.message);
-      },
-      not_supported: function not_supported() {
-        console.log("Your browser does not support geolocation");
-      },
-      always: function always() {
-        console.log("Done!");
-      }
-    });
-  },
-
-  render: function render() {
-    return React.createElement(
-      'div',
-      null,
-      React.createElement('div', { id: 'map' }),
-      React.createElement(AddressSearch, {
-        centerMap: this.centerMap })
     );
   }
 });
@@ -19919,158 +19908,4 @@ var LogOut = React.createClass({
 
 ReactDOM.render(React.createElement(Container, null), document.querySelector('main'));
 
-},{"../../sample-data-reviews-updated.js":167,"../../sample-data-reviews.js":168,"react":165,"react-dom":28}],167:[function(require,module,exports){
-'use strict';
-
-var sampleData = [{
-  placeName: 'Dick\'s dive bar',
-  lat: 41.890763,
-  lng: -87.626858,
-  comment: 'Great place, cheap beer',
-  picture: 'some base64 nonsense',
-  time: '1/1/2016'
-}, {
-  placeName: 'Dick\'s dive bar',
-  lat: 41.890763,
-  lng: -87.626858,
-  comment: 'I wish they played more cher classic hits',
-  picture: 'some base64 nonsense',
-  time: '1/1/2016'
-}, {
-  placeName: 'Dick\'s dive bar',
-  lat: 41.890763,
-  lng: -87.626858,
-  comment: 'too smelly',
-  picture: 'some base64 nonsense',
-  time: '1/1/2016'
-}, {
-  placeName: 'Route 64 bike trail',
-  lat: 41.891763,
-  lng: -87.626868,
-  comment: 'v nice trail, gr8 times',
-  picture: 'more base64 nonsense',
-  time: '1/1/2016'
-}, {
-  placeName: 'Route 64 bike trail',
-  lat: 41.891763,
-  lng: -87.626868,
-  comment: 'this was shit',
-  picture: 'more base64 nonsense',
-  time: '1/1/2016'
-}, {
-  placeName: 'Route 64 bike trail',
-  lat: 41.891763,
-  lng: -87.626868,
-  comment: 'I rode my bike',
-  picture: 'more base64 nonsense',
-  time: '1/1/2016'
-}, {
-  placeName: 'The art museum',
-  lat: 41.891653,
-  lng: -87.626768,
-  comment: 'what a great museum',
-  picture: 'base64',
-  time: '1/1/2016'
-}, {
-  placeName: 'The art museum',
-  lat: 41.891653,
-  lng: -87.626768,
-  comment: 'what a nice museum',
-  picture: 'base64',
-  time: '1/1/2016'
-}, {
-  placeName: 'The art museum',
-  lat: 41.891653,
-  lng: -87.626768,
-  comment: 'what a fun museum',
-  picture: 'base64',
-  time: '1/1/2016'
-}, {
-  placeName: 'THIS IS NEWWWWWW',
-  lat: 41.891653,
-  lng: -87.626768,
-  comment: 'WOAHHHHHHHHH',
-  picture: 'base64',
-  time: '1/1/2016'
-}, {
-  placeName: 'ALSO NEWWWWW',
-  lat: 41.891653,
-  lng: -87.626768,
-  comment: 'HOLY SHIIIIIIIIIT',
-  picture: 'base64',
-  time: '1/1/2016'
-}];
-
-module.exports = sampleData;
-
-},{}],168:[function(require,module,exports){
-'use strict';
-
-var sampleData = [{
-  placeName: 'Dick\'s dive bar',
-  lat: 41.890763,
-  lng: -87.626858,
-  comment: 'Great place, cheap beer',
-  picture: 'some base64 nonsense',
-  time: Date.now()
-}, {
-  placeName: 'Dick\'s dive bar',
-  lat: 41.890763,
-  lng: -87.626858,
-  comment: 'I wish they played more cher classic hits',
-  picture: 'some base64 nonsense',
-  time: Date.now()
-}, {
-  placeName: 'Dick\'s dive bar',
-  lat: 41.890763,
-  lng: -87.626858,
-  comment: 'too smelly',
-  picture: 'some base64 nonsense',
-  time: Date.now()
-}, {
-  placeName: 'Route 64 bike trail',
-  lat: 41.891763,
-  lng: -87.626868,
-  comment: 'v nice trail, gr8 times',
-  picture: 'more base64 nonsense',
-  time: Date.now()
-}, {
-  placeName: 'Route 64 bike trail',
-  lat: 41.891763,
-  lng: -87.626868,
-  comment: 'this was shit',
-  picture: 'more base64 nonsense',
-  time: Date.now()
-}, {
-  placeName: 'Route 64 bike trail',
-  lat: 41.891763,
-  lng: -87.626868,
-  comment: 'I rode my bike',
-  picture: 'more base64 nonsense',
-  time: Date.now()
-}, {
-  placeName: 'The art museum',
-  lat: 41.891653,
-  lng: -87.626768,
-  comment: 'what a great museum',
-  picture: 'base64',
-  time: Date.now()
-}, {
-  placeName: 'The art museum',
-  lat: 41.891653,
-  lng: -87.626768,
-  comment: 'what a nice museum',
-  picture: 'base64',
-  time: Date.now()
-}, {
-  placeName: 'The art museum',
-  lat: 41.891653,
-  lng: -87.626768,
-  comment: 'what a fun museum',
-  picture: 'base64',
-  time: Date.now()
-}];
-
-module.exports = sampleData;
-
-},{}]},{},[166]);
+},{"react":165,"react-dom":28}]},{},[166]);

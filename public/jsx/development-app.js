@@ -1,7 +1,7 @@
 var React    = require('react'),
     ReactDOM = require('react-dom'),
-    sampleData = require('../../sample-data-reviews.js'),
-    sampleDataUpdated = require('../../sample-data-reviews-updated.js');
+    sampleData = [{}],//require('../../sample-data-reviews.js'),
+    sampleDataUpdated = [{}];//require('../../sample-data-reviews-updated.js');
 
 var Container = React.createClass({
   getInitialState: function(){
@@ -22,7 +22,7 @@ var Container = React.createClass({
       lng: state.lng,
       idle: function(){
         // function to make [AJAX] call and grab locations
-        console.log('idle!!!');
+        // console.log('idle!!!');
       }
     });
 
@@ -42,18 +42,11 @@ var Container = React.createClass({
       success: function(returnedLocations){
         state.locations = returnedLocations;
         self.setState(state);
-        console.log('hey! updated the global position.');
-        // console.log('the actual state of the react component ');
-        // console.log(self.state);
       },
       error: function(err){
         console.log(err);
       }
     })
-
-    // console.log('our variable state: ');
-    // console.log(state);
-
 
   },
 
@@ -68,6 +61,67 @@ var Container = React.createClass({
                     setPosition={ this.setPosition }
                     createMap = { this.createMap }
                     map={ this.state.map }/>
+      </div>
+
+    )
+  }
+})
+
+var GoogleMap = React.createClass({
+  centerMap: function(lat, lng){
+    this.props.setPosition(lat, lng); // function from container to set location globally
+    this.props.map.setCenter(lat, lng);
+    this.props.map.addMarker({
+        lat: lat,
+        lng: lng
+      })
+  },
+  addMarkers: function(){
+    var self = this;
+    this.props.locations.forEach(function(location){
+      // console.log(location);
+      self.props.map.addMarker({
+        lat: location.lat,
+        lng: location.lng,
+        infoWindow: {
+          content: ('<p><b>' + location.placeName+ '</b></p><p>' + location.comment + '</p>')
+        }
+      });
+
+
+    })
+  },
+  componentDidMount: function(){
+    var self = this;
+    this.props.createMap();
+
+    // show "loading" here
+
+    // find user's position
+    GMaps.geolocate({
+      success: function(position) {
+        // hide "loading" here
+        self.centerMap(position.coords.latitude, position.coords.longitude);
+      },
+      error: function(error) {
+        console.log('Geolocation failed: ' + error.message);
+      },
+      not_supported: function() {
+        console.log("Your browser does not support geolocation");
+      },
+      always: function() {
+        console.log("Done!");
+      }
+    });
+  },
+
+  render: function(){
+    this.addMarkers();
+    return(
+      <div>
+        <div id='map'></div>
+        <AddressSearch
+          centerMap={ this.centerMap }/>
       </div>
 
     )
@@ -128,72 +182,7 @@ var AddressSearch = React.createClass({
 
 
 
-var GoogleMap = React.createClass({
-  centerMap: function(lat, lng){
-    this.props.setPosition(lat, lng); // function from container to set location globally
-    this.props.map.setCenter(lat, lng);
-    this.props.map.addMarker({
-        lat: lat,
-        lng: lng
-      })
-    this.addMarkers();
-  },
-  addMarkers: function(){
-    var self = this;
-    console.log(this.props);
-    this.props.locations.forEach(function(location){
-      // console.log(location);
-      self.props.map.addMarker({
-        lat: location.lat,
-        lng: location.lng,
-        infoWindow: {
-          content: ('<p><b>' + location.placeName+ '</b></p><p>' + location.comment + '</p>')
-        }
-      });
 
-
-    })
-  },
-  // componentDidRender: function() {
-  //   var state = this.state;
-  //   state.locations = this.props.locations;
-  //   this.setState(state);
-  // },
-  componentDidMount: function(){
-    var self = this;
-    this.props.createMap();
-
-    // show "loading" here
-
-    // find user's position
-    GMaps.geolocate({
-      success: function(position) {
-        // hide "loading" here
-        self.centerMap(position.coords.latitude, position.coords.longitude);
-      },
-      error: function(error) {
-        console.log('Geolocation failed: ' + error.message);
-      },
-      not_supported: function() {
-        console.log("Your browser does not support geolocation");
-      },
-      always: function() {
-        console.log("Done!");
-      }
-    });
-  },
-
-  render: function(){
-    return(
-      <div>
-        <div id='map'></div>
-        <AddressSearch
-          centerMap={ this.centerMap }/>
-      </div>
-
-    )
-  }
-})
 
 var FeedContainer = React.createClass({
   getInitialState: function(){
