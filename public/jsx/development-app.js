@@ -247,7 +247,20 @@ var Feed = React.createClass({
   },
   updateFeedItems: function(){
     var state;
-    // this will be ajax to api
+    // this will be ajax to api ======================
+    $.ajax({
+      method: 'post',
+      url: 'http://localhost:3000/search',
+      data: { lat: this.prop.lat, lng: this.prop.lng, radius: 0 },
+      success: function(returnedLocations){
+        state.locations = returnedLocations;
+        self.setState(state);
+      },
+      error: function(err){
+        console.log(err);
+      }
+    })
+    // Changed ===================
     state = { locations: sampleDataUpdated }
     this.setState(state);
   },
