@@ -6,32 +6,55 @@ var React    = require('react'),
 var Container = React.createClass({
   getInitialState: function(){
     return {
-      lat: 41.890663,
-      lng: -87.626958,
-      locations: sampleData,
+      lat: 0,
+      lng: 0,
+      locations: [],
       loggedIn: false
     }
   },
-  setPosition: function(lat, lng){
+  createMap: function() {
+    var self  = this;
     var state = this.state;
+    // set up the map
+    state.map = new GMaps({
+      div: '#map',
+      lat: state.lat,
+      lng: state.lng,
+      idle: function(){
+        // function to make [AJAX] call and grab locations
+        console.log('idle!!!');
+      }
+    });
 
-    // $.ajax({
-    //   method: 'post',
-    //   url: '',
-    //   data: { lat: lat, lng: lng, radius: 0.02 },
-    //   success: function(returnedLocations){
-    //     locations = returnedLocations;
-    //   },
-    //   error: function(err){
-    //     console.log(err);
-    //   }
-    // })
+    this.setState(state);
 
-    state.locations = sampleDataUpdated;
-
+  },
+  setPosition: function(lat, lng){
+    var self = this;
+    var state = this.state;
     state.lat = lat;
     state.lng = lng;
-    this.setState(state);
+
+    $.ajax({
+      method: 'post',
+      url: 'http://localhost:3000/search',
+      data: { lat: lat, lng: lng, radius: 10 },
+      success: function(returnedLocations){
+        state.locations = returnedLocations;
+        self.setState(state);
+        console.log('hey! updated the global position.');
+        // console.log('the actual state of the react component ');
+        // console.log(self.state);
+      },
+      error: function(err){
+        console.log(err);
+      }
+    })
+
+    // console.log('our variable state: ');
+    // console.log(state);
+
+
   },
 
   render: function(){
@@ -39,7 +62,12 @@ var Container = React.createClass({
       <div className="container">
         <Buttons />
         <FeedContainer />
-        <GoogleMap locations={ this.state.locations } setPosition={ this.setPosition }/>
+        <GoogleMap  lat={ this.state.lat }
+                    lng={ this.state.lng }
+                    locations={ this.state.locations }
+                    setPosition={ this.setPosition }
+                    createMap = { this.createMap }
+                    map={ this.state.map }/>
       </div>
 
     )
@@ -70,7 +98,7 @@ var AddressSearch = React.createClass({
               address: data,
               callback: function(results, status) {
                 if (status == 'OK') {
-                  console.log(results);
+                  // console.log(results);
                   var latlng = results[0].geometry.location;
                   self.props.centerMap(latlng.lat(), latlng.lng());
                 }
@@ -101,15 +129,10 @@ var AddressSearch = React.createClass({
 
 
 var GoogleMap = React.createClass({
-  getInitialState: function(){
-    return { lat: 41.890663,
-             lng: -87.626958,
-             locations: this.props.locations }
-  },
   centerMap: function(lat, lng){
-    this.props.setPosition(); // function from container to set location globally
-    this.state.map.setCenter(lat, lng);
-    this.state.map.addMarker({
+    this.props.setPosition(lat, lng); // function from container to set location globally
+    this.props.map.setCenter(lat, lng);
+    this.props.map.addMarker({
         lat: lat,
         lng: lng
       })
@@ -117,9 +140,10 @@ var GoogleMap = React.createClass({
   },
   addMarkers: function(){
     var self = this;
-    this.state.locations.forEach(function(location){
-      console.log(location);
-      self.state.map.addMarker({
+    console.log(this.props);
+    this.props.locations.forEach(function(location){
+      // console.log(location);
+      self.props.map.addMarker({
         lat: location.lat,
         lng: location.lng,
         infoWindow: {
@@ -130,21 +154,14 @@ var GoogleMap = React.createClass({
 
     })
   },
+  // componentDidRender: function() {
+  //   var state = this.state;
+  //   state.locations = this.props.locations;
+  //   this.setState(state);
+  // },
   componentDidMount: function(){
-    var state = this.state;
-    var self  = this;
-    // set up the map
-    state.map = new GMaps({
-      div: '#map',
-      lat: state.lat,
-      lng: state.lng,
-      idle: function(){
-        // function to make [AJAX] call and grab locations
-        console.log('idle!!!');
-      }
-    });
-
-    this.setState(state);
+    var self = this;
+    this.props.createMap();
 
     // show "loading" here
 

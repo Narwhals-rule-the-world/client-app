@@ -19374,32 +19374,52 @@ var Container = React.createClass({
 
   getInitialState: function getInitialState() {
     return {
-      lat: 41.890663,
-      lng: -87.626958,
-      locations: sampleData,
+      lat: 0,
+      lng: 0,
+      locations: [],
       loggedIn: false
     };
   },
-  setPosition: function setPosition(lat, lng) {
+  createMap: function createMap() {
+    var self = this;
     var state = this.state;
+    // set up the map
+    state.map = new GMaps({
+      div: '#map',
+      lat: state.lat,
+      lng: state.lng,
+      idle: function idle() {
+        // function to make [AJAX] call and grab locations
+        console.log('idle!!!');
+      }
+    });
 
-    // $.ajax({
-    //   method: 'post',
-    //   url: '',
-    //   data: { lat: lat, lng: lng, radius: 0.02 },
-    //   success: function(returnedLocations){
-    //     locations = returnedLocations;
-    //   },
-    //   error: function(err){
-    //     console.log(err);
-    //   }
-    // })
-
-    state.locations = sampleDataUpdated;
-
+    this.setState(state);
+  },
+  setPosition: function setPosition(lat, lng) {
+    var self = this;
+    var state = this.state;
     state.lat = lat;
     state.lng = lng;
-    this.setState(state);
+
+    $.ajax({
+      method: 'post',
+      url: 'http://localhost:3000/search',
+      data: { lat: lat, lng: lng, radius: 10 },
+      success: function success(returnedLocations) {
+        state.locations = returnedLocations;
+        self.setState(state);
+        console.log('hey! updated the global position.');
+        // console.log('the actual state of the react component ');
+        // console.log(self.state);
+      },
+      error: function error(err) {
+        console.log(err);
+      }
+    });
+
+    // console.log('our variable state: ');
+    // console.log(state);
   },
 
   render: function render() {
@@ -19408,7 +19428,12 @@ var Container = React.createClass({
       { className: 'container' },
       React.createElement(Buttons, null),
       React.createElement(FeedContainer, null),
-      React.createElement(GoogleMap, { locations: this.state.locations, setPosition: this.setPosition })
+      React.createElement(GoogleMap, { lat: this.state.lat,
+        lng: this.state.lng,
+        locations: this.state.locations,
+        setPosition: this.setPosition,
+        createMap: this.createMap,
+        map: this.state.map })
     );
   }
 });
@@ -19437,7 +19462,7 @@ var AddressSearch = React.createClass({
               address: data,
               callback: function callback(results, status) {
                 if (status == 'OK') {
-                  console.log(results);
+                  // console.log(results);
                   var latlng = results[0].geometry.location;
                   self.props.centerMap(latlng.lat(), latlng.lng());
                 }
@@ -19474,15 +19499,10 @@ var AddressSearch = React.createClass({
 var GoogleMap = React.createClass({
   displayName: 'GoogleMap',
 
-  getInitialState: function getInitialState() {
-    return { lat: 41.890663,
-      lng: -87.626958,
-      locations: this.props.locations };
-  },
   centerMap: function centerMap(lat, lng) {
-    this.props.setPosition(); // function from container to set location globally
-    this.state.map.setCenter(lat, lng);
-    this.state.map.addMarker({
+    this.props.setPosition(lat, lng); // function from container to set location globally
+    this.props.map.setCenter(lat, lng);
+    this.props.map.addMarker({
       lat: lat,
       lng: lng
     });
@@ -19490,9 +19510,10 @@ var GoogleMap = React.createClass({
   },
   addMarkers: function addMarkers() {
     var self = this;
-    this.state.locations.forEach(function (location) {
-      console.log(location);
-      self.state.map.addMarker({
+    console.log(this.props);
+    this.props.locations.forEach(function (location) {
+      // console.log(location);
+      self.props.map.addMarker({
         lat: location.lat,
         lng: location.lng,
         infoWindow: {
@@ -19501,21 +19522,14 @@ var GoogleMap = React.createClass({
       });
     });
   },
+  // componentDidRender: function() {
+  //   var state = this.state;
+  //   state.locations = this.props.locations;
+  //   this.setState(state);
+  // },
   componentDidMount: function componentDidMount() {
-    var state = this.state;
     var self = this;
-    // set up the map
-    state.map = new GMaps({
-      div: '#map',
-      lat: state.lat,
-      lng: state.lng,
-      idle: function idle() {
-        // function to make [AJAX] call and grab locations
-        console.log('idle!!!');
-      }
-    });
-
-    this.setState(state);
+    this.props.createMap();
 
     // show "loading" here
 
@@ -19914,77 +19928,77 @@ var sampleData = [{
   lng: -87.626858,
   comment: 'Great place, cheap beer',
   picture: 'some base64 nonsense',
-  time: Date.now()
+  time: '1/1/2016'
 }, {
   placeName: 'Dick\'s dive bar',
   lat: 41.890763,
   lng: -87.626858,
   comment: 'I wish they played more cher classic hits',
   picture: 'some base64 nonsense',
-  time: Date.now()
+  time: '1/1/2016'
 }, {
   placeName: 'Dick\'s dive bar',
   lat: 41.890763,
   lng: -87.626858,
   comment: 'too smelly',
   picture: 'some base64 nonsense',
-  time: Date.now()
+  time: '1/1/2016'
 }, {
   placeName: 'Route 64 bike trail',
   lat: 41.891763,
   lng: -87.626868,
   comment: 'v nice trail, gr8 times',
   picture: 'more base64 nonsense',
-  time: Date.now()
+  time: '1/1/2016'
 }, {
   placeName: 'Route 64 bike trail',
   lat: 41.891763,
   lng: -87.626868,
   comment: 'this was shit',
   picture: 'more base64 nonsense',
-  time: Date.now()
+  time: '1/1/2016'
 }, {
   placeName: 'Route 64 bike trail',
   lat: 41.891763,
   lng: -87.626868,
   comment: 'I rode my bike',
   picture: 'more base64 nonsense',
-  time: Date.now()
+  time: '1/1/2016'
 }, {
   placeName: 'The art museum',
   lat: 41.891653,
   lng: -87.626768,
   comment: 'what a great museum',
   picture: 'base64',
-  time: Date.now()
+  time: '1/1/2016'
 }, {
   placeName: 'The art museum',
   lat: 41.891653,
   lng: -87.626768,
   comment: 'what a nice museum',
   picture: 'base64',
-  time: Date.now()
+  time: '1/1/2016'
 }, {
   placeName: 'The art museum',
   lat: 41.891653,
   lng: -87.626768,
   comment: 'what a fun museum',
   picture: 'base64',
-  time: Date.now()
+  time: '1/1/2016'
 }, {
   placeName: 'THIS IS NEWWWWWW',
   lat: 41.891653,
   lng: -87.626768,
   comment: 'WOAHHHHHHHHH',
   picture: 'base64',
-  time: Date.now()
+  time: '1/1/2016'
 }, {
   placeName: 'ALSO NEWWWWW',
   lat: 41.891653,
   lng: -87.626768,
   comment: 'HOLY SHIIIIIIIIIT',
   picture: 'base64',
-  time: Date.now()
+  time: '1/1/2016'
 }];
 
 module.exports = sampleData;
