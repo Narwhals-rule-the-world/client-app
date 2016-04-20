@@ -10,9 +10,19 @@ var Container = React.createClass({
       lat: 0,
       lng: 0,
       locations: [],
-      loggedIn: false
+      loggedIn: false,
     }
   },
+  login: function() {
+    var state = this.state;
+    state.loggedIn = true;
+    this.setState(state);
+  },
+  logout: function() {
+    var state = this.state;
+    state.loggedIn = false;
+    this.setState(state);
+  }
   createMap: function() {
     var self  = this;
     var state = this.state;
@@ -54,14 +64,18 @@ var Container = React.createClass({
   render: function(){
     return(
       <div className="container">
-        <Buttons />
-        <FeedContainer />
+        <Buttons    login={ this.login }
+                    logout={ this.logout }
+                    loggedIn={ this.state.loggedIn }/>
+        <FeedContainer loggedIn={ this.state.loggedIn }/>
         <GoogleMap  lat={ this.state.lat }
                     lng={ this.state.lng }
                     locations={ this.state.locations }
                     setPosition={ this.setPosition }
                     createMap = { this.createMap }
-                    map={ this.state.map }/>
+                    map={ this.state.map }
+                    loggedIn={ this.state.loggedIn }/>
+
       </div>
 
     )
@@ -351,32 +365,32 @@ var Post = React.createClass({
 })
 
 var Buttons = React.createClass({
-  getInitialState: function(){
-    return {
-      welcomeScreen: true,
-      userLoggedIn: false,
-    }
-  },
-  handleLoggedIn: function(logged){
-    if(logged){
-      var state = this.state
-      state.userLoggedIn = true
-      this.setState(state)
-      console.log(this.state)
-    }
-  },
-  handleLoggedOut: function(logged){
-    if(logged){
-      var state = this.state
-      state.userLoggedIn = false
-      this.setState(state)
-      console.log(this.state)
-    }
-  },
+  // getInitialState: function(){
+  //   return {
+  //     welcomeScreen: true,
+  //     userLoggedIn: false,
+  //   }
+  // },
+  // handleLoggedIn: function(logged){
+  //   if(logged){
+  //     var state = this.state
+  //     state.userLoggedIn = true
+  //     this.setState(state)
+  //     console.log(this.state)
+  //   }
+  // },
+  // handleLoggedOut: function(logged){
+  //   if(logged){
+  //     var state = this.state
+  //     state.userLoggedIn = false
+  //     this.setState(state)
+  //     console.log(this.state)
+  //   }
+  // },
   render: function(){
     return (
         <div>
-          {this.state.userLoggedIn ? <LogOut handleLoggedOut={this.handleLoggedOut} /> :  <LogIn handleLoggedIn={this.handleLoggedIn} handleLoggedOut={this.handleLoggedOut}/>  }
+          {this.props.userLoggedIn} ? <LogOut handleLoggedOut={this.handleLoggedOut} /> :  <LogIn handleLoggedIn={this.handleLoggedIn} handleLoggedOut={this.handleLoggedOut}/>  }
         </div>
 
     )
@@ -400,6 +414,11 @@ var LogIn = React.createClass({
       data: state,
       success: function(data){
         console.log(data);
+        if(data.loggedIn){
+          this.props.login()
+        }else{
+          console.log("NOT THE RIGHT PASSWORD OR EMAIL")
+        }
       },
       error: function(err){
         console.log(err);
@@ -415,6 +434,12 @@ var LogIn = React.createClass({
       data: state,
       success: function(data){
         console.log(data);
+        if(data.success){
+          console.log('you successfully registered an account')
+          this.props.login()
+        }else{
+          console.log('something went wrong')
+        }
       },
       error: function(err){
         console.log(err);
@@ -426,12 +451,12 @@ var LogIn = React.createClass({
     state[e.target.name] = e.target.value;
     this.setState(state);
   },
-  handleLoginClick: function(event){
-    this.props.handleLoggedIn(true)
-    //event.target.value will get you values of inputs
-    //this will need to be an ajax call for users log in
-    console.log('ATTEMPTED LOGIN!')
-  },
+  // handleLoginClick: function(event){
+  //   this.props.handleLoggedIn(true)
+  //   //event.target.value will get you values of inputs
+  //   //this will need to be an ajax call for users log in
+  //   console.log('ATTEMPTED LOGIN!')
+  // },
   render: function(){
     return(
       <div class="input-row">
@@ -440,7 +465,7 @@ var LogIn = React.createClass({
           <input class="email" type="text" name="email" onChange={ this.textChange }></input>
           <label class="password">Password: </label>
           <input class="password" type="password" name="password" onChange={ this.textChange }></input>
-          <button onClick={this.handleLoginClick} type="submit">LOGIN</button>
+          <button type="submit">LOGIN</button>
         </form>
           <br />
           <a class="register" href="#register-popup">Not Registered? Sign Up!</a>
@@ -475,7 +500,7 @@ var LogIn = React.createClass({
                   </div>
                   <br />
                   <div className="input-row">
-                      <button onClick={this.handleLoginClick} type="submit">REGISTER</button>
+                      <button type="submit">REGISTER</button>
                   </div>
                 </form>
 
