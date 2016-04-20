@@ -19691,7 +19691,7 @@ var Post = React.createClass({
   getInitialState: function getInitialState() {
     return {
       comment: '',
-      image_as_base64: ''
+      picture: ''
     };
   },
   postHandler: function postHandler(e) {
@@ -19716,6 +19716,22 @@ var Post = React.createClass({
     state[e.target.name] = e.target.value;
     this.setState(state);
   },
+  imageChange: function imageChange(event) {
+    var input = $('#imgUpload')[0].files[0];
+    var reader = new FileReader();
+    var state = this.state;
+    var self = this;
+
+    reader.onload = function (e) {
+      // console.log(e.target.result);
+      state.picture = e.target.result;
+      self.setState(state);
+      $("#images").val(e.target.result);
+      // console.log($('#myImage').val())
+    };
+
+    reader.readAsDataURL(input);
+  },
   render: function render() {
     return React.createElement(
       'div',
@@ -19728,8 +19744,7 @@ var Post = React.createClass({
       React.createElement(
         'form',
         { onSubmit: this.postHandler },
-        React.createElement('input', { type: 'file', name: 'image', onChange: this.textChange }),
-        React.createElement('input', { type: 'hidden', name: 'image_as_base64' }),
+        React.createElement('input', { id: 'imgUpload', type: 'file', name: 'image', onChange: this.imageChange }),
         React.createElement(
           'label',
           { className: 'comment' },

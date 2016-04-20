@@ -288,7 +288,7 @@ var Post = React.createClass({
   getInitialState: function(){
     return{
       comment: '',
-      image_as_base64: ''
+      picture: ''
     }
   },
   postHandler: function(e){
@@ -313,14 +313,29 @@ var Post = React.createClass({
     state[e.target.name] = e.target.value;
     this.setState(state);
   },
+  imageChange: function(event){
+    var input = $('#imgUpload')[0].files[0];
+    var reader = new FileReader();
+    var state = this.state;
+    var self = this;
+
+    reader.onload = function (e) {
+      // console.log(e.target.result);
+      state.picture = e.target.result;
+      self.setState(state);
+      $("#images").val(e.target.result);
+    // console.log($('#myImage').val())
+    };
+
+    reader.readAsDataURL(input);
+  },
   render: function(){
     return (
       <div>
 
         <h3>Upload Image</h3>
         <form onSubmit={ this.postHandler }>
-          <input type="file" name="image" onChange={ this.textChange }/>
-          <input type="hidden" name="image_as_base64" />
+          <input id="imgUpload" type="file" name="image" onChange={this.imageChange}/>
           <label className="comment">Comment: </label>
           <input className="comment" type="text" name="comment" onChange={ this.textChange }></input>
           <label className="name">Name:</label>
