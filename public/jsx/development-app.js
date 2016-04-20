@@ -55,7 +55,9 @@ var Container = React.createClass({
     return(
       <div className="container">
         <Buttons />
-        <FeedContainer />
+        <FeedContainer lat={ this.state.lat }
+                       lng={ this.state.lng }/>
+                     
         <GoogleMap  lat={ this.state.lat }
                     lng={ this.state.lng }
                     locations={ this.state.locations }
