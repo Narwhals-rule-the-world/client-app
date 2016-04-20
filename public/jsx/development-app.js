@@ -22,7 +22,7 @@ var Container = React.createClass({
     var state = this.state;
     state.loggedIn = false;
     this.setState(state);
-  }
+  },
   createMap: function() {
     var self  = this;
     var state = this.state;
@@ -64,25 +64,16 @@ var Container = React.createClass({
   render: function(){
     return(
       <div className="container">
-<<<<<<< HEAD
         <Buttons />
         <FeedContainer lat={ this.state.lat }
                        lng={ this.state.lng }/>
-                     
-=======
-        <Buttons    login={ this.login }
-                    logout={ this.logout }
-                    loggedIn={ this.state.loggedIn }/>
-        <FeedContainer loggedIn={ this.state.loggedIn }/>
->>>>>>> 0aad666a58450168ceaaf877bda16bedde4a7e07
+
         <GoogleMap  lat={ this.state.lat }
                     lng={ this.state.lng }
                     locations={ this.state.locations }
                     setPosition={ this.setPosition }
                     createMap = { this.createMap }
-                    map={ this.state.map }
-                    loggedIn={ this.state.loggedIn }/>
-
+                    map={ this.state.map }/>
       </div>
 
     )
@@ -247,7 +238,8 @@ var Feed = React.createClass({
   },
   updateFeedItems: function(){
     var state;
-    // this will be ajax to api ======================
+    var self = this;
+    // this will be ajax to api
     $.ajax({
       method: 'post',
       url: 'http://localhost:3000/search',
@@ -260,9 +252,6 @@ var Feed = React.createClass({
         console.log(err);
       }
     })
-    // Changed ===================
-    state = { locations: sampleDataUpdated }
-    this.setState(state);
   },
   render: function(){
     var self = this;
@@ -383,6 +372,7 @@ var Post = React.createClass({
     )
   }
 })
+
 
 var Buttons = React.createClass({
   // getInitialState: function(){
@@ -534,8 +524,6 @@ var LogIn = React.createClass({
 
 var LogOut = React.createClass({
   handleLogoutClick: function(event){
-    this.props.handleLoggedOut(true)
-    console.log('ATTEMPTED LOGOUT!')
     $.ajax({
       method: 'get',
       url: 'http://localhost:3000/users/logout',
@@ -543,6 +531,8 @@ var LogOut = React.createClass({
         console.log(err);
       }
     })
+    this.props.handleLoggedOut(true)
+    console.log('ATTEMPTED LOGOUT!')
   },
   render: function(){
     return(
