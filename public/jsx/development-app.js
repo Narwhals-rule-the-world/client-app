@@ -491,6 +491,13 @@ var LogOut = React.createClass({
   handleLogoutClick: function(event){
     this.props.handleLoggedOut(true)
     console.log('ATTEMPTED LOGOUT!')
+    $.ajax({
+      method: 'get',
+      url: 'http://localhost:3000/users/logout',
+      error: function(err){
+        console.log(err);
+      }
+    })
   },
   render: function(){
     return(
