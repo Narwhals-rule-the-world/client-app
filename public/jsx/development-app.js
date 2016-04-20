@@ -285,11 +285,21 @@ var Welcome = React.createClass({
 })
 
 var Post = React.createClass({
-  postHandler: function(){
+  getInitialState: function(){
+    return{
+      comment: '',
+      image_as_base64: ''
+    }
+  },
+  postHandler: function(e){
+    e.preventDefault();
+    var state = this.state;
+    state.time = Date.now();
+    console.log(state);
     $.ajax({
       method: 'post',
-      url: '/', // whatever this route is supposed to be
-      data: { hey: 'this is test data' },
+      url: 'http://localhost:3000/create', // whatever this route is supposed to be
+      data: state,
       success: function(data){
         console.log(data);
       },
@@ -298,20 +308,28 @@ var Post = React.createClass({
       }
     });
   },
+  textChange: function(e){
+    var state = this.state;
+    state[e.target.name] = e.target.value;
+    this.setState(state);
+  },
   render: function(){
     return (
       <div>
 
         <h3>Upload Image</h3>
-        <input type="file" name="image" />
-        <input type="hidden" name="image_as_base64" />
-        <input onClick={ this.postHandler } type="button" value="Upload" />
+        <form onSubmit={ this.postHandler }>
+          <input type="file" name="image" onChange={ this.textChange }/>
+          <input type="hidden" name="image_as_base64" />
+          <label className="comment">Comment: </label>
+          <input className="comment" type="text" name="comment" onChange={ this.textChange }></input>
+          <label className="name">Name:</label>
+          <input className="name" type="text" name="userName" onChange={ this.textChange }></input>
+          <button type="submit">Upload</button>
+        </form>
 
         <div id="images"></div>
 
-        <br />
-        <label class="comment">Comment: </label>
-        <input class="comment" type="text"></input>
       </div>
     )
   }

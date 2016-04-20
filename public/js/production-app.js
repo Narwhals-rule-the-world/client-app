@@ -19688,11 +19688,21 @@ var Welcome = React.createClass({
 var Post = React.createClass({
   displayName: 'Post',
 
-  postHandler: function postHandler() {
+  getInitialState: function getInitialState() {
+    return {
+      comment: '',
+      image_as_base64: ''
+    };
+  },
+  postHandler: function postHandler(e) {
+    e.preventDefault();
+    var state = this.state;
+    state.time = Date.now();
+    console.log(state);
     $.ajax({
       method: 'post',
-      url: '/', // whatever this route is supposed to be
-      data: { hey: 'this is test data' },
+      url: 'http://localhost:3000/create', // whatever this route is supposed to be
+      data: state,
       success: function success(data) {
         console.log(data);
       },
@@ -19700,6 +19710,11 @@ var Post = React.createClass({
         console.log(err);
       }
     });
+  },
+  textChange: function textChange(e) {
+    var state = this.state;
+    state[e.target.name] = e.target.value;
+    this.setState(state);
   },
   render: function render() {
     return React.createElement(
@@ -19710,17 +19725,30 @@ var Post = React.createClass({
         null,
         'Upload Image'
       ),
-      React.createElement('input', { type: 'file', name: 'image' }),
-      React.createElement('input', { type: 'hidden', name: 'image_as_base64' }),
-      React.createElement('input', { onClick: this.postHandler, type: 'button', value: 'Upload' }),
-      React.createElement('div', { id: 'images' }),
-      React.createElement('br', null),
       React.createElement(
-        'label',
-        { 'class': 'comment' },
-        'Comment: '
+        'form',
+        { onSubmit: this.postHandler },
+        React.createElement('input', { type: 'file', name: 'image', onChange: this.textChange }),
+        React.createElement('input', { type: 'hidden', name: 'image_as_base64' }),
+        React.createElement(
+          'label',
+          { className: 'comment' },
+          'Comment: '
+        ),
+        React.createElement('input', { className: 'comment', type: 'text', name: 'comment', onChange: this.textChange }),
+        React.createElement(
+          'label',
+          { className: 'name' },
+          'Name:'
+        ),
+        React.createElement('input', { className: 'name', type: 'text', name: 'userName', onChange: this.textChange }),
+        React.createElement(
+          'button',
+          { type: 'submit' },
+          'Upload'
+        )
       ),
-      React.createElement('input', { 'class': 'comment', type: 'text' })
+      React.createElement('div', { id: 'images' })
     );
   }
 });
