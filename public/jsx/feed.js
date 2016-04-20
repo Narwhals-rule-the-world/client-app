@@ -38,8 +38,9 @@
 // var FeedItem = React.createClass({
 //   clickHandler: function(e){
 //     console.log('you clicked a list item!');
+//     // function to update feed so it shows only items for that location
 //     this.props.updateFeedItems();
-//       // function to update feed so it shows only items for that location
+//
 //   },
 //   render: function(){
 //     return(

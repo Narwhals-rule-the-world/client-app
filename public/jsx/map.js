@@ -7,33 +7,37 @@ var AddressSearch = React.createClass({
     var self = this;
     $('#address-search-button').click(function(e){
       e.preventDefault();
+      var address = $('#address-search').val();
 
-      // ajax to google places api on the server
-      // returns its best guess of a location
-      // depending on what the user enters
-      $.ajax({
-        method: 'post',
-        url: '/location',
-        data: { place: $('#address-search').val() },
-        success: function(data){
-          // function to make [AJAX] call and grab locations
-          // take the address and center the map at that location
-          GMaps.geocode({
-            address: data,
-            callback: function(results, status) {
-              if (status == 'OK') {
-                console.log(results);
-                var latlng = results[0].geometry.location;
-                self.props.centerMap(latlng.lat(), latlng.lng());
+
+      if (address){
+        // ajax to google places api on the server
+        // returns its best guess of a location
+        // depending on what the user enters
+        $.ajax({
+          method: 'post',
+          url: '/location',
+          data: { place: address },
+          success: function(data){
+            // function to make [AJAX] call and grab locations
+            // take the address and center the map at that location
+            GMaps.geocode({
+              address: data,
+              callback: function(results, status) {
+                if (status == 'OK') {
+                  console.log(results);
+                  var latlng = results[0].geometry.location;
+                  self.props.centerMap(latlng.lat(), latlng.lng());
+                }
               }
-            }
-          });
+            });
 
-        },
-        error: function(err){
-          console.log(err);
-        }
-      })
+          },
+          error: function(err){
+            console.log(err);
+          }
+        })
+      }
 
     })
   },
@@ -51,19 +55,35 @@ var AddressSearch = React.createClass({
 
 
 
-var GmapsMap = React.createClass({
+var GoogleMap = React.createClass({
   getInitialState: function(){
-    return { lat: 41.890663, lng: -87.626958 }
+    return { lat: 41.890663,
+             lng: -87.626958,
+             locations: this.props.locations }
   },
   centerMap: function(lat, lng){
+    this.props.setPosition(); // function from container to set location globally
     this.state.map.setCenter(lat, lng);
     this.state.map.addMarker({
         lat: lat,
         lng: lng
       })
+    this.addMarkers();
+  },
+  addMarkers: function(){
+    this.state.locations.forEach(function(location){
+      map.addMarker({
+        lat: location.lat,
+        lng: location.lng,
+        infoWindow: {
+          content: <p>location.placeName</p>
+        }
+      });
+
+
+    })
   },
   componentDidMount: function(){
-    console.log('the map mounted!');
     var state = this.state;
     var self  = this;
     // set up the map
@@ -86,7 +106,6 @@ var GmapsMap = React.createClass({
       success: function(position) {
         // hide "loading" here
         self.centerMap(position.coords.latitude, position.coords.longitude);
-        // function to make [AJAX] call and grab locations? This one might not be neccesary
       },
       error: function(error) {
         console.log('Geolocation failed: ' + error.message);
@@ -112,4 +131,4 @@ var GmapsMap = React.createClass({
   }
 })
 
-ReactDOM.render(<GmapsMap />, document.getElementById('map-container'));
+ReactDOM.render(<GoogleMap />, document.getElementById('map-container'));
