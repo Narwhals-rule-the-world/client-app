@@ -28,8 +28,6 @@ var Buttons = React.createClass({
     return (
         <div>
           {this.state.userLoggedIn ? <LogOut handleLoggedOut={this.handleLoggedOut} /> :  <LogIn handleLoggedIn={this.handleLoggedIn} handleLoggedOut={this.handleLoggedOut}/>  }
-          <a class="register" href="#register-popup">Not Registered? Sign Up!</a>
-
         </div>
 
     )
@@ -52,6 +50,7 @@ var LogIn = React.createClass({
           <input class="password" type="text"></input>
           <button onClick={this.handleLoginClick} type="button">LOGIN</button>
           <br />
+          <a class="register" href="#register-popup">Not Registered? Sign Up!</a>
           <div className="overlay" id="register-popup">
               <div className="popup">
 
