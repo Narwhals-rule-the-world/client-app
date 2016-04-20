@@ -9,6 +9,8 @@ var GooglePlaces     = require('google-locations'),
 
 var places = new GooglePlaces(process.env.GOOGLE_API_KEY_SERVER);
 
+app.use(cors());
+
 // set the location for our public and view folders
 // ------------------------------------------------
 app.use(express.static(__dirname + '/public'));
@@ -61,6 +63,6 @@ app.post('/location', function(req, res, next){
 
 // start the server!
 // -----------------
-var server = app.listen(3000, function(){
+var server = app.listen(4000, function(){
   console.log('The server is listening on port ' + server.address().port);
 })

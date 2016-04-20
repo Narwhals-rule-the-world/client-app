@@ -27,9 +27,9 @@
 //   render: function(){
 //     return (
 //         <div>
-//           {this.state.userLoggedIn ? null :  <LogIn handleLoggedIn={this.handleLoggedIn} handleLoggedOut={this.handleLoggedOut}/>  }
-//           <a class="register" href="#register-popup">Not Registered? Sign Up!</a>
+//           {this.state.userLoggedIn ? <LogOut handleLoggedOut={this.handleLoggedOut} /> :  <LogIn handleLoggedIn={this.handleLoggedIn} handleLoggedOut={this.handleLoggedOut}/>  }
 //         </div>
+//
 //     )
 //   },
 // })
@@ -49,10 +49,51 @@
 //           <label class="password">Password: </label>
 //           <input class="password" type="text"></input>
 //           <button onClick={this.handleLoginClick} type="button">LOGIN</button>
+//           <br />
+//           <a class="register" href="#register-popup">Not Registered? Sign Up!</a>
+//           <div className="overlay" id="register-popup">
+//               <div className="popup">
+//
+//                 <h4>Register</h4>
+//                 <a className="close" href="#">&times;</a>
+//                 <form>
+//                   <div className="input-row">
+//                       <label className="name">Name: </label>
+//                       <input className="name" type="text"></input>
+//                   </div>
+//                   <br />
+//                   <div className="input-row">
+//                       <label className="email">Email: </label>
+//                       <input className="email" type="text"></input>
+//                   </div>
+//                   <br />
+//                   <div className="input-row">
+//                       <label className="password">Password: </label>
+//                       <input className="password" type="text"></input>
+//                   </div>
+//                   <br />
+//                   <div className="input-row">
+//                       <label className="email">Re-Confirm Password: </label>
+//                       <input className="password" type="text"></input>
+//                   </div>
+//                   <br />
+//                   <div className="input-row">
+//                       <label className="email">Default Address: </label>
+//                       <input className="address" type="text"></input>
+//                   </div>
+//                   <br />
+//                   <div className="input-row">
+//                       <button onClick={this.handleLoginClick} type="button">REGISTER</button>
+//                   </div>
+//                 </form>
+//
+//               </div>
+//             </div>
 //       </div>
 //     )
 //   }
 // })
+//
 //
 // var LogOut = React.createClass({
 //   handleLogoutClick: function(event){
@@ -69,49 +110,5 @@
 //   }
 // })
 //
-// var Register = React.createClass({
-//   render: function(){
-//     return(
-//       <div className="overlay" id="register-popup">
-//         <div className="popup">
-//
-//           <h4>Register</h4>
-//           <a className="close" href="#">&times;</a>
-//           <form>
-//             <div className="input-row">
-//                 <label className="name">Name: </label>
-//                 <input className="name" type="text"></input>
-//             </div>
-//             <br />
-//             <div className="input-row">
-//                 <label className="email">Email: </label>
-//                 <input className="email" type="text"></input>
-//             </div>
-//             <br />
-//             <div className="input-row">
-//                 <label className="password">Password: </label>
-//                 <input className="password" type="text"></input>
-//             </div>
-//             <br />
-//             <div className="input-row">
-//                 <label className="email">Re-Confirm Password: </label>
-//                 <input className="password" type="text"></input>
-//             </div>
-//             <br />
-//             <div className="input-row">
-//                 <label className="email">Default Address: </label>
-//                 <input className="address" type="text"></input>
-//             </div>
-//             <br />
-//             <div className="input-row">
-//                 <button type="button">Register</button>
-//             </div>
-//           </form>
-//
-//         </div>
-//       </div>
-//     )
-//   }
-// })
 //
 // ReactDOM.render(<Buttons />, document.getElementById('button-group'));

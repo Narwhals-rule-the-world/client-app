@@ -17,7 +17,7 @@ gulp.task('less', function() {
 });
 
 gulp.task('react', function(){
-  return gulp.src('./public/jsx/*.js') // place to read react files from
+  return gulp.src('./public/jsx/development-app.js') // place to read react files from
     .pipe(tap(function(file) {
       file.contents = browserify(file.path).transform('babelify', {presets: ['es2015', 'react']}).bundle()
     }))
@@ -29,7 +29,7 @@ gulp.task('react', function(){
 
 // Watch for changes = first variable and run defined tasks = second variable
 gulp.task('watch', function() {
-  gulp.watch(['./public/jsx/*.js'], ['react']); // place to watch for react changes
+  gulp.watch(['./public/jsx/development-app.js'], ['react']); // place to watch for react changes
   gulp.watch(['./public/less/**/*.less'], ['less']);
 });
 
