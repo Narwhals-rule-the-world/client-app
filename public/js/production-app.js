@@ -19443,7 +19443,8 @@ var Container = React.createClass({
       { className: 'container' },
       React.createElement(Buttons, { login: this.login,
         logout: this.logout,
-        loggedIn: this.state.loggedIn }),
+        loggedIn: this.state.loggedIn,
+        username: this.state.username }),
       React.createElement(FeedContainer, { lat: this.state.lat,
         lng: this.state.lng,
         loggedIn: this.state.loggedIn,
@@ -19903,7 +19904,7 @@ var Buttons = React.createClass({
     return React.createElement(
       'div',
       null,
-      this.props.loggedIn ? React.createElement(LogOut, { logout: this.props.logout }) : React.createElement(LogIn, { login: this.props.login })
+      this.props.loggedIn ? React.createElement(LogOut, { username: this.props.username, logout: this.props.logout }) : React.createElement(LogIn, { login: this.props.login })
     );
   }
 });
@@ -20101,7 +20102,8 @@ var LogOut = React.createClass({
       React.createElement(
         'div',
         { id: 'signed-in' },
-        'Welcome User',
+        'Welcome ',
+        this.props.username,
         React.createElement(
           'button',
           { onClick: this.handleLogoutClick, type: 'button' },

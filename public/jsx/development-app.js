@@ -75,7 +75,8 @@ var Container = React.createClass({
       <div className="container">
         <Buttons  login={ this.login }
                   logout={ this.logout }
-                  loggedIn={ this.state.loggedIn }/>
+                  loggedIn={ this.state.loggedIn }
+                  username={ this.state.username }/>
         <FeedContainer lat={ this.state.lat }
                        lng={ this.state.lng }
                        loggedIn={ this.state.loggedIn }
@@ -476,7 +477,7 @@ var Buttons = React.createClass({
   render: function(){
     return (
         <div>
-          { this.props.loggedIn  ? <LogOut logout={ this.props.logout } /> :  <LogIn login={ this.props.login } />  }
+          { this.props.loggedIn  ? <LogOut username={ this.props.username } logout={ this.props.logout } /> :  <LogIn login={ this.props.login } />  }
         </div>
 
     )
@@ -615,7 +616,7 @@ var LogOut = React.createClass({
       <div id="header">
         <div id="title">WHO/WHAT/WHERE</div>
         <div id="signed-in">
-          Welcome User
+          Welcome { this.props.username }
           <button onClick={this.handleLogoutClick} type="button">LOGOUT</button>
         </div>
       </div>
