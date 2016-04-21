@@ -1,9 +1,6 @@
 var React    = require('react'),
-    ReactDOM = require('react-dom'),
-    sampleData = [{}],//require('../../sample-data-reviews.js'),
-    sampleDataUpdated = [{}];//require('../../sample-data-reviews-updated.js');
+    ReactDOM = require('react-dom');
 
-// hiii
 var Container = React.createClass({
   getInitialState: function(){
     return {
@@ -16,6 +13,7 @@ var Container = React.createClass({
     }
   },
   login: function(username, homeLocation) {
+    // set our container state to logged in
     var state = this.state;
     state.loggedIn = true;
     state.username = username;
@@ -24,6 +22,7 @@ var Container = React.createClass({
     console.log(this.state);
   },
   logout: function() {
+    // set our container state to logged in
     var state = this.state;
     state.loggedIn = false;
     state.username = '';
@@ -39,14 +38,16 @@ var Container = React.createClass({
       lat: state.lat,
       lng: state.lng,
       idle: function(){
-        // function to make [AJAX] call and grab locations
-        // console.log('idle!!!');
+        // this is where functionality would go to update the map everytime the user stops interacting with it
       }
     });
-
+    // save our map in the container state so all children can access it
     this.setState(state);
-
   },
+  // takes a lat, lng, and location name ('444 n wabash, chicago, IL')
+  // and saves in the container state as the user's 'current position'
+  // this is the positon that will be attached to all posts they make
+  // it also grabs all nearby reviews
   setPosition: function(lat, lng, myLocation){
     var self = this;
     var state = this.state;
@@ -56,8 +57,13 @@ var Container = React.createClass({
 
     $.ajax({
       method: 'post',
+<<<<<<< HEAD
       url: 'http://api.whowhatwhere.com/search',
       data: { lat: lat, lng: lng, radius: 10 },
+=======
+      url: 'http://localhost:3000/search',
+      data: { lat: lat, lng: lng, radius: 2 },
+>>>>>>> b0557468c9d36cc3390ce17367ba7f1ef4c07e3a
       success: function(returnedLocations){
         state.locations = returnedLocations;
         self.setState(state);
@@ -69,7 +75,7 @@ var Container = React.createClass({
     })
 
   },
-
+  // render this container and all its kids!
   render: function(){
     return(
       <div className="container">
@@ -96,19 +102,22 @@ var Container = React.createClass({
   }
 })
 
+
+// class for the map and its address search box
 var GoogleMap = React.createClass({
   centerMap: function(lat, lng, myLocation){
     this.props.setPosition(lat, lng, myLocation); // function from container to set location globally
+    // gmaps methods
     this.props.map.setCenter(lat, lng);
     this.props.map.addMarker({
         lat: lat,
         lng: lng
       })
   },
+  // takes an array of location objects and places map markers for all of them
   addMarkers: function(){
     var self = this;
     this.props.locations.forEach(function(location){
-      // console.log(location);
       self.props.map.addMarker({
         lat: location.lat,
         lng: location.lng,
@@ -116,8 +125,6 @@ var GoogleMap = React.createClass({
           content: ('<p><b>' + location.placeName+ '</b></p><p>' + location.comment + '</p>')
         }
       });
-
-
     })
   },
   componentDidMount: function(){
@@ -125,8 +132,9 @@ var GoogleMap = React.createClass({
     this.props.createMap();
 
     // show "loading" here
+    // not yet implemented
 
-    // find user's position
+    // find user's position w/gmaps geolocate function
     GMaps.geolocate({
       success: function(position) {
         // hide "loading" here
@@ -164,11 +172,11 @@ var AddressSearch = React.createClass({
     e.preventDefault();
     var address = $('#address-search').val();
 
-
     if (address){
       // ajax to google places api on the server
       // returns its best guess of a location
       // depending on what the user enters
+      // there is probably a better implementation for what we are trying to accomplish here
       $.ajax({
         method: 'post',
         url: '/location',
@@ -197,7 +205,7 @@ var AddressSearch = React.createClass({
   render: function(){
     return(
       <form id="search-form">
-        <input id="address-search" type="text"></input>
+        <input id="address-search" type="text" placeholder="ENTER A LOCATION"></input>
         <br />
         <button id="address-search-button" type="button" onClick={ this.addressSearchHandler }>SEARCH ADDRESS</button>
       </form>
@@ -208,7 +216,8 @@ var AddressSearch = React.createClass({
 
 
 
-
+// holds news feed, welcome and create post 'views'
+// its state keeps track of which 'view' to display
 var FeedContainer = React.createClass({
   getInitialState: function(){
     return { displayWelcome: true,
@@ -216,6 +225,7 @@ var FeedContainer = React.createClass({
              displayPost: false
              }
   },
+  // future versions of this project can probably cut this down to one function vs 3
   changeToFeed: function(){
     var state = { displayWelcome: false,
                   displayFeed: true,
@@ -235,15 +245,16 @@ var FeedContainer = React.createClass({
     this.setState(state);
   },
   render: function(){
+    console.log(this.props.username);
     return(
       <div className="feed-container">
-        <h1>Hi { this.props.username ? this.props.username : 'please log in to post' }!</h1>
+        <h1 id="feed-top-message">Hi { this.props.username ? this.props.username + '!' : 'there! You must be logged in to post.' }</h1>
         { this.state.displayWelcome ? <Welcome /> : null }
         { this.state.displayFeed ? <Feed changeToFeed={ this.changeToFeed } lat={ this.props.lat } lng={ this.props.lng }/> : null }
         { this.state.displayPost && this.props.loggedIn ? <Post lat={ this.props.lat } lng={ this.props.lng } myLocation={ this.props.myLocation } username={ this.props.username } loggedIn={ this.props.loggedIn }/> : null }
-        { this.state.displayPost ?  null : <button onClick={ this.changeToPost }>POST</button> }
-        { this.state.displayFeed ?  null: <button onClick={ this.changeToFeed }>RESULTS</button> }
-        { this.state.displayWelcome ?  null : <button onClick={ this.changeToWelcome }>ABOUT</button> }
+        { this.state.displayPost ?  null : <button id="post-button"onClick={ this.changeToPost }>POST</button> }
+        { this.state.displayFeed ?  null: <button id="results-button" onClick={ this.changeToFeed }>RESULTS</button> }
+        { this.state.displayWelcome ?  null : <button id="about-button" onClick={ this.changeToWelcome }>ABOUT</button> }
 
       </div>
     )
@@ -252,42 +263,28 @@ var FeedContainer = React.createClass({
 
 var Feed = React.createClass({
   getInitialState: function(){
-    // console.log('get initial state');
-    // return { locations: this.props.locations }
-    // using our test data:
     return { locations: [] }
   },
   componentWillReceiveProps: function(nextProps, nextState){
-    // console.log('will receive props, this will be calling updateFeedItems');
+    // when the coordinates of the container component change,
+    // grab new 'feed' items from the database
     this.updateFeedItems(nextProps.lat, nextProps.lng);
   },
   shouldComponentUpdate: function(nextProps, nextState){
-    // console.log('deciding if the component should update');
-    // console.log(nextState);
-    // console.log(this.state);
-    // console.log(nextState.locations != this.state.locations);
+    // do not update the component if the user's location has not changed
+    // or if the list of locations has not changed
+    // this prevents infinite looping issues
     if (nextProps.lat != this.props.lat && nextProps.lng != this.props.lng) {
-      // console.log('update');
-      // console.log(nextProps.lat, this.props.lat, nextProps.lng, this.props.lng);
-      // console.log(this.state);
       return true;
     } else if (nextState.locations != this.state.locations) {
       return true;
     } else {
-      // console.log(nextProps.lat, this.props.lat, nextProps.lng, this.props.lng);
-      // console.log(this.state);
-      // console.log('no update');
       return false;
     }
-    // console.log(nextProps);
-    // console.log('============');
-    // console.log(this.props);
-    // return false
   },
   updateFeedItems: function(lat, lng){
     var self = this;
-    // console.log(self.props);
-    // this will be ajax to api =================
+
     $.ajax({
       method: 'post',
       url: 'http://api.whowhatwhere.com/search',
@@ -303,13 +300,9 @@ var Feed = React.createClass({
       }
     })
 
-
-    // ==============================
   },
   render: function(){
-    // console.log('render');
     var self = this;
-    // console.log(this.state);
     var locations = this.state.locations.map(function(location, i){
       console.log(location)
       return(
@@ -323,7 +316,8 @@ var Feed = React.createClass({
     })
     return(
       <article>
-        <h4>Here's what we found...</h4>
+        <h1 id="post-instruction">Click SEARCH ADDRESS to join the conversation!</h1>
+        <h4 id="post-instruction">Here's what people are talking about...</h4>
         { locations }
       </article>
     )
@@ -336,6 +330,8 @@ var Picture = React.createClass({
   }
 })
 
+// holds a review from the database
+// with an image, comment, etc.
 var FeedItem = React.createClass({
   clickHandler: function(e){
     console.log('you clicked a list item!');
@@ -358,13 +354,18 @@ var Welcome = React.createClass({
   render: function(){
     return (
       <div>
-        <p>
-          Welcome to PROJECT NAME! The place to see and share what's going on in your city.
-          Share pictures, comments and more to the interactive map where others can catch a short lived glimpse
-          of your activity. Search the map to see other posts to help you get off the couch and explore the city!
+        <p id="welcome-p">
+          Welcome to WHO/WHAT/WHERE! The place to see and share who is doing what in your city!
+          <br />
+          <br />
+          Share pictures, comments and more to the interactive map where others can catch a glimpse of the social activity around you!
+          Click on the map markers and read what people are doing at that location!
+          <br />
+          <br />
+          Search the map to see the city's posts to help you get off the couch and explore your city's WHO, WHAT and WHERE!
         </p>
-        <p>
-          Enter an address or press search to get started!
+        <p id="welcome-p">
+          Enter a location and press SEARCH ADDRESS to get started!
         </p>
       </div>
     )
@@ -381,11 +382,13 @@ var Post = React.createClass({
     e.preventDefault();
     var self = this;
     var state = this.state;
+    // save current info in state so it can be sent to db
     state.time = Date.now();
     state.lat = this.props.lat;
     state.lng = this.props.lng;
     state.placeName = this.props.myLocation;
-    console.log(state);
+
+    // can't post if ya ain't logged in
     if (this.props.loggedIn){
       $.ajax({
         method: 'post',
@@ -407,11 +410,13 @@ var Post = React.createClass({
     } else console.log('log in, mannnn.')
 
   },
+  // function to update state variables as user inputs text
   textChange: function(e){
     var state = this.state;
     state[e.target.name] = e.target.value;
     this.setState(state);
   },
+  // function to update state variables as user uploads new image
   imageChange: function(event){
     var input = $('#imgUpload')[0].files[0];
     var reader = new FileReader();
@@ -431,49 +436,31 @@ var Post = React.createClass({
   render: function(){
     return (
       <div>
-
-        <h3>New post for { this.props.myLocation }</h3>
-        <p>{ this.state.message }</p>
-        <form onSubmit={ this.postHandler }>
-          <input id="imgUpload" type="file" name="image" onChange={this.imageChange}/>
-          <label className="comment">Comment: </label>
-          <input className="comment" type="text" name="comment" onChange={ this.textChange }></input>
-          <label className="name">Name:</label>
-          <input className="name" type="text" name="userName" onChange={ this.textChange }></input>
-          <button type="submit">Upload</button>
+        <h3 id="new-post-title">New post for { this.props.myLocation }</h3>
+        <div> { this.state.message } </div>
+        <form id="post-form" onSubmit={ this.postHandler }>
+            <input id="imgUpload" type="file" name="image" onChange={ this.imageChange }></input>
+            <br />
+            <br />
+            <label id="post-label">Comment: </label>
+            <input id="post-input-nonpic" type="text" name="comment" onChange={ this.textChange }></input>
+            <br />
+            <br />
+            <label id="post-label">Name:</label>
+            <input id="post-input-nonpic" type="text" name="userName" onChange={ this.textChange }></input>
+            <br />
+            <br />
+            <button id="upload-button" type="submit">UPLOAD</button>
+            <div id="images"></div>
         </form>
-
-        <div id="images"></div>
-
       </div>
     )
   }
 })
 
-
+// parent component for login/logout buttons
+// this component may not be necessary
 var Buttons = React.createClass({
-  // getInitialState: function(){
-  //   return {
-  //     welcomeScreen: true,
-  //     userLoggedIn: false,
-  //   }
-  // },
-  // handleLoggedIn: function(logged){
-  //   if(logged){
-  //     var state = this.state
-  //     state.userLoggedIn = true
-  //     this.setState(state)
-  //     console.log(this.state)
-  //   }
-  // },
-  // handleLoggedOut: function(logged){
-  //   if(logged){
-  //     var state = this.state
-  //     state.userLoggedIn = false
-  //     this.setState(state)
-  //     console.log(this.state)
-  //   }
-  // },
   render: function(){
     return (
         <div>
@@ -484,8 +471,10 @@ var Buttons = React.createClass({
   },
 })
 
+// login button
 var LogIn = React.createClass({
   getInitialState: function(){
+    // state holds user data to be sent to api via ajax
     return{
       username: '',
       email: '',
@@ -542,12 +531,6 @@ var LogIn = React.createClass({
     state[e.target.name] = e.target.value;
     this.setState(state);
   },
-  // handleLoginClick: function(event){
-  //   this.props.handleLoggedIn(true)
-  //   //event.target.value will get you values of inputs
-  //   //this will need to be an ajax call for users log in
-  //   console.log('ATTEMPTED LOGIN!')
-  // },
   render: function(){
     return(
       <div id="header">
@@ -612,11 +595,12 @@ var LogOut = React.createClass({
     console.log('ATTEMPTED LOGOUT!')
   },
   render: function(){
+    console.log(this.props)
     return(
       <div id="header">
         <div id="title">WHO/WHAT/WHERE</div>
         <div id="signed-in">
-          Welcome { this.props.username }
+          <div id="welcome-message"> Welcome { this.props.username } </div>
           <button id="logout-button" onClick={this.handleLogoutClick} type="button">LOGOUT</button>
         </div>
       </div>
