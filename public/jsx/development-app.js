@@ -240,9 +240,10 @@ var FeedContainer = React.createClass({
     this.setState(state);
   },
   render: function(){
+    console.log(this.props.username);
     return(
       <div className="feed-container">
-        <h1 id="feed-top-message">Hi { this.props.username ? this.props.username : <br />'Must log in to be able to post!' }!</h1>
+        <h1 id="feed-top-message">Hi { this.props.username ? this.props.username + '!' : 'there! You must be logged in to post.' }</h1>
         { this.state.displayWelcome ? <Welcome /> : null }
         { this.state.displayFeed ? <Feed changeToFeed={ this.changeToFeed } lat={ this.props.lat } lng={ this.props.lng }/> : null }
         { this.state.displayPost && this.props.loggedIn ? <Post lat={ this.props.lat } lng={ this.props.lng } myLocation={ this.props.myLocation } username={ this.props.username } loggedIn={ this.props.loggedIn }/> : null }
