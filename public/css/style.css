@@ -270,6 +270,7 @@ body {
   position: relative;
   float: right;
   margin-top: 10px;
+  margin-bottom: 20px;
 }
 #register-title {
   text-align: center;
@@ -310,9 +311,12 @@ body {
 #title {
   position: relative;
   float: left;
-  width: 33%
+  width: 60%
   .fonts;
   font-size: 56px;
+}
+#logout-button {
+  margin-left: 50px;
 }
 .overlay {
   position: fixed;

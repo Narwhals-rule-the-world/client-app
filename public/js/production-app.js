@@ -19565,8 +19565,8 @@ var AddressSearch = React.createClass({
       React.createElement('br', null),
       React.createElement(
         'button',
-        { type: 'button', onClick: this.addressSearchHandler },
-        'Seach Address'
+        { id: 'address-search-button', type: 'button', onClick: this.addressSearchHandler },
+        'SEARCH ADDRESS'
       )
     );
   }
@@ -20102,11 +20102,18 @@ var LogOut = React.createClass({
       React.createElement(
         'div',
         { id: 'signed-in' },
+<<<<<<< HEAD
         'Welcome ',
         this.props.username,
         React.createElement(
           'button',
           { onClick: this.handleLogoutClick, type: 'button' },
+=======
+        'Welcome User',
+        React.createElement(
+          'button',
+          { id: 'logout-button', onClick: this.handleLogoutClick, type: 'button' },
+>>>>>>> views
           'LOGOUT'
         )
       )
