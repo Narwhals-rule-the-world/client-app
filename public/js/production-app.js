@@ -19908,19 +19908,9 @@ var LogIn = React.createClass({
         { className: 'input-row' },
         React.createElement(
           'form',
-          { onSubmit: this.loginHandler },
-          React.createElement(
-            'label',
-            { className: 'email' },
-            'Email: '
-          ),
-          React.createElement('input', { className: 'email', type: 'text', name: 'email', onChange: this.textChange }),
-          React.createElement(
-            'label',
-            { className: 'password' },
-            'Password: '
-          ),
-          React.createElement('input', { className: 'password', type: 'password', name: 'password', onChange: this.textChange }),
+          { id: 'login-form', onSubmit: this.loginHandler },
+          React.createElement('input', { className: 'email', type: 'text', name: 'email', placeholder: 'ENTER EMAIL', onChange: this.textChange }),
+          React.createElement('input', { className: 'password', type: 'password', name: 'password', placeholder: 'ENTER PASSWORD', onChange: this.textChange }),
           React.createElement(
             'button',
             { type: 'submit' },

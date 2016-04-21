@@ -484,11 +484,11 @@ var LogIn = React.createClass({
       <div id="header">
         <div id="title">WHO/WHAT/WHERE</div>
         <div className="input-row">
-          <form onSubmit={ this.loginHandler }>
-            <label className="email">Email: </label>
-            <input className="email" type="text" name="email" onChange={ this.textChange }></input>
-            <label className="password">Password: </label>
-            <input className="password" type="password" name="password" onChange={ this.textChange }></input>
+          <form id="login-form" onSubmit={ this.loginHandler }>
+
+            <input className="email" type="text" name="email" placeholder="ENTER EMAIL"onChange={ this.textChange }></input>
+
+            <input className="password" type="password" name="password" placeholder="ENTER PASSWORD" onChange={ this.textChange }></input>
             <button type="submit">LOGIN</button>
           </form>
             <br />
