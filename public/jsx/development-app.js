@@ -135,7 +135,7 @@ var GoogleMap = React.createClass({
   render: function(){
     this.addMarkers();
     return(
-      <div>
+      <div id="map-and-search">
         <div id='map'></div>
         <AddressSearch
           centerMap={ this.centerMap }/>
@@ -187,7 +187,7 @@ var AddressSearch = React.createClass({
   },
   render: function(){
     return(
-      <form>
+      <form id="search-form">
         <input id="address-search" type="text"></input>
         <br />
         <button id="address-search-button" type="button">Seach Address</button>
@@ -227,7 +227,7 @@ var FeedContainer = React.createClass({
   },
   render: function(){
     return(
-      <div>
+      <div className="feed-container">
         <h1>guhhhh</h1>
         { this.state.displayWelcome ? <Welcome /> : null }
         { this.state.displayFeed ? <Feed changeToFeed={ this.changeToFeed } lat={ this.props.lat } lng={ this.props.lng }/> : null }
@@ -518,53 +518,56 @@ var LogIn = React.createClass({
   // },
   render: function(){
     return(
-      <div class="input-row">
-        <form onSubmit={ this.loginHandler }>
-          <label class="email">Email: </label>
-          <input class="email" type="text" name="email" onChange={ this.textChange }></input>
-          <label class="password">Password: </label>
-          <input class="password" type="password" name="password" onChange={ this.textChange }></input>
-          <button type="submit">LOGIN</button>
-        </form>
-          <br />
-          <a class="register" href="#register-popup">Not Registered? Sign Up!</a>
-          <div className="overlay" id="register-popup">
-              <div className="popup">
-                <h4>Register</h4>
-                <a className="close" href="#">&times;</a>
-                <form onSubmit={ this.registerHandler }>
-                  <div className="input-row">
-                      <label className="name">Username: </label>
-                      <input className="name" type="text" name="username" onChange={ this.textChange }></input>
-                  </div>
-                  <br />
-                  <div className="input-row">
-                      <label className="email">Email: </label>
-                      <input className="email" type="text" name="email" onChange={ this.textChange }></input>
-                  </div>
-                  <br />
-                  <div className="input-row">
-                      <label className="password">Password: </label>
-                      <input className="password" type="password" name="password" onChange={ this.textChange }></input>
-                  </div>
-                  <br />
-                  <div className="input-row">
-                      <label className="email">Re-Confirm Password: </label>
-                      <input className="password" type="password" name="reconfirmpassword" onChange={ this.textChange }></input>
-                  </div>
-                  <br />
-                  <div className="input-row">
-                      <label className="email">Default Address: </label>
-                      <input className="address" type="text" name="default_address" onChange={ this.textChange }></input>
-                  </div>
-                  <br />
-                  <div className="input-row">
-                      <button type="submit">REGISTER</button>
-                  </div>
-                </form>
+      <div id="header">
+        <div id="title">WHO/WHAT/WHERE</div>
+        <div className="input-row">
+          <form onSubmit={ this.loginHandler }>
+            <label className="email">Email: </label>
+            <input className="email" type="text" name="email" onChange={ this.textChange }></input>
+            <label className="password">Password: </label>
+            <input className="password" type="password" name="password" onChange={ this.textChange }></input>
+            <button type="submit">LOGIN</button>
+          </form>
+            <br />
+            <a className="register" href="#register-popup">Not Registered? Sign Up!</a>
+            <div className="overlay" id="register-popup">
+                <div className="popup">
+                  <h4>Register</h4>
+                  <a className="close" href="#">&times;</a>
+                  <form onSubmit={ this.registerHandler }>
+                    <div className="input-row">
+                        <label className="name">Username: </label>
+                        <input className="name" type="text" name="username" onChange={ this.textChange }></input>
+                    </div>
+                    <br />
+                    <div className="input-row">
+                        <label className="email">Email: </label>
+                        <input className="email" type="text" name="email" onChange={ this.textChange }></input>
+                    </div>
+                    <br />
+                    <div className="input-row">
+                        <label className="password">Password: </label>
+                        <input className="password" type="password" name="password" onChange={ this.textChange }></input>
+                    </div>
+                    <br />
+                    <div className="input-row">
+                        <label className="email">Re-Confirm Password: </label>
+                        <input className="password" type="password" name="reconfirmpassword" onChange={ this.textChange }></input>
+                    </div>
+                    <br />
+                    <div className="input-row">
+                        <label className="email">Default Address: </label>
+                        <input className="address" type="text" name="default_address" onChange={ this.textChange }></input>
+                    </div>
+                    <br />
+                    <div className="input-row">
+                        <button type="submit">REGISTER</button>
+                    </div>
+                  </form>
 
+                </div>
               </div>
-            </div>
+        </div>
       </div>
     )
   }
