@@ -19556,7 +19556,7 @@ var AddressSearch = React.createClass({
       React.createElement(
         'button',
         { id: 'address-search-button', type: 'button' },
-        'Seach Address'
+        'SEARCH ADDRESS'
       )
     );
   }
@@ -19931,8 +19931,8 @@ var LogIn = React.createClass({
             { className: 'popup' },
             React.createElement(
               'h4',
-              null,
-              'Register'
+              { id: 'register-title' },
+              'ENTER INFO'
             ),
             React.createElement(
               'a',
@@ -19941,70 +19941,51 @@ var LogIn = React.createClass({
             ),
             React.createElement(
               'form',
-              { onSubmit: this.registerHandler },
+              { id: 'register-form', onSubmit: this.registerHandler },
               React.createElement(
-                'div',
-                { className: 'input-row' },
-                React.createElement(
-                  'label',
-                  { className: 'name' },
-                  'Username: '
-                ),
-                React.createElement('input', { className: 'name', type: 'text', name: 'username', onChange: this.textChange })
+                'label',
+                { className: 'register-label' },
+                'Username: '
               ),
+              React.createElement('input', { className: 'register-input', type: 'text', name: 'username', onChange: this.textChange }),
+              React.createElement('br', null),
               React.createElement('br', null),
               React.createElement(
-                'div',
-                { className: 'input-row' },
-                React.createElement(
-                  'label',
-                  { className: 'email' },
-                  'Email: '
-                ),
-                React.createElement('input', { className: 'email', type: 'text', name: 'email', onChange: this.textChange })
+                'label',
+                { className: 'register-label' },
+                'Email: '
               ),
+              React.createElement('input', { className: 'register-input', type: 'text', name: 'email', onChange: this.textChange }),
+              React.createElement('br', null),
               React.createElement('br', null),
               React.createElement(
-                'div',
-                { className: 'input-row' },
-                React.createElement(
-                  'label',
-                  { className: 'password' },
-                  'Password: '
-                ),
-                React.createElement('input', { className: 'password', type: 'password', name: 'password', onChange: this.textChange })
+                'label',
+                { className: 'register-label' },
+                'Password: '
               ),
+              React.createElement('input', { className: 'register-input', type: 'password', name: 'password', onChange: this.textChange }),
+              React.createElement('br', null),
               React.createElement('br', null),
               React.createElement(
-                'div',
-                { className: 'input-row' },
-                React.createElement(
-                  'label',
-                  { className: 'email' },
-                  'Re-Confirm Password: '
-                ),
-                React.createElement('input', { className: 'password', type: 'password', name: 'reconfirmpassword', onChange: this.textChange })
+                'label',
+                { className: 'register-label' },
+                'Re-Confirm Password: '
               ),
+              React.createElement('input', { className: 'register-input', type: 'password', name: 'reconfirmpassword', onChange: this.textChange }),
+              React.createElement('br', null),
               React.createElement('br', null),
               React.createElement(
-                'div',
-                { className: 'input-row' },
-                React.createElement(
-                  'label',
-                  { className: 'email' },
-                  'Default Address: '
-                ),
-                React.createElement('input', { className: 'address', type: 'text', name: 'default_address', onChange: this.textChange })
+                'label',
+                { className: 'register-label' },
+                'Default Address: '
               ),
+              React.createElement('input', { className: 'register-input', type: 'text', name: 'default_address', onChange: this.textChange }),
+              React.createElement('br', null),
               React.createElement('br', null),
               React.createElement(
-                'div',
-                { className: 'input-row' },
-                React.createElement(
-                  'button',
-                  { type: 'submit' },
-                  'REGISTER'
-                )
+                'button',
+                { id: 'register-button', type: 'submit' },
+                'REGISTER'
               )
             )
           )
