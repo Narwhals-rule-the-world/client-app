@@ -75,7 +75,8 @@ var Container = React.createClass({
       <div className="container">
         <Buttons  login={ this.login }
                   logout={ this.logout }
-                  loggedIn={ this.state.loggedIn }/>
+                  loggedIn={ this.state.loggedIn }
+                  username={ this.state.username }/>
         <FeedContainer lat={ this.state.lat }
                        lng={ this.state.lng }
                        loggedIn={ this.state.loggedIn }
@@ -372,13 +373,13 @@ var Welcome = React.createClass({
 
 var Post = React.createClass({
   getInitialState: function(){
-    return{
-      comment: '',
-      picture: ''
-    }
+    return { message: '',
+             name: '',
+             comment: '' }
   },
   postHandler: function(e){
     e.preventDefault();
+    var self = this;
     var state = this.state;
     state.time = Date.now();
     state.lat = this.props.lat;
@@ -392,8 +393,14 @@ var Post = React.createClass({
         data: state,
         success: function(data){
           console.log(data);
+          var state = self.state;
+          state.message = "Thanks for posting!";
+          self.setState(state);
         },
         error: function(err){
+          var state = sefl.state;
+          state.message = "Something went wrong! Please make sure you are logged in and all your information is correct."
+          self.setState(state);
           console.log(err);
         }
       });
@@ -425,6 +432,7 @@ var Post = React.createClass({
     return (
       <div>
 
+<<<<<<< HEAD
         <h3 id="new-post-title">New post for { this.props.myLocation }</h3>
         <form id="post-form" onSubmit={ this.postHandler }>
             <input id="imgUpload" type="file" name="image" onChange={this.imageChange}/>
@@ -439,6 +447,17 @@ var Post = React.createClass({
             <br />
             <br />
             <button id"upload-button"type="submit">Upload</button>
+=======
+        <h3>New post for { this.props.myLocation }</h3>
+        <p>{ this.state.message }</p>
+        <form onSubmit={ this.postHandler }>
+          <input id="imgUpload" type="file" name="image" onChange={this.imageChange}/>
+          <label className="comment">Comment: </label>
+          <input className="comment" type="text" name="comment" onChange={ this.textChange }></input>
+          <label className="name">Name:</label>
+          <input className="name" type="text" name="userName" onChange={ this.textChange }></input>
+          <button type="submit">Upload</button>
+>>>>>>> develop
         </form>
 
         <div id="images"></div>
@@ -475,7 +494,7 @@ var Buttons = React.createClass({
   render: function(){
     return (
         <div>
-          { this.props.loggedIn  ? <LogOut logout={ this.props.logout } /> :  <LogIn login={ this.props.login } />  }
+          { this.props.loggedIn  ? <LogOut username={ this.props.username } logout={ this.props.logout } /> :  <LogIn login={ this.props.login } />  }
         </div>
 
     )
@@ -614,7 +633,7 @@ var LogOut = React.createClass({
       <div id="header">
         <div id="title">WHO/WHAT/WHERE</div>
         <div id="signed-in">
-          Welcome User
+          Welcome { this.props.username }
           <button id="logout-button" onClick={this.handleLogoutClick} type="button">LOGOUT</button>
         </div>
       </div>
