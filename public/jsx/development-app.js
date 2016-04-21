@@ -372,13 +372,13 @@ var Welcome = React.createClass({
 
 var Post = React.createClass({
   getInitialState: function(){
-    return{
-      comment: '',
-      picture: ''
-    }
+    return { message: '',
+             name: '',
+             comment: '' }
   },
   postHandler: function(e){
     e.preventDefault();
+    var self = this;
     var state = this.state;
     state.time = Date.now();
     state.lat = this.props.lat;
@@ -392,8 +392,14 @@ var Post = React.createClass({
         data: state,
         success: function(data){
           console.log(data);
+          var state = self.state;
+          state.message = "Thanks for posting!";
+          self.setState(state);
         },
         error: function(err){
+          var state = sefl.state;
+          state.message = "Something went wrong! Please make sure you are logged in and all your information is correct."
+          self.setState(state);
           console.log(err);
         }
       });
@@ -426,6 +432,7 @@ var Post = React.createClass({
       <div>
 
         <h3>New post for { this.props.myLocation }</h3>
+        <p>{ this.state.message }</p>
         <form onSubmit={ this.postHandler }>
           <input id="imgUpload" type="file" name="image" onChange={this.imageChange}/>
           <label className="comment">Comment: </label>

@@ -19778,13 +19778,13 @@ var Post = React.createClass({
   displayName: 'Post',
 
   getInitialState: function getInitialState() {
-    return {
-      comment: '',
-      picture: ''
-    };
+    return { message: '',
+      name: '',
+      comment: '' };
   },
   postHandler: function postHandler(e) {
     e.preventDefault();
+    var self = this;
     var state = this.state;
     state.time = Date.now();
     state.lat = this.props.lat;
@@ -19798,8 +19798,14 @@ var Post = React.createClass({
         data: state,
         success: function success(data) {
           console.log(data);
+          var state = self.state;
+          state.message = "Thanks for posting!";
+          self.setState(state);
         },
         error: function error(err) {
+          var state = sefl.state;
+          state.message = "Something went wrong! Please make sure you are logged in and all your information is correct.";
+          self.setState(state);
           console.log(err);
         }
       });
@@ -19835,6 +19841,11 @@ var Post = React.createClass({
         null,
         'New post for ',
         this.props.myLocation
+      ),
+      React.createElement(
+        'p',
+        null,
+        this.state.message
       ),
       React.createElement(
         'form',
@@ -19977,19 +19988,9 @@ var LogIn = React.createClass({
         { className: 'input-row' },
         React.createElement(
           'form',
-          { onSubmit: this.loginHandler },
-          React.createElement(
-            'label',
-            { className: 'email' },
-            'Email: '
-          ),
-          React.createElement('input', { className: 'email', type: 'text', name: 'email', onChange: this.textChange }),
-          React.createElement(
-            'label',
-            { className: 'password' },
-            'Password: '
-          ),
-          React.createElement('input', { className: 'password', type: 'password', name: 'password', onChange: this.textChange }),
+          { id: 'login-form', onSubmit: this.loginHandler },
+          React.createElement('input', { className: 'email', type: 'text', name: 'email', placeholder: 'ENTER EMAIL', onChange: this.textChange }),
+          React.createElement('input', { className: 'password', type: 'password', name: 'password', placeholder: 'ENTER PASSWORD', onChange: this.textChange }),
           React.createElement(
             'button',
             { type: 'submit' },
@@ -20010,8 +20011,8 @@ var LogIn = React.createClass({
             { className: 'popup' },
             React.createElement(
               'h4',
-              null,
-              'Register'
+              { id: 'register-title' },
+              'ENTER INFO'
             ),
             React.createElement(
               'a',
@@ -20020,70 +20021,51 @@ var LogIn = React.createClass({
             ),
             React.createElement(
               'form',
-              { onSubmit: this.registerHandler },
+              { id: 'register-form', onSubmit: this.registerHandler },
               React.createElement(
-                'div',
-                { className: 'input-row' },
-                React.createElement(
-                  'label',
-                  { className: 'name' },
-                  'Username: '
-                ),
-                React.createElement('input', { className: 'name', type: 'text', name: 'username', onChange: this.textChange })
+                'label',
+                { className: 'register-label' },
+                'Username: '
               ),
+              React.createElement('input', { className: 'register-input', type: 'text', name: 'username', onChange: this.textChange }),
+              React.createElement('br', null),
               React.createElement('br', null),
               React.createElement(
-                'div',
-                { className: 'input-row' },
-                React.createElement(
-                  'label',
-                  { className: 'email' },
-                  'Email: '
-                ),
-                React.createElement('input', { className: 'email', type: 'text', name: 'email', onChange: this.textChange })
+                'label',
+                { className: 'register-label' },
+                'Email: '
               ),
+              React.createElement('input', { className: 'register-input', type: 'text', name: 'email', onChange: this.textChange }),
+              React.createElement('br', null),
               React.createElement('br', null),
               React.createElement(
-                'div',
-                { className: 'input-row' },
-                React.createElement(
-                  'label',
-                  { className: 'password' },
-                  'Password: '
-                ),
-                React.createElement('input', { className: 'password', type: 'password', name: 'password', onChange: this.textChange })
+                'label',
+                { className: 'register-label' },
+                'Password: '
               ),
+              React.createElement('input', { className: 'register-input', type: 'password', name: 'password', onChange: this.textChange }),
+              React.createElement('br', null),
               React.createElement('br', null),
               React.createElement(
-                'div',
-                { className: 'input-row' },
-                React.createElement(
-                  'label',
-                  { className: 'email' },
-                  'Re-Confirm Password: '
-                ),
-                React.createElement('input', { className: 'password', type: 'password', name: 'reconfirmpassword', onChange: this.textChange })
+                'label',
+                { className: 'register-label' },
+                'Re-Confirm Password: '
               ),
+              React.createElement('input', { className: 'register-input', type: 'password', name: 'reconfirmpassword', onChange: this.textChange }),
+              React.createElement('br', null),
               React.createElement('br', null),
               React.createElement(
-                'div',
-                { className: 'input-row' },
-                React.createElement(
-                  'label',
-                  { className: 'email' },
-                  'Default Address: '
-                ),
-                React.createElement('input', { className: 'address', type: 'text', name: 'homeLocation', onChange: this.textChange })
+                'label',
+                { className: 'register-label' },
+                'Default Address: '
               ),
+              React.createElement('input', { className: 'register-input', type: 'text', name: 'homeLocation', onChange: this.textChange }),
+              React.createElement('br', null),
               React.createElement('br', null),
               React.createElement(
-                'div',
-                { className: 'input-row' },
-                React.createElement(
-                  'button',
-                  { type: 'submit' },
-                  'REGISTER'
-                )
+                'button',
+                { id: 'register-button', type: 'submit' },
+                'REGISTER'
               )
             )
           )
@@ -20110,12 +20092,21 @@ var LogOut = React.createClass({
   render: function render() {
     return React.createElement(
       'div',
-      null,
-      'Welcome User',
+      { id: 'header' },
       React.createElement(
-        'button',
-        { onClick: this.handleLogoutClick, type: 'button' },
-        'LOGOUT'
+        'div',
+        { id: 'title' },
+        'WHO/WHAT/WHERE'
+      ),
+      React.createElement(
+        'div',
+        { id: 'signed-in' },
+        'Welcome User',
+        React.createElement(
+          'button',
+          { onClick: this.handleLogoutClick, type: 'button' },
+          'LOGOUT'
+        )
       )
     );
   }
