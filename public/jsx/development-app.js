@@ -197,7 +197,7 @@ var AddressSearch = React.createClass({
   render: function(){
     return(
       <form id="search-form">
-        <input id="address-search" type="text"></input>
+        <input id="address-search" type="text" placeholder="ENTER A LOCATION"></input>
         <br />
         <button id="address-search-button" type="button" onClick={ this.addressSearchHandler }>SEARCH ADDRESS</button>
       </form>
@@ -237,7 +237,7 @@ var FeedContainer = React.createClass({
   render: function(){
     return(
       <div className="feed-container">
-        <h1 id="feed-top-message">Hi { this.props.username ? this.props.username : 'please log in to post' }!</h1>
+        <h1 id="feed-top-message">Hi { this.props.username ? this.props.username : <br />'Must log in to be able to post!' }!</h1>
         { this.state.displayWelcome ? <Welcome /> : null }
         { this.state.displayFeed ? <Feed changeToFeed={ this.changeToFeed } lat={ this.props.lat } lng={ this.props.lng }/> : null }
         { this.state.displayPost && this.props.loggedIn ? <Post lat={ this.props.lat } lng={ this.props.lng } myLocation={ this.props.myLocation } username={ this.props.username } loggedIn={ this.props.loggedIn }/> : null }
@@ -323,7 +323,8 @@ var Feed = React.createClass({
     })
     return(
       <article>
-        <h4>Here's what we found...</h4>
+        <h1 id="post-instruction">Click SEARCH ADDRESS to join the conversation!</h1>
+        <h4 id="post-instruction">Here's what people are talking about...</h4>
         { locations }
       </article>
     )
@@ -359,12 +360,17 @@ var Welcome = React.createClass({
     return (
       <div>
         <p id="welcome-p">
-          Welcome to PROJECT NAME! The place to see and share what's going on in your city.
-          Share pictures, comments and more to the interactive map where others can catch a short lived glimpse
-          of your activity. Search the map to see other posts to help you get off the couch and explore the city!
+          Welcome to WHO/WHAT/WHERE! The place to see and share who is doing what in your city!
+          <br />
+          <br />
+          Share pictures, comments and more to the interactive map where others can catch a glimpse of the social activity around you!
+          Click on the map markers and read what people are doing at that location!
+          <br />
+          <br />
+          Search the map to see the city's posts to help you get off the couch and explore your city's WHO, WHAT and WHERE!
         </p>
         <p id="welcome-p">
-          Enter an address or press search to get started!
+          Enter a location and press SEARCH ADDRESS to get started!
         </p>
       </div>
     )
@@ -615,7 +621,7 @@ var LogOut = React.createClass({
     console.log('ATTEMPTED LOGOUT!')
   },
   render: function(){
-    console.log(this.props.username)
+    console.log(this.props)
     return(
       <div id="header">
         <div id="title">WHO/WHAT/WHERE</div>

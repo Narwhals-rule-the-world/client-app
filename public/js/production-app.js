@@ -19561,7 +19561,7 @@ var AddressSearch = React.createClass({
     return React.createElement(
       'form',
       { id: 'search-form' },
-      React.createElement('input', { id: 'address-search', type: 'text' }),
+      React.createElement('input', { id: 'address-search', type: 'text', placeholder: 'ENTER A LOCATION' }),
       React.createElement('br', null),
       React.createElement(
         'button',
@@ -19706,9 +19706,14 @@ var Feed = React.createClass({
       'article',
       null,
       React.createElement(
+        'h1',
+        null,
+        'Click SEARCH ADDRESS to join the conversation!'
+      ),
+      React.createElement(
         'h4',
         null,
-        'Here\'s what we found...'
+        'Here\'s what people are talking about...'
       ),
       locations
     );
@@ -19764,12 +19769,16 @@ var Welcome = React.createClass({
       React.createElement(
         'p',
         { id: 'welcome-p' },
-        'Welcome to PROJECT NAME! The place to see and share what\'s going on in your city. Share pictures, comments and more to the interactive map where others can catch a short lived glimpse of your activity. Search the map to see other posts to help you get off the couch and explore the city!'
+        'Welcome to WHO/WHAT/WHERE! The place to see and share who is doing what in your city!',
+        React.createElement('br', null),
+        'Share pictures, comments and more to the interactive map where others can catch a glimpse of the social activity around you! Click on the map markers and read what people are doing at that location!',
+        React.createElement('br', null),
+        'Search the map to see the city\'s posts to help you get off the couch and explore your city\'s WHO, WHAT and WHERE!'
       ),
       React.createElement(
         'p',
         { id: 'welcome-p' },
-        'Enter an address or press search to get started!'
+        'Enter a location and press SEARCH ADDRESS to get started!'
       )
     );
   }
@@ -20099,7 +20108,7 @@ var LogOut = React.createClass({
     console.log('ATTEMPTED LOGOUT!');
   },
   render: function render() {
-    console.log(this.props.username);
+    console.log(this.props);
     return React.createElement(
       'div',
       { id: 'header' },
