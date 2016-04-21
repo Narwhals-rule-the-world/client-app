@@ -200,7 +200,7 @@ var AddressSearch = React.createClass({
   render: function(){
     return(
       <form id="search-form">
-        <input id="address-search" type="text"></input>
+        <input id="address-search" type="text" placeholder="ENTER A LOCATION"></input>
         <br />
         <button id="address-search-button" type="button" onClick={ this.addressSearchHandler }>SEARCH ADDRESS</button>
       </form>
@@ -242,13 +242,13 @@ var FeedContainer = React.createClass({
   render: function(){
     return(
       <div className="feed-container">
-        <h1>Hi { this.props.username ? this.props.username : 'please log in to post' }!</h1>
+        <h1 id="feed-top-message">Hi { this.props.username ? this.props.username : <br />'Must log in to be able to post!' }!</h1>
         { this.state.displayWelcome ? <Welcome /> : null }
         { this.state.displayFeed ? <Feed changeToFeed={ this.changeToFeed } lat={ this.props.lat } lng={ this.props.lng }/> : null }
         { this.state.displayPost && this.props.loggedIn ? <Post lat={ this.props.lat } lng={ this.props.lng } myLocation={ this.props.myLocation } username={ this.props.username } loggedIn={ this.props.loggedIn }/> : null }
-        { this.state.displayPost ?  null : <button onClick={ this.changeToPost }>POST</button> }
-        { this.state.displayFeed ?  null: <button onClick={ this.changeToFeed }>RESULTS</button> }
-        { this.state.displayWelcome ?  null : <button onClick={ this.changeToWelcome }>ABOUT</button> }
+        { this.state.displayPost ?  null : <button id="post-button"onClick={ this.changeToPost }>POST</button> }
+        { this.state.displayFeed ?  null: <button id="results-button" onClick={ this.changeToFeed }>RESULTS</button> }
+        { this.state.displayWelcome ?  null : <button id="about-button" onClick={ this.changeToWelcome }>ABOUT</button> }
 
       </div>
     )
@@ -310,7 +310,8 @@ var Feed = React.createClass({
     })
     return(
       <article>
-        <h4>Here's what we found...</h4>
+        <h1 id="post-instruction">Click SEARCH ADDRESS to join the conversation!</h1>
+        <h4 id="post-instruction">Here's what people are talking about...</h4>
         { locations }
       </article>
     )
@@ -347,13 +348,18 @@ var Welcome = React.createClass({
   render: function(){
     return (
       <div>
-        <p>
-          Welcome to PROJECT NAME! The place to see and share what's going on in your city.
-          Share pictures, comments and more to the interactive map where others can catch a short lived glimpse
-          of your activity. Search the map to see other posts to help you get off the couch and explore the city!
+        <p id="welcome-p">
+          Welcome to WHO/WHAT/WHERE! The place to see and share who is doing what in your city!
+          <br />
+          <br />
+          Share pictures, comments and more to the interactive map where others can catch a glimpse of the social activity around you!
+          Click on the map markers and read what people are doing at that location!
+          <br />
+          <br />
+          Search the map to see the city's posts to help you get off the couch and explore your city's WHO, WHAT and WHERE!
         </p>
-        <p>
-          Enter an address or press search to get started!
+        <p id="welcome-p">
+          Enter a location and press SEARCH ADDRESS to get started!
         </p>
       </div>
     )
@@ -424,20 +430,23 @@ var Post = React.createClass({
   render: function(){
     return (
       <div>
-
-        <h3>New post for { this.props.myLocation }</h3>
-        <p>{ this.state.message }</p>
-        <form onSubmit={ this.postHandler }>
-          <input id="imgUpload" type="file" name="image" onChange={this.imageChange}/>
-          <label className="comment">Comment: </label>
-          <input className="comment" type="text" name="comment" onChange={ this.textChange }></input>
-          <label className="name">Name:</label>
-          <input className="name" type="text" name="userName" onChange={ this.textChange }></input>
-          <button type="submit">Upload</button>
+        <h3 id="new-post-title">New post for { this.props.myLocation }</h3>
+        <div> { this.state.message } </div>
+        <form id="post-form" onSubmit={ this.postHandler }>
+            <input id="imgUpload" type="file" name="image" onChange={ this.imageChange }></input>
+            <br />
+            <br />
+            <label id="post-label">Comment: </label>
+            <input id="post-input-nonpic" type="text" name="comment" onChange={ this.textChange }></input>
+            <br />
+            <br />
+            <label id="post-label">Name:</label>
+            <input id="post-input-nonpic" type="text" name="userName" onChange={ this.textChange }></input>
+            <br />
+            <br />
+            <button id="upload-button" type="submit">UPLOAD</button>
+            <div id="images"></div>
         </form>
-
-        <div id="images"></div>
-
       </div>
     )
   }
@@ -580,11 +589,12 @@ var LogOut = React.createClass({
     console.log('ATTEMPTED LOGOUT!')
   },
   render: function(){
+    console.log(this.props)
     return(
       <div id="header">
         <div id="title">WHO/WHAT/WHERE</div>
         <div id="signed-in">
-          Welcome { this.props.username }
+          <div id="welcome-message"> Welcome { this.props.username } </div>
           <button id="logout-button" onClick={this.handleLogoutClick} type="button">LOGOUT</button>
         </div>
       </div>
