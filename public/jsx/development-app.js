@@ -64,16 +64,20 @@ var Container = React.createClass({
   render: function(){
     return(
       <div className="container">
-        <Buttons />
+        <Buttons  login={ this.login }
+                  logout={ this.logout }
+                  loggedIn={ this.state.loggedIn }/>
         <FeedContainer lat={ this.state.lat }
-                       lng={ this.state.lng }/>
+                       lng={ this.state.lng }
+                       loggedIn={ this.state.loggedIn }/>
 
         <GoogleMap  lat={ this.state.lat }
                     lng={ this.state.lng }
                     locations={ this.state.locations }
                     setPosition={ this.setPosition }
                     createMap = { this.createMap }
-                    map={ this.state.map }/>
+                    map={ this.state.map }
+                    loggedIn={ this.state.loggedIn }/>
       </div>
 
     )
@@ -220,7 +224,7 @@ var FeedContainer = React.createClass({
       <div>
         <h1>guhhhh</h1>
         { this.state.displayWelcome ? <Welcome /> : null }
-        { this.state.displayFeed ? <Feed /> : null }
+        { this.state.displayFeed ? <Feed lat={ this.props.lat } lng={ this.props.lng }/> : null }
         { this.state.displayPost ? <Post /> : null }
         { this.state.displayPost ? <button onClick={ this.changeToFeed }>RESULTS</button> : null }
         { this.state.displayFeed ? <button onClick={ this.changeToPost }>POST</button> : null }
@@ -234,17 +238,19 @@ var Feed = React.createClass({
   getInitialState: function(){
     // return { locations: this.props.locations }
     // using our test data:
-    return { locations: sampleData }
+    return { locations: [] }
   },
   updateFeedItems: function(){
-    var state;
     var self = this;
-    // this will be ajax to api
+    console.log(self.props);
+    // this will be ajax to api =================
     $.ajax({
       method: 'post',
       url: 'http://localhost:3000/search',
-      data: { lat: this.prop.lat, lng: this.prop.lng, radius: 0 },
+      data: { lat: self.props.lat, lng: self.props.lng, radius: 10 },
       success: function(returnedLocations){
+        var state = {};
+        console.log('success!!!!!!@#!@#');
         state.locations = returnedLocations;
         self.setState(state);
       },
@@ -252,9 +258,12 @@ var Feed = React.createClass({
         console.log(err);
       }
     })
+    // ==============================
   },
   render: function(){
+    this.updateFeedItems();
     var self = this;
+    // console.log(this.state);
     var locations = this.state.locations.map(function(location, i){
       return(
           <FeedItem
@@ -400,7 +409,7 @@ var Buttons = React.createClass({
   render: function(){
     return (
         <div>
-          {this.props.userLoggedIn} ? <LogOut handleLoggedOut={this.handleLoggedOut} /> :  <LogIn handleLoggedIn={this.handleLoggedIn} handleLoggedOut={this.handleLoggedOut}/>  }
+          { this.props.loggedIn  ? <LogOut logout={ this.props.logout } /> :  <LogIn login={ this.props.login } />  }
         </div>
 
     )
@@ -416,6 +425,7 @@ var LogIn = React.createClass({
     }
   },
   loginHandler: function(e){
+    var self = this;
     e.preventDefault();
     var state = this.state;
     $.ajax({
@@ -424,8 +434,8 @@ var LogIn = React.createClass({
       data: state,
       success: function(data){
         console.log(data);
-        if(data.loggedIn){
-          this.props.login()
+        if(data.success){
+          self.props.login()
         }else{
           console.log("NOT THE RIGHT PASSWORD OR EMAIL")
         }
@@ -436,6 +446,7 @@ var LogIn = React.createClass({
     });
   },
   registerHandler: function(e){
+    var self = this;
     e.preventDefault();
     var state = this.state;
     $.ajax({
@@ -446,7 +457,8 @@ var LogIn = React.createClass({
         console.log(data);
         if(data.success){
           console.log('you successfully registered an account')
-          this.props.login()
+          console.log(self.props);
+          self.props.login()
         }else{
           console.log('something went wrong')
         }
@@ -531,7 +543,7 @@ var LogOut = React.createClass({
         console.log(err);
       }
     })
-    this.props.handleLoggedOut(true)
+    this.props.logout();
     console.log('ATTEMPTED LOGOUT!')
   },
   render: function(){

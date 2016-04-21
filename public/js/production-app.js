@@ -19382,6 +19382,16 @@ var Container = React.createClass({
       loggedIn: false
     };
   },
+  login: function login() {
+    var state = this.state;
+    state.loggedIn = true;
+    this.setState(state);
+  },
+  logout: function logout() {
+    var state = this.state;
+    state.loggedIn = false;
+    this.setState(state);
+  },
   createMap: function createMap() {
     var self = this;
     var state = this.state;
@@ -19422,14 +19432,19 @@ var Container = React.createClass({
     return React.createElement(
       'div',
       { className: 'container' },
-      React.createElement(Buttons, null),
-      React.createElement(FeedContainer, null),
+      React.createElement(Buttons, { login: this.login,
+        logout: this.logout,
+        loggedIn: this.state.loggedIn }),
+      React.createElement(FeedContainer, { lat: this.state.lat,
+        lng: this.state.lng,
+        loggedIn: this.state.loggedIn }),
       React.createElement(GoogleMap, { lat: this.state.lat,
         lng: this.state.lng,
         locations: this.state.locations,
         setPosition: this.setPosition,
         createMap: this.createMap,
-        map: this.state.map })
+        map: this.state.map,
+        loggedIn: this.state.loggedIn })
     );
   }
 });
@@ -19578,7 +19593,7 @@ var FeedContainer = React.createClass({
         'guhhhh'
       ),
       this.state.displayWelcome ? React.createElement(Welcome, null) : null,
-      this.state.displayFeed ? React.createElement(Feed, null) : null,
+      this.state.displayFeed ? React.createElement(Feed, { lat: this.props.lat, lng: this.props.lng }) : null,
       this.state.displayPost ? React.createElement(Post, null) : null,
       this.state.displayPost ? React.createElement(
         'button',
@@ -19600,16 +19615,32 @@ var Feed = React.createClass({
   getInitialState: function getInitialState() {
     // return { locations: this.props.locations }
     // using our test data:
-    return { locations: sampleData };
+    return { locations: [] };
   },
   updateFeedItems: function updateFeedItems() {
-    var state;
-    // this will be ajax to api
-    state = { locations: sampleDataUpdated };
-    this.setState(state);
+    var self = this;
+    console.log(self.props);
+    // this will be ajax to api =================
+    $.ajax({
+      method: 'post',
+      url: 'http://localhost:3000/search',
+      data: { lat: self.props.lat, lng: self.props.lng, radius: 10 },
+      success: function success(returnedLocations) {
+        var state = {};
+        console.log('success!!!!!!@#!@#');
+        state.locations = returnedLocations;
+        self.setState(state);
+      },
+      error: function error(err) {
+        console.log(err);
+      }
+    });
+    // ==============================
   },
   render: function render() {
+    this.updateFeedItems();
     var self = this;
+    // console.log(this.state);
     var locations = this.state.locations.map(function (location, i) {
       return React.createElement(FeedItem, {
         key: i,
@@ -19767,33 +19798,33 @@ var Post = React.createClass({
 var Buttons = React.createClass({
   displayName: 'Buttons',
 
-  getInitialState: function getInitialState() {
-    return {
-      welcomeScreen: true,
-      userLoggedIn: false
-    };
-  },
-  handleLoggedIn: function handleLoggedIn(logged) {
-    if (logged) {
-      var state = this.state;
-      state.userLoggedIn = true;
-      this.setState(state);
-      console.log(this.state);
-    }
-  },
-  handleLoggedOut: function handleLoggedOut(logged) {
-    if (logged) {
-      var state = this.state;
-      state.userLoggedIn = false;
-      this.setState(state);
-      console.log(this.state);
-    }
-  },
+  // getInitialState: function(){
+  //   return {
+  //     welcomeScreen: true,
+  //     userLoggedIn: false,
+  //   }
+  // },
+  // handleLoggedIn: function(logged){
+  //   if(logged){
+  //     var state = this.state
+  //     state.userLoggedIn = true
+  //     this.setState(state)
+  //     console.log(this.state)
+  //   }
+  // },
+  // handleLoggedOut: function(logged){
+  //   if(logged){
+  //     var state = this.state
+  //     state.userLoggedIn = false
+  //     this.setState(state)
+  //     console.log(this.state)
+  //   }
+  // },
   render: function render() {
     return React.createElement(
       'div',
       null,
-      this.state.userLoggedIn ? React.createElement(LogOut, { handleLoggedOut: this.handleLoggedOut }) : React.createElement(LogIn, { handleLoggedIn: this.handleLoggedIn, handleLoggedOut: this.handleLoggedOut })
+      this.props.loggedIn ? React.createElement(LogOut, { logout: this.props.logout }) : React.createElement(LogIn, { login: this.props.login })
     );
   }
 });
@@ -19809,6 +19840,7 @@ var LogIn = React.createClass({
     };
   },
   loginHandler: function loginHandler(e) {
+    var self = this;
     e.preventDefault();
     var state = this.state;
     $.ajax({
@@ -19817,6 +19849,11 @@ var LogIn = React.createClass({
       data: state,
       success: function success(data) {
         console.log(data);
+        if (data.success) {
+          self.props.login();
+        } else {
+          console.log("NOT THE RIGHT PASSWORD OR EMAIL");
+        }
       },
       error: function error(err) {
         console.log(err);
@@ -19824,6 +19861,7 @@ var LogIn = React.createClass({
     });
   },
   registerHandler: function registerHandler(e) {
+    var self = this;
     e.preventDefault();
     var state = this.state;
     $.ajax({
@@ -19832,6 +19870,13 @@ var LogIn = React.createClass({
       data: state,
       success: function success(data) {
         console.log(data);
+        if (data.success) {
+          console.log('you successfully registered an account');
+          console.log(self.props);
+          self.props.login();
+        } else {
+          console.log('something went wrong');
+        }
       },
       error: function error(err) {
         console.log(err);
@@ -19843,12 +19888,12 @@ var LogIn = React.createClass({
     state[e.target.name] = e.target.value;
     this.setState(state);
   },
-  handleLoginClick: function handleLoginClick(event) {
-    this.props.handleLoggedIn(true);
-    //event.target.value will get you values of inputs
-    //this will need to be an ajax call for users log in
-    console.log('ATTEMPTED LOGIN!');
-  },
+  // handleLoginClick: function(event){
+  //   this.props.handleLoggedIn(true)
+  //   //event.target.value will get you values of inputs
+  //   //this will need to be an ajax call for users log in
+  //   console.log('ATTEMPTED LOGIN!')
+  // },
   render: function render() {
     return React.createElement(
       'div',
@@ -19870,7 +19915,7 @@ var LogIn = React.createClass({
         React.createElement('input', { 'class': 'password', type: 'password', name: 'password', onChange: this.textChange }),
         React.createElement(
           'button',
-          { onClick: this.handleLoginClick, type: 'submit' },
+          { type: 'submit' },
           'LOGIN'
         )
       ),
@@ -19959,7 +20004,7 @@ var LogIn = React.createClass({
               { className: 'input-row' },
               React.createElement(
                 'button',
-                { onClick: this.handleLoginClick, type: 'submit' },
+                { type: 'submit' },
                 'REGISTER'
               )
             )
@@ -19974,7 +20019,14 @@ var LogOut = React.createClass({
   displayName: 'LogOut',
 
   handleLogoutClick: function handleLogoutClick(event) {
-    this.props.handleLoggedOut(true);
+    $.ajax({
+      method: 'get',
+      url: 'http://localhost:3000/users/logout',
+      error: function error(err) {
+        console.log(err);
+      }
+    });
+    this.props.logout();
     console.log('ATTEMPTED LOGOUT!');
   },
   render: function render() {
