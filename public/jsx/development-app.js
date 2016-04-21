@@ -9,18 +9,25 @@ var Container = React.createClass({
     return {
       lat: 0,
       lng: 0,
+      myLocation: '',
+      username: '',
       locations: [],
       loggedIn: false,
     }
   },
-  login: function() {
+  login: function(username, homeLocation) {
     var state = this.state;
     state.loggedIn = true;
+    state.username = username;
+    state.myLocation = homeLocation;
     this.setState(state);
+    console.log(this.state);
   },
   logout: function() {
     var state = this.state;
     state.loggedIn = false;
+    state.username = '';
+    state.myLocation = '';
     this.setState(state);
   },
   createMap: function() {
@@ -40,11 +47,12 @@ var Container = React.createClass({
     this.setState(state);
 
   },
-  setPosition: function(lat, lng){
+  setPosition: function(lat, lng, myLocation){
     var self = this;
     var state = this.state;
     state.lat = lat;
     state.lng = lng;
+    state.myLocation = myLocation;
 
     $.ajax({
       method: 'post',
@@ -53,6 +61,7 @@ var Container = React.createClass({
       success: function(returnedLocations){
         state.locations = returnedLocations;
         self.setState(state);
+        console.log(state);
       },
       error: function(err){
         console.log(err);
@@ -69,7 +78,9 @@ var Container = React.createClass({
                   loggedIn={ this.state.loggedIn }/>
         <FeedContainer lat={ this.state.lat }
                        lng={ this.state.lng }
-                       loggedIn={ this.state.loggedIn }/>
+                       loggedIn={ this.state.loggedIn }
+                       myLocation={ this.state.myLocation }
+                       username={ this.state.username }/>
 
         <GoogleMap  lat={ this.state.lat }
                     lng={ this.state.lng }
@@ -85,8 +96,8 @@ var Container = React.createClass({
 })
 
 var GoogleMap = React.createClass({
-  centerMap: function(lat, lng){
-    this.props.setPosition(lat, lng); // function from container to set location globally
+  centerMap: function(lat, lng, myLocation){
+    this.props.setPosition(lat, lng, myLocation); // function from container to set location globally
     this.props.map.setCenter(lat, lng);
     this.props.map.addMarker({
         lat: lat,
@@ -147,50 +158,47 @@ var GoogleMap = React.createClass({
 
 
 var AddressSearch = React.createClass({
-  componentDidMount: function(){
+  addressSearchHandler: function(e){
     var self = this;
-    $('#address-search-button').click(function(e){
-      e.preventDefault();
-      var address = $('#address-search').val();
+    e.preventDefault();
+    var address = $('#address-search').val();
 
 
-      if (address){
-        // ajax to google places api on the server
-        // returns its best guess of a location
-        // depending on what the user enters
-        $.ajax({
-          method: 'post',
-          url: '/location',
-          data: { place: address },
-          success: function(data){
-            // function to make [AJAX] call and grab locations
-            // take the address and center the map at that location
-            GMaps.geocode({
-              address: data,
-              callback: function(results, status) {
-                if (status == 'OK') {
-                  // console.log(results);
-                  var latlng = results[0].geometry.location;
-                  self.props.centerMap(latlng.lat(), latlng.lng());
-                }
+    if (address){
+      // ajax to google places api on the server
+      // returns its best guess of a location
+      // depending on what the user enters
+      $.ajax({
+        method: 'post',
+        url: '/location',
+        data: { place: address },
+        success: function(data){
+          console.log(data);
+          // function to make [AJAX] call and grab locations
+          // take the address and center the map at that location
+          GMaps.geocode({
+            address: data,
+            callback: function(results, status) {
+              if (status == 'OK') {
+                var latlng = results[0].geometry.location;
+                self.props.centerMap(latlng.lat(), latlng.lng(), data);
               }
-            });
+            }
+          });
 
-          },
-          error: function(err){
-            console.log(err);
-          }
-        })
-      }
-
-    })
+        },
+        error: function(err){
+          console.log(err);
+        }
+      })
+    }
   },
   render: function(){
     return(
       <form id="search-form">
         <input id="address-search" type="text"></input>
         <br />
-        <button id="address-search-button" type="button">Seach Address</button>
+        <button type="button" onClick={ this.addressSearchHandler }>Seach Address</button>
       </form>
     )
   }
@@ -228,10 +236,10 @@ var FeedContainer = React.createClass({
   render: function(){
     return(
       <div className="feed-container">
-        <h1>guhhhh</h1>
+        <h1>Hi { this.props.username ? this.props.username : 'please log in to post' }!</h1>
         { this.state.displayWelcome ? <Welcome /> : null }
         { this.state.displayFeed ? <Feed changeToFeed={ this.changeToFeed } lat={ this.props.lat } lng={ this.props.lng }/> : null }
-        { this.state.displayPost ? <Post /> : null }
+        { this.state.displayPost && this.props.loggedIn ? <Post lat={ this.props.lat } lng={ this.props.lng } myLocation={ this.props.myLocation } username={ this.props.username } loggedIn={ this.props.loggedIn }/> : null }
         { this.state.displayPost ?  null : <button onClick={ this.changeToPost }>POST</button> }
         { this.state.displayFeed ?  null: <button onClick={ this.changeToFeed }>RESULTS</button> }
         { this.state.displayWelcome ?  null : <button onClick={ this.changeToWelcome }>ABOUT</button> }
@@ -243,22 +251,22 @@ var FeedContainer = React.createClass({
 
 var Feed = React.createClass({
   getInitialState: function(){
-    console.log('get initial state');
+    // console.log('get initial state');
     // return { locations: this.props.locations }
     // using our test data:
     return { locations: [] }
   },
   componentWillReceiveProps: function(nextProps, nextState){
-    console.log('will receive props, this will be calling updateFeedItems');
+    // console.log('will receive props, this will be calling updateFeedItems');
     this.updateFeedItems(nextProps.lat, nextProps.lng);
   },
   shouldComponentUpdate: function(nextProps, nextState){
-    console.log('deciding if the component should update');
-    console.log(nextState);
-    console.log(this.state);
-    console.log(nextState.locations != this.state.locations)
+    // console.log('deciding if the component should update');
+    // console.log(nextState);
+    // console.log(this.state);
+    // console.log(nextState.locations != this.state.locations);
     if (nextProps.lat != this.props.lat && nextProps.lng != this.props.lng) {
-      console.log('update');
+      // console.log('update');
       // console.log(nextProps.lat, this.props.lat, nextProps.lng, this.props.lng);
       // console.log(this.state);
       return true;
@@ -267,7 +275,7 @@ var Feed = React.createClass({
     } else {
       // console.log(nextProps.lat, this.props.lat, nextProps.lng, this.props.lng);
       // console.log(this.state);
-      console.log('no update');
+      // console.log('no update');
       return false;
     }
     // console.log(nextProps);
@@ -285,7 +293,7 @@ var Feed = React.createClass({
       data: { lat: lat, lng: lng, radius: 10 },
       success: function(returnedLocations){
         var state = {};
-        console.log('ajax');
+        // console.log('ajax');
         state.locations = returnedLocations;
         self.setState(state);
       },
@@ -298,15 +306,17 @@ var Feed = React.createClass({
     // ==============================
   },
   render: function(){
-    console.log('render');
+    // console.log('render');
     var self = this;
     // console.log(this.state);
     var locations = this.state.locations.map(function(location, i){
+      console.log(location)
       return(
           <FeedItem
             key={ i }
             name={ location.placeName }
             comment={ location.comment }
+            picture={ location.picture }
             updateFeedItems={ self.updateFeedItems }/>
       )
     })
@@ -316,6 +326,12 @@ var Feed = React.createClass({
         { locations }
       </article>
     )
+  }
+})
+
+var Picture = React.createClass({
+  render: function(){
+    return <img src={ this.props.picture } />
   }
 })
 
@@ -331,6 +347,7 @@ var FeedItem = React.createClass({
       <div className="feed-item" onClick={ this.clickHandler }>
         <p><em>{ this.props.name }</em></p>
         <p>{ this.props.comment }</p>
+        { this.props.picture ? <Picture picture={ this.props.picture } /> : null }
       </div>
     )
   }
@@ -364,18 +381,24 @@ var Post = React.createClass({
     e.preventDefault();
     var state = this.state;
     state.time = Date.now();
+    state.lat = this.props.lat;
+    state.lng = this.props.lng;
+    state.placeName = this.props.myLocation;
     console.log(state);
-    $.ajax({
-      method: 'post',
-      url: 'http://localhost:3000/create', // whatever this route is supposed to be
-      data: state,
-      success: function(data){
-        console.log(data);
-      },
-      error: function(err){
-        console.log(err);
-      }
-    });
+    if (this.props.loggedIn){
+      $.ajax({
+        method: 'post',
+        url: 'http://localhost:3000/create', // whatever this route is supposed to be
+        data: state,
+        success: function(data){
+          console.log(data);
+        },
+        error: function(err){
+          console.log(err);
+        }
+      });
+    } else console.log('log in, mannnn.')
+
   },
   textChange: function(e){
     var state = this.state;
@@ -402,7 +425,7 @@ var Post = React.createClass({
     return (
       <div>
 
-        <h3>Upload Image</h3>
+        <h3>New post for { this.props.myLocation }</h3>
         <form onSubmit={ this.postHandler }>
           <input id="imgUpload" type="file" name="image" onChange={this.imageChange}/>
           <label className="comment">Comment: </label>
@@ -472,7 +495,8 @@ var LogIn = React.createClass({
       success: function(data){
         console.log(data);
         if(data.success){
-          self.props.login()
+
+          self.props.login(data.username, data.homeLocation)
         }else{
           console.log("NOT THE RIGHT PASSWORD OR EMAIL")
         }
@@ -557,7 +581,7 @@ var LogIn = React.createClass({
                     <br />
                     <div className="input-row">
                         <label className="email">Default Address: </label>
-                        <input className="address" type="text" name="default_address" onChange={ this.textChange }></input>
+                        <input className="address" type="text" name="homeLocation" onChange={ this.textChange }></input>
                     </div>
                     <br />
                     <div className="input-row">
