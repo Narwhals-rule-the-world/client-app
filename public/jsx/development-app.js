@@ -190,7 +190,7 @@ var AddressSearch = React.createClass({
       <form id="search-form">
         <input id="address-search" type="text"></input>
         <br />
-        <button id="address-search-button" type="button">Seach Address</button>
+        <button id="address-search-button" type="button">SEARCH ADDRESS</button>
       </form>
     )
   }
@@ -484,48 +484,41 @@ var LogIn = React.createClass({
       <div id="header">
         <div id="title">WHO/WHAT/WHERE</div>
         <div className="input-row">
-          <form onSubmit={ this.loginHandler }>
-            <label className="email">Email: </label>
-            <input className="email" type="text" name="email" onChange={ this.textChange }></input>
-            <label className="password">Password: </label>
-            <input className="password" type="password" name="password" onChange={ this.textChange }></input>
+          <form id="login-form" onSubmit={ this.loginHandler }>
+
+            <input className="email" type="text" name="email" placeholder="ENTER EMAIL"onChange={ this.textChange }></input>
+
+            <input className="password" type="password" name="password" placeholder="ENTER PASSWORD" onChange={ this.textChange }></input>
             <button type="submit">LOGIN</button>
           </form>
             <br />
             <a className="register" href="#register-popup">Not Registered? Sign Up!</a>
             <div className="overlay" id="register-popup">
                 <div className="popup">
-                  <h4>Register</h4>
+                  <h4 id="register-title">ENTER INFO</h4>
                   <a className="close" href="#">&times;</a>
-                  <form onSubmit={ this.registerHandler }>
-                    <div className="input-row">
-                        <label className="name">Username: </label>
-                        <input className="name" type="text" name="username" onChange={ this.textChange }></input>
-                    </div>
+                  <form id="register-form" onSubmit={ this.registerHandler }>
+                        <label className="register-label">Username: </label>
+                        <input className="register-input" type="text" name="username" onChange={ this.textChange }></input>
                     <br />
-                    <div className="input-row">
-                        <label className="email">Email: </label>
-                        <input className="email" type="text" name="email" onChange={ this.textChange }></input>
-                    </div>
                     <br />
-                    <div className="input-row">
-                        <label className="password">Password: </label>
-                        <input className="password" type="password" name="password" onChange={ this.textChange }></input>
-                    </div>
+                        <label className="register-label">Email: </label>
+                        <input className="register-input" type="text" name="email" onChange={ this.textChange }></input>
                     <br />
-                    <div className="input-row">
-                        <label className="email">Re-Confirm Password: </label>
-                        <input className="password" type="password" name="reconfirmpassword" onChange={ this.textChange }></input>
-                    </div>
                     <br />
-                    <div className="input-row">
-                        <label className="email">Default Address: </label>
-                        <input className="address" type="text" name="default_address" onChange={ this.textChange }></input>
-                    </div>
+                        <label className="register-label">Password: </label>
+                        <input className="register-input" type="password" name="password" onChange={ this.textChange }></input>
                     <br />
-                    <div className="input-row">
-                        <button type="submit">REGISTER</button>
-                    </div>
+                    <br />
+                        <label className="register-label">Re-Confirm Password: </label>
+                        <input className="register-input" type="password" name="reconfirmpassword" onChange={ this.textChange }></input>
+                    <br />
+                    <br />
+                        <label className="register-label">Default Address: </label>
+                        <input className="register-input" type="text" name="default_address" onChange={ this.textChange }></input>
+                    <br />
+                    <br />
+                        <button id="register-button" type="submit">REGISTER</button>
                   </form>
 
                 </div>
@@ -551,10 +544,14 @@ var LogOut = React.createClass({
   },
   render: function(){
     return(
-      <div>
-        Welcome User
-        <button onClick={this.handleLogoutClick} type="button">LOGOUT</button>
+      <div id="header">
+        <div id="title">WHO/WHAT/WHERE</div>
+        <div id="signed-in">
+          Welcome User
+          <button onClick={this.handleLogoutClick} type="button">LOGOUT</button>
+        </div>
       </div>
+
     )
   }
 })
