@@ -20012,12 +20012,21 @@ var LogOut = React.createClass({
   render: function render() {
     return React.createElement(
       'div',
-      null,
-      'Welcome User',
+      { id: 'header' },
       React.createElement(
-        'button',
-        { onClick: this.handleLogoutClick, type: 'button' },
-        'LOGOUT'
+        'div',
+        { id: 'title' },
+        'WHO/WHAT/WHERE'
+      ),
+      React.createElement(
+        'div',
+        { id: 'signed-in' },
+        'Welcome User',
+        React.createElement(
+          'button',
+          { onClick: this.handleLogoutClick, type: 'button' },
+          'LOGOUT'
+        )
       )
     );
   }

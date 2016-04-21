@@ -266,6 +266,11 @@ body {
   float: right;
   margin-top: 10px;
 }
+#signed-in {
+  position: relative;
+  float: right;
+  margin-top: 10px;
+}
 #register-title {
   text-align: center;
   font-size: 36px;

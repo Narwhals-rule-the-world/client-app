@@ -544,10 +544,14 @@ var LogOut = React.createClass({
   },
   render: function(){
     return(
-      <div>
-        Welcome User
-        <button onClick={this.handleLogoutClick} type="button">LOGOUT</button>
+      <div id="header">
+        <div id="title">WHO/WHAT/WHERE</div>
+        <div id="signed-in">
+          Welcome User
+          <button onClick={this.handleLogoutClick} type="button">LOGOUT</button>
+        </div>
       </div>
+
     )
   }
 })
