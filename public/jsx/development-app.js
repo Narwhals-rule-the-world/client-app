@@ -431,11 +431,10 @@ var Post = React.createClass({
   render: function(){
     return (
       <div>
-
-<<<<<<< HEAD
         <h3 id="new-post-title">New post for { this.props.myLocation }</h3>
+        <div> { this.state.message } </div>
         <form id="post-form" onSubmit={ this.postHandler }>
-            <input id="imgUpload" type="file" name="image" onChange={this.imageChange}/>
+            <input id="imgUpload" type="file" name="image" onChange={ this.imageChange }></input>
             <br />
             <br />
             <label id="post-label">Comment: </label>
@@ -446,22 +445,9 @@ var Post = React.createClass({
             <input id="post-input-nonpic" type="text" name="userName" onChange={ this.textChange }></input>
             <br />
             <br />
-            <button id"upload-button"type="submit">Upload</button>
-=======
-        <h3>New post for { this.props.myLocation }</h3>
-        <p>{ this.state.message }</p>
-        <form onSubmit={ this.postHandler }>
-          <input id="imgUpload" type="file" name="image" onChange={this.imageChange}/>
-          <label className="comment">Comment: </label>
-          <input className="comment" type="text" name="comment" onChange={ this.textChange }></input>
-          <label className="name">Name:</label>
-          <input className="name" type="text" name="userName" onChange={ this.textChange }></input>
-          <button type="submit">Upload</button>
->>>>>>> develop
+            <button id="upload-button" type="submit">UPLOAD</button>
+            <div id="images"></div>
         </form>
-
-        <div id="images"></div>
-
       </div>
     )
   }
@@ -629,11 +615,12 @@ var LogOut = React.createClass({
     console.log('ATTEMPTED LOGOUT!')
   },
   render: function(){
+    console.log(this.props.username)
     return(
       <div id="header">
         <div id="title">WHO/WHAT/WHERE</div>
         <div id="signed-in">
-          Welcome { this.props.username }
+          <div> Welcome { this.props.username } </div>
           <button id="logout-button" onClick={this.handleLogoutClick} type="button">LOGOUT</button>
         </div>
       </div>

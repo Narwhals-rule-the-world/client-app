@@ -218,6 +218,9 @@ input[type="button"].button-primary:focus {
   border: 1px solid #bbb;
   border-radius: 4px;
   height: 38px;
+  font-size: 25px;
+  font-family: 'Economica', sans-serif;
+  text-align: center;
 }
 #address-search-button {
   width: 100%;
@@ -285,6 +288,12 @@ body {
   overflow: scroll;
   border: 1px solid #bbb;
   border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 20px;
+}
+img {
+  text-align: center;
 }
 #post-button {
   text-align: center;
@@ -303,6 +312,11 @@ body {
   position: relative;
   float: right;
   margin-right: 20px!important;
+}
+#upload-button {
+  width: 100%!important;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 #register-form {
   margin-bottom: 20px;
