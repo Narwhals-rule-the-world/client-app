@@ -19566,8 +19566,8 @@ var FeedContainer = React.createClass({
   displayName: 'FeedContainer',
 
   getInitialState: function getInitialState() {
-    return { displayWelcome: false,
-      displayFeed: true,
+    return { displayWelcome: true,
+      displayFeed: false,
       displayPost: false
     };
   },
@@ -19583,6 +19583,12 @@ var FeedContainer = React.createClass({
       displayPost: true };
     this.setState(state);
   },
+  changeToWelcome: function changeToWelcome() {
+    var state = { displayWelcome: true,
+      displayFeed: false,
+      displayPost: false };
+    this.setState(state);
+  },
   render: function render() {
     return React.createElement(
       'div',
@@ -19593,18 +19599,23 @@ var FeedContainer = React.createClass({
         'guhhhh'
       ),
       this.state.displayWelcome ? React.createElement(Welcome, null) : null,
-      this.state.displayFeed ? React.createElement(Feed, { lat: this.props.lat, lng: this.props.lng }) : null,
+      this.state.displayFeed ? React.createElement(Feed, { changeToFeed: this.changeToFeed, lat: this.props.lat, lng: this.props.lng }) : null,
       this.state.displayPost ? React.createElement(Post, null) : null,
-      this.state.displayPost ? React.createElement(
-        'button',
-        { onClick: this.changeToFeed },
-        'RESULTS'
-      ) : null,
-      this.state.displayFeed ? React.createElement(
+      this.state.displayPost ? null : React.createElement(
         'button',
         { onClick: this.changeToPost },
         'POST'
-      ) : null
+      ),
+      this.state.displayFeed ? null : React.createElement(
+        'button',
+        { onClick: this.changeToFeed },
+        'RESULTS'
+      ),
+      this.state.displayWelcome ? null : React.createElement(
+        'button',
+        { onClick: this.changeToWelcome },
+        'ABOUT'
+      )
     );
   }
 });
@@ -19613,21 +19624,49 @@ var Feed = React.createClass({
   displayName: 'Feed',
 
   getInitialState: function getInitialState() {
+    console.log('get initial state');
     // return { locations: this.props.locations }
     // using our test data:
     return { locations: [] };
   },
-  updateFeedItems: function updateFeedItems() {
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextState) {
+    console.log('will receive props, this will be calling updateFeedItems');
+    this.updateFeedItems(nextProps.lat, nextProps.lng);
+  },
+  shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
+    console.log('deciding if the component should update');
+    console.log(nextState);
+    console.log(this.state);
+    console.log(nextState.locations != this.state.locations);
+    if (nextProps.lat != this.props.lat && nextProps.lng != this.props.lng) {
+      console.log('update');
+      // console.log(nextProps.lat, this.props.lat, nextProps.lng, this.props.lng);
+      // console.log(this.state);
+      return true;
+    } else if (nextState.locations != this.state.locations) {
+      return true;
+    } else {
+      // console.log(nextProps.lat, this.props.lat, nextProps.lng, this.props.lng);
+      // console.log(this.state);
+      console.log('no update');
+      return false;
+    }
+    // console.log(nextProps);
+    // console.log('============');
+    // console.log(this.props);
+    // return false
+  },
+  updateFeedItems: function updateFeedItems(lat, lng) {
     var self = this;
-    console.log(self.props);
+    // console.log(self.props);
     // this will be ajax to api =================
     $.ajax({
       method: 'post',
       url: 'http://localhost:3000/search',
-      data: { lat: self.props.lat, lng: self.props.lng, radius: 10 },
+      data: { lat: lat, lng: lng, radius: 10 },
       success: function success(returnedLocations) {
         var state = {};
-        console.log('success!!!!!!@#!@#');
+        console.log('ajax');
         state.locations = returnedLocations;
         self.setState(state);
       },
@@ -19635,10 +19674,11 @@ var Feed = React.createClass({
         console.log(err);
       }
     });
+
     // ==============================
   },
   render: function render() {
-    this.updateFeedItems();
+    console.log('render');
     var self = this;
     // console.log(this.state);
     var locations = this.state.locations.map(function (location, i) {
