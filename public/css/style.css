@@ -345,8 +345,11 @@ img {
   padding: 5px;
 }
 #post-label {
-  font-size: 18px;
+  font-size: 20px;
   margin-top: 20px;
+}
+#post-instruction {
+  text-align: center;
 }
 #post-input-nonpic {
   position: relative;
@@ -358,6 +361,7 @@ img {
   margin-left: 20px;
   padding: 5px;
   font-family: 'Economica', sans-serif;
+  font-size: 20px;
 }
 #register-button {
   margin-left: 30%;
