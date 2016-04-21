@@ -1,6 +1,26 @@
-// IMPORTS OF OTHER LESS FILES
+// VARIABLES
 // -----------------------------------------
+@background-color: rgba(184, 179, 183, 0.4);
 
+.borders() {
+  border: 1px solid #bbb;
+  border-radius: 4px;
+}
+
+.fonts() {
+  font-family: 'Economica', sans-serif;
+  color: white;
+}
+
+.left-side() {
+  position: relative;
+  float: left;
+}
+
+.right-side() {
+  position: relative;
+  float: right;
+}
 
 
 // BEGIN THE SKELETON GRID SYSTEM
@@ -15,7 +35,6 @@
 .column,
 .columns {
   width: 100%;
-  float: left;
   box-sizing: border-box; }
 
 /* For devices larger than 400px */
@@ -149,91 +168,79 @@ input[type="button"].button-primary:focus {
 
 
 // this is the map
+
+#map-and-search{
+  .right-side;
+  width: 48%;
+}
+
 #map{
-  width: 500px;
+  width: 100%;
   height: 500px;
-  border: 1px solid #bbb;
-  border-radius: 4px;
-}
-.login-button{
-  position: relative;
-  float: right;
+  background-color: @background-color;
+  .right-side;
+  .borders;
+  margin: 20px 0px;
+
 }
 
-#button-group{
-  position: relative;
-  float: right;
-}
-
-input{
-  height: 30px;
-  width: 100px;
-  margin-right: 15px;
-  border-radius: 4px;
-  font-family: 'Economica', sans-serif;
-}
-
-label{
-  margin-right: 15px;
-}
-
-.newsfeed {
-  border: 1px solid #bbb;
-  border-radius: 4px;
-  position: relative;
-  float: left;
-  padding: 20px;
-  marign: 5px;
-  background-color: rgba(184, 179, 183, 0.4);
-}
-
-#search-container{
-  text-align: center;
+#search-form{
+  margin-top: 100px;
 }
 
 #address-search{
-  width: 200px;
-  height: 36px;
+  width: 100%;
+  .borders;
+  height: 38px;
 }
 
-.title{
-  position: relative;
-  float: left;
-  font-size: 56px;
+#address-search-button{
+  width: 100%;
+
 }
 
-.login{
-  position: relative;
-  float: right;
-  padding: 5px;
+.feed-container {
+  .borders;
+  .left-side;
+  padding: 20px;
+  margin: 30px 0px;
+  background-color: @background-color;
+  width: 40%;
+  height: 460px;
+  // overflow: scroll;
+
 }
 
-.email{
-  padding: 10px;
-  border-radius: 4px;
-}
-
-.password{
-  padding: 10px;
-  border-radius: 4px;
-}
-
-a{
-  text-align: right;
-}
-
-.input-row{
-  color: red;
-  margin-top: 25px;
-  text-align: center
-}
 
 body{
   background: url('/images/background-image-4.jpg') no-repeat center center fixed;
   background-size: cover;
-  font-family: 'Economica', sans-serif;
-  color: white;
+  .fonts;
 }
+
+.input-row{
+  .right-side;
+  width: 48%;
+}
+
+.register{
+  .right-side;
+}
+
+#header{
+  width: 100%;
+
+}
+
+#title{
+  .left-side;
+  width: 33%
+  .fonts;
+  font-size: 56px;
+}
+
+
+
 
 
 // start popup css
@@ -255,7 +262,7 @@ body{
 }
 
 .popup {
-  margin: 20% auto;
+  margin: 10px auto;
   padding: 20px;
   background: #fff;
   border-radius: 4px;
@@ -267,6 +274,7 @@ body{
     position: absolute;
     top: 15px;
     right: 20px;
+    color: black;
   }
 
   a{
