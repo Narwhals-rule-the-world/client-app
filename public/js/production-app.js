@@ -19365,12 +19365,8 @@ module.exports = require('./lib/React');
 'use strict';
 
 var React = require('react'),
-    ReactDOM = require('react-dom'),
-    sampleData = [{}],
-    //require('../../sample-data-reviews.js'),
-sampleDataUpdated = [{}]; //require('../../sample-data-reviews-updated.js');
+    ReactDOM = require('react-dom');
 
-// hiii
 var Container = React.createClass({
   displayName: 'Container',
 
@@ -19385,6 +19381,7 @@ var Container = React.createClass({
     };
   },
   login: function login(username, homeLocation) {
+    // set our container state to logged in
     var state = this.state;
     state.loggedIn = true;
     state.username = username;
@@ -19393,6 +19390,7 @@ var Container = React.createClass({
     console.log(this.state);
   },
   logout: function logout() {
+    // set our container state to logged in
     var state = this.state;
     state.loggedIn = false;
     state.username = '';
@@ -19408,13 +19406,16 @@ var Container = React.createClass({
       lat: state.lat,
       lng: state.lng,
       idle: function idle() {
-        // function to make [AJAX] call and grab locations
-        // console.log('idle!!!');
+        // this is where functionality would go to update the map everytime the user stops interacting with it
       }
     });
-
+    // save our map in the container state so all children can access it
     this.setState(state);
   },
+  // takes a lat, lng, and location name ('444 n wabash, chicago, IL')
+  // and saves in the container state as the user's 'current position'
+  // this is the positon that will be attached to all posts they make
+  // it also grabs all nearby reviews
   setPosition: function setPosition(lat, lng, myLocation) {
     var self = this;
     var state = this.state;
@@ -19425,7 +19426,7 @@ var Container = React.createClass({
     $.ajax({
       method: 'post',
       url: 'http://localhost:3000/search',
-      data: { lat: lat, lng: lng, radius: 10 },
+      data: { lat: lat, lng: lng, radius: 2 },
       success: function success(returnedLocations) {
         state.locations = returnedLocations;
         self.setState(state);
@@ -19436,7 +19437,7 @@ var Container = React.createClass({
       }
     });
   },
-
+  // render this container and all its kids!
   render: function render() {
     return React.createElement(
       'div',
@@ -19461,21 +19462,23 @@ var Container = React.createClass({
   }
 });
 
+// class for the map and its address search box
 var GoogleMap = React.createClass({
   displayName: 'GoogleMap',
 
   centerMap: function centerMap(lat, lng, myLocation) {
     this.props.setPosition(lat, lng, myLocation); // function from container to set location globally
+    // gmaps methods
     this.props.map.setCenter(lat, lng);
     this.props.map.addMarker({
       lat: lat,
       lng: lng
     });
   },
+  // takes an array of location objects and places map markers for all of them
   addMarkers: function addMarkers() {
     var self = this;
     this.props.locations.forEach(function (location) {
-      // console.log(location);
       self.props.map.addMarker({
         lat: location.lat,
         lng: location.lng,
@@ -19490,8 +19493,9 @@ var GoogleMap = React.createClass({
     this.props.createMap();
 
     // show "loading" here
+    // not yet implemented
 
-    // find user's position
+    // find user's position w/gmaps geolocate function
     GMaps.geolocate({
       success: function success(position) {
         // hide "loading" here
@@ -19533,6 +19537,7 @@ var AddressSearch = React.createClass({
       // ajax to google places api on the server
       // returns its best guess of a location
       // depending on what the user enters
+      // there is probably a better implementation for what we are trying to accomplish here
       $.ajax({
         method: 'post',
         url: '/location',
@@ -19572,6 +19577,8 @@ var AddressSearch = React.createClass({
   }
 });
 
+// holds news feed, welcome and create post 'views'
+// its state keeps track of which 'view' to display
 var FeedContainer = React.createClass({
   displayName: 'FeedContainer',
 
@@ -19581,6 +19588,7 @@ var FeedContainer = React.createClass({
       displayPost: false
     };
   },
+  // future versions of this project can probably cut this down to one function vs 3
   changeToFeed: function changeToFeed() {
     var state = { displayWelcome: false,
       displayFeed: true,
@@ -19636,42 +19644,28 @@ var Feed = React.createClass({
   displayName: 'Feed',
 
   getInitialState: function getInitialState() {
-    // console.log('get initial state');
-    // return { locations: this.props.locations }
-    // using our test data:
     return { locations: [] };
   },
   componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextState) {
-    // console.log('will receive props, this will be calling updateFeedItems');
+    // when the coordinates of the container component change,
+    // grab new 'feed' items from the database
     this.updateFeedItems(nextProps.lat, nextProps.lng);
   },
   shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
-    // console.log('deciding if the component should update');
-    // console.log(nextState);
-    // console.log(this.state);
-    // console.log(nextState.locations != this.state.locations);
+    // do not update the component if the user's location has not changed
+    // or if the list of locations has not changed
+    // this prevents infinite looping issues
     if (nextProps.lat != this.props.lat && nextProps.lng != this.props.lng) {
-      // console.log('update');
-      // console.log(nextProps.lat, this.props.lat, nextProps.lng, this.props.lng);
-      // console.log(this.state);
       return true;
     } else if (nextState.locations != this.state.locations) {
       return true;
     } else {
-      // console.log(nextProps.lat, this.props.lat, nextProps.lng, this.props.lng);
-      // console.log(this.state);
-      // console.log('no update');
       return false;
     }
-    // console.log(nextProps);
-    // console.log('============');
-    // console.log(this.props);
-    // return false
   },
   updateFeedItems: function updateFeedItems(lat, lng) {
     var self = this;
-    // console.log(self.props);
-    // this will be ajax to api =================
+
     $.ajax({
       method: 'post',
       url: 'http://localhost:3000/search',
@@ -19686,13 +19680,9 @@ var Feed = React.createClass({
         console.log(err);
       }
     });
-
-    // ==============================
   },
   render: function render() {
-    // console.log('render');
     var self = this;
-    // console.log(this.state);
     var locations = this.state.locations.map(function (location, i) {
       console.log(location);
       return React.createElement(FeedItem, {
@@ -19723,6 +19713,8 @@ var Picture = React.createClass({
   }
 });
 
+// holds a review from the database
+// with an image, comment, etc.
 var FeedItem = React.createClass({
   displayName: 'FeedItem',
 
@@ -19787,11 +19779,13 @@ var Post = React.createClass({
     e.preventDefault();
     var self = this;
     var state = this.state;
+    // save current info in state so it can be sent to db
     state.time = Date.now();
     state.lat = this.props.lat;
     state.lng = this.props.lng;
     state.placeName = this.props.myLocation;
-    console.log(state);
+
+    // can't post if ya ain't logged in
     if (this.props.loggedIn) {
       $.ajax({
         method: 'post',
@@ -19812,11 +19806,13 @@ var Post = React.createClass({
       });
     } else console.log('log in, mannnn.');
   },
+  // function to update state variables as user inputs text
   textChange: function textChange(e) {
     var state = this.state;
     state[e.target.name] = e.target.value;
     this.setState(state);
   },
+  // function to update state variables as user uploads new image
   imageChange: function imageChange(event) {
     var input = $('#imgUpload')[0].files[0];
     var reader = new FileReader();
@@ -19875,31 +19871,11 @@ var Post = React.createClass({
   }
 });
 
+// parent component for login/logout buttons
+// this component may not be necessary
 var Buttons = React.createClass({
   displayName: 'Buttons',
 
-  // getInitialState: function(){
-  //   return {
-  //     welcomeScreen: true,
-  //     userLoggedIn: false,
-  //   }
-  // },
-  // handleLoggedIn: function(logged){
-  //   if(logged){
-  //     var state = this.state
-  //     state.userLoggedIn = true
-  //     this.setState(state)
-  //     console.log(this.state)
-  //   }
-  // },
-  // handleLoggedOut: function(logged){
-  //   if(logged){
-  //     var state = this.state
-  //     state.userLoggedIn = false
-  //     this.setState(state)
-  //     console.log(this.state)
-  //   }
-  // },
   render: function render() {
     return React.createElement(
       'div',
@@ -19909,10 +19885,12 @@ var Buttons = React.createClass({
   }
 });
 
+// login button
 var LogIn = React.createClass({
   displayName: 'LogIn',
 
   getInitialState: function getInitialState() {
+    // state holds user data to be sent to api via ajax
     return {
       username: '',
       email: '',
@@ -19969,12 +19947,6 @@ var LogIn = React.createClass({
     state[e.target.name] = e.target.value;
     this.setState(state);
   },
-  // handleLoginClick: function(event){
-  //   this.props.handleLoggedIn(true)
-  //   //event.target.value will get you values of inputs
-  //   //this will need to be an ajax call for users log in
-  //   console.log('ATTEMPTED LOGIN!')
-  // },
   render: function render() {
     return React.createElement(
       'div',
@@ -20102,18 +20074,11 @@ var LogOut = React.createClass({
       React.createElement(
         'div',
         { id: 'signed-in' },
-<<<<<<< HEAD
         'Welcome ',
         this.props.username,
         React.createElement(
           'button',
-          { onClick: this.handleLogoutClick, type: 'button' },
-=======
-        'Welcome User',
-        React.createElement(
-          'button',
           { id: 'logout-button', onClick: this.handleLogoutClick, type: 'button' },
->>>>>>> views
           'LOGOUT'
         )
       )
