@@ -620,7 +620,7 @@ var LogOut = React.createClass({
       <div id="header">
         <div id="title">WHO/WHAT/WHERE</div>
         <div id="signed-in">
-          <div> Welcome { this.props.username } </div>
+          <div id="welcome-message"> Welcome { this.props.username } </div>
           <button id="logout-button" onClick={this.handleLogoutClick} type="button">LOGOUT</button>
         </div>
       </div>

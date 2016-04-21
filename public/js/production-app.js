@@ -20113,7 +20113,7 @@ var LogOut = React.createClass({
         { id: 'signed-in' },
         React.createElement(
           'div',
-          null,
+          { id: 'welcome-message' },
           ' Welcome ',
           this.props.username,
           ' '
