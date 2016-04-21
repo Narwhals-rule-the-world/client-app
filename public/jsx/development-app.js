@@ -198,7 +198,7 @@ var AddressSearch = React.createClass({
       <form id="search-form">
         <input id="address-search" type="text"></input>
         <br />
-        <button type="button" onClick={ this.addressSearchHandler }>Seach Address</button>
+        <button id="address-search-button" type="button" onClick={ this.addressSearchHandler }>SEARCH ADDRESS</button>
       </form>
     )
   }
@@ -609,7 +609,7 @@ var LogOut = React.createClass({
         <div id="title">WHO/WHAT/WHERE</div>
         <div id="signed-in">
           Welcome User
-          <button onClick={this.handleLogoutClick} type="button">LOGOUT</button>
+          <button id="logout-button" onClick={this.handleLogoutClick} type="button">LOGOUT</button>
         </div>
       </div>
 
