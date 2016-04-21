@@ -19604,7 +19604,7 @@ var FeedContainer = React.createClass({
       { className: 'feed-container' },
       React.createElement(
         'h1',
-        null,
+        { id: 'feed-top-message' },
         'Hi ',
         this.props.username ? this.props.username : 'please log in to post',
         '!'
@@ -19614,17 +19614,17 @@ var FeedContainer = React.createClass({
       this.state.displayPost && this.props.loggedIn ? React.createElement(Post, { lat: this.props.lat, lng: this.props.lng, myLocation: this.props.myLocation, username: this.props.username, loggedIn: this.props.loggedIn }) : null,
       this.state.displayPost ? null : React.createElement(
         'button',
-        { onClick: this.changeToPost },
+        { id: 'post-button', onClick: this.changeToPost },
         'POST'
       ),
       this.state.displayFeed ? null : React.createElement(
         'button',
-        { onClick: this.changeToFeed },
+        { id: 'results-button', onClick: this.changeToFeed },
         'RESULTS'
       ),
       this.state.displayWelcome ? null : React.createElement(
         'button',
-        { onClick: this.changeToWelcome },
+        { id: 'about-button', onClick: this.changeToWelcome },
         'ABOUT'
       )
     );
@@ -19762,12 +19762,12 @@ var Welcome = React.createClass({
       null,
       React.createElement(
         'p',
-        null,
+        { id: 'welcome-p' },
         'Welcome to PROJECT NAME! The place to see and share what\'s going on in your city. Share pictures, comments and more to the interactive map where others can catch a short lived glimpse of your activity. Search the map to see other posts to help you get off the couch and explore the city!'
       ),
       React.createElement(
         'p',
-        null,
+        { id: 'welcome-p' },
         'Enter an address or press search to get started!'
       )
     );
@@ -19832,26 +19832,32 @@ var Post = React.createClass({
       null,
       React.createElement(
         'h3',
-        null,
+        { id: 'new-post-title' },
         'New post for ',
         this.props.myLocation
       ),
       React.createElement(
         'form',
-        { onSubmit: this.postHandler },
+        { id: 'post-form', onSubmit: this.postHandler },
         React.createElement('input', { id: 'imgUpload', type: 'file', name: 'image', onChange: this.imageChange }),
+        React.createElement('br', null),
+        React.createElement('br', null),
         React.createElement(
           'label',
-          { className: 'comment' },
+          { id: 'post-label' },
           'Comment: '
         ),
-        React.createElement('input', { className: 'comment', type: 'text', name: 'comment', onChange: this.textChange }),
+        React.createElement('input', { id: 'post-input-nonpic', type: 'text', name: 'comment', onChange: this.textChange }),
+        React.createElement('br', null),
+        React.createElement('br', null),
         React.createElement(
           'label',
-          { className: 'name' },
+          { id: 'post-label' },
           'Name:'
         ),
-        React.createElement('input', { className: 'name', type: 'text', name: 'userName', onChange: this.textChange }),
+        React.createElement('input', { id: 'post-input-nonpic', type: 'text', name: 'userName', onChange: this.textChange }),
+        React.createElement('br', null),
+        React.createElement('br', null),
         React.createElement(
           'button',
           { type: 'submit' },

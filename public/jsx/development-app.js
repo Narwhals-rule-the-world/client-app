@@ -236,13 +236,13 @@ var FeedContainer = React.createClass({
   render: function(){
     return(
       <div className="feed-container">
-        <h1>Hi { this.props.username ? this.props.username : 'please log in to post' }!</h1>
+        <h1 id="feed-top-message">Hi { this.props.username ? this.props.username : 'please log in to post' }!</h1>
         { this.state.displayWelcome ? <Welcome /> : null }
         { this.state.displayFeed ? <Feed changeToFeed={ this.changeToFeed } lat={ this.props.lat } lng={ this.props.lng }/> : null }
         { this.state.displayPost && this.props.loggedIn ? <Post lat={ this.props.lat } lng={ this.props.lng } myLocation={ this.props.myLocation } username={ this.props.username } loggedIn={ this.props.loggedIn }/> : null }
-        { this.state.displayPost ?  null : <button onClick={ this.changeToPost }>POST</button> }
-        { this.state.displayFeed ?  null: <button onClick={ this.changeToFeed }>RESULTS</button> }
-        { this.state.displayWelcome ?  null : <button onClick={ this.changeToWelcome }>ABOUT</button> }
+        { this.state.displayPost ?  null : <button id="post-button"onClick={ this.changeToPost }>POST</button> }
+        { this.state.displayFeed ?  null: <button id="results-button" onClick={ this.changeToFeed }>RESULTS</button> }
+        { this.state.displayWelcome ?  null : <button id="about-button" onClick={ this.changeToWelcome }>ABOUT</button> }
 
       </div>
     )
@@ -357,12 +357,12 @@ var Welcome = React.createClass({
   render: function(){
     return (
       <div>
-        <p>
+        <p id="welcome-p">
           Welcome to PROJECT NAME! The place to see and share what's going on in your city.
           Share pictures, comments and more to the interactive map where others can catch a short lived glimpse
           of your activity. Search the map to see other posts to help you get off the couch and explore the city!
         </p>
-        <p>
+        <p id="welcome-p">
           Enter an address or press search to get started!
         </p>
       </div>
@@ -425,14 +425,20 @@ var Post = React.createClass({
     return (
       <div>
 
-        <h3>New post for { this.props.myLocation }</h3>
-        <form onSubmit={ this.postHandler }>
-          <input id="imgUpload" type="file" name="image" onChange={this.imageChange}/>
-          <label className="comment">Comment: </label>
-          <input className="comment" type="text" name="comment" onChange={ this.textChange }></input>
-          <label className="name">Name:</label>
-          <input className="name" type="text" name="userName" onChange={ this.textChange }></input>
-          <button type="submit">Upload</button>
+        <h3 id="new-post-title">New post for { this.props.myLocation }</h3>
+        <form id="post-form" onSubmit={ this.postHandler }>
+            <input id="imgUpload" type="file" name="image" onChange={this.imageChange}/>
+            <br />
+            <br />
+            <label id="post-label">Comment: </label>
+            <input id="post-input-nonpic" type="text" name="comment" onChange={ this.textChange }></input>
+            <br />
+            <br />
+            <label id="post-label">Name:</label>
+            <input id="post-input-nonpic" type="text" name="userName" onChange={ this.textChange }></input>
+            <br />
+            <br />
+            <button id"upload-button"type="submit">Upload</button>
         </form>
 
         <div id="images"></div>

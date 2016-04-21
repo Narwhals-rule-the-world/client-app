@@ -1,6 +1,6 @@
 // VARIABLES
 // -----------------------------------------
-@background-color: rgba(184, 179, 183, 0.4);
+@background-color: rgba(36, 36, 36, 0.8);
 
 .borders() {
   border: 1px solid #bbb;
@@ -215,7 +215,7 @@ input[type="button"].button-primary:focus {
   background-color: @background-color;
   width: 40%;
   height: 460px;
-  // overflow: scroll;
+  overflow: scroll;
 
 }
 
@@ -243,7 +243,10 @@ body{
   .right-side;
   margin-top: 10px;
 }
-
+#welcome-p{
+  text-align: center;
+  font-size: 20px;
+}
 #signed-in{
   .right-side;
   margin-top: 10px;
@@ -253,6 +256,33 @@ body{
 #register-title{
   text-align: center;
   font-size: 36px;
+}
+
+.feed-item{
+  overflow: scroll;
+  .borders;
+}
+
+#post-button{
+  text-align: center;
+  .left-side;
+  margin-left: 20px!important;
+}
+
+#results-button{
+  text-align: center;
+  .right-side;
+  margin-right: 20px!important;
+}
+
+#about-button{
+  text-align: center;
+  .right-side;
+  margin-right: 20px!important;
+}
+
+#upload-button{
+  width: 80%;
 }
 
 #register-form{
@@ -268,10 +298,25 @@ body{
     height: 20px;
     .borders;
     font-family: 'Economica', sans-serif;
-
     padding: 5px;
   }
 }
+
+#post-label {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+#post-input-nonpic {
+    .right-side;
+    .borders;
+    height: 20px;
+    width: 60%;
+    margin-left: 20px;
+    padding: 5px;
+    font-family: 'Economica', sans-serif;
+}
+
 
 #register-button{
   margin-left: 30%;
@@ -303,7 +348,13 @@ body{
   margin-left: 50px;
 }
 
+#new-post-title{
+  text-align: center;
+}
 
+#feed-top-message{
+  text-align: center;
+}
 
 // start popup css
 .overlay {
