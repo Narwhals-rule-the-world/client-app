@@ -1,4 +1,4 @@
-# WHO/WHAT/WHERE
+![WHOWHATWHERE](public/images/Screen Shot 2016-04-22 at 9.05.40 AM.png)
 *************************************************
 
 ### WDI GROUP PROJECT 3
