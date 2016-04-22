@@ -19425,13 +19425,8 @@ var Container = React.createClass({
 
     $.ajax({
       method: 'post',
-<<<<<<< HEAD
       url: 'http://api.whowhatwhere.com/search',
       data: { lat: lat, lng: lng, radius: 10 },
-=======
-      url: 'http://localhost:3000/search',
-      data: { lat: lat, lng: lng, radius: 2 },
->>>>>>> b0557468c9d36cc3390ce17367ba7f1ef4c07e3a
       success: function success(returnedLocations) {
         state.locations = returnedLocations;
         self.setState(state);
@@ -20099,11 +20094,6 @@ var LogOut = React.createClass({
       React.createElement(
         'div',
         { id: 'signed-in' },
-<<<<<<< HEAD
-        'Welcome ',
-        this.props.username,
-        React.createElement(
-=======
         React.createElement(
           'div',
           { id: 'welcome-message' },
@@ -20112,7 +20102,6 @@ var LogOut = React.createClass({
           ' '
         ),
         React.createElement(
->>>>>>> b0557468c9d36cc3390ce17367ba7f1ef4c07e3a
           'button',
           { id: 'logout-button', onClick: this.handleLogoutClick, type: 'button' },
           'LOGOUT'
