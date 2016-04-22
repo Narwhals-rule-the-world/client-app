@@ -57,8 +57,8 @@ var Container = React.createClass({
 
     $.ajax({
       method: 'post',
-      url: 'http://localhost:3000/search',
-      data: { lat: lat, lng: lng, radius: 2 },
+      url: 'http://api.whowhatwhere.com/search',
+      data: { lat: lat, lng: lng, radius: 10 },
       success: function(returnedLocations){
         state.locations = returnedLocations;
         self.setState(state);
@@ -282,7 +282,7 @@ var Feed = React.createClass({
 
     $.ajax({
       method: 'post',
-      url: 'http://localhost:3000/search',
+      url: 'http://api.whowhatwhere.com/search',
       data: { lat: lat, lng: lng, radius: 10 },
       success: function(returnedLocations){
         var state = {};
@@ -387,7 +387,7 @@ var Post = React.createClass({
     if (this.props.loggedIn){
       $.ajax({
         method: 'post',
-        url: 'http://localhost:3000/create', // whatever this route is supposed to be
+        url: 'http://api.whowhatwhere.com/create', // whatever this route is supposed to be
         data: state,
         success: function(data){
           console.log(data);
@@ -482,7 +482,7 @@ var LogIn = React.createClass({
     var state = this.state;
     $.ajax({
       method: 'post',
-      url: 'http://localhost:3000/users/login',
+      url: 'http://api.whowhatwhere.com/users/login',
       data: state,
       success: function(data){
         console.log(data);
@@ -504,7 +504,7 @@ var LogIn = React.createClass({
     var state = this.state;
     $.ajax({
       method: 'post',
-      url: 'http://localhost:3000/users/signup',
+      url: 'http://api.whowhatwhere.com/users/signup',
       data: state,
       success: function(data){
         console.log(data);
@@ -581,7 +581,7 @@ var LogOut = React.createClass({
   handleLogoutClick: function(event){
     $.ajax({
       method: 'get',
-      url: 'http://localhost:3000/users/logout',
+      url: 'http://api.whowhatwhere.com/users/logout',
       error: function(err){
         console.log(err);
       }
