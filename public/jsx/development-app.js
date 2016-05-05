@@ -57,7 +57,7 @@ var Container = React.createClass({
 
     $.ajax({
       method: 'post',
-      url: 'http://narwhals-whowhatwhereapi.herokuapp.com/search',
+      url: 'https://narwhals-whowhatwhereapi.herokuapp.com/search',
       data: { lat: lat, lng: lng, radius: 10 },
       success: function(returnedLocations){
         state.locations = returnedLocations;
@@ -282,7 +282,7 @@ var Feed = React.createClass({
 
     $.ajax({
       method: 'post',
-      url: 'http://narwhals-whowhatwhereapi.herokuapp.com/search',
+      url: 'https://narwhals-whowhatwhereapi.herokuapp.com/search',
       data: { lat: lat, lng: lng, radius: 10 },
       success: function(returnedLocations){
         var state = {};
@@ -387,7 +387,7 @@ var Post = React.createClass({
     if (this.props.loggedIn){
       $.ajax({
         method: 'post',
-        url: 'http://narwhals-whowhatwhereapi.herokuapp.com/create', // whatever this route is supposed to be
+        url: 'https://narwhals-whowhatwhereapi.herokuapp.com/create', // whatever this route is supposed to be
         data: state,
         success: function(data){
           console.log(data);
@@ -482,7 +482,7 @@ var LogIn = React.createClass({
     var state = this.state;
     $.ajax({
       method: 'post',
-      url: 'http://narwhals-whowhatwhereapi.herokuapp.com/users/login',
+      url: 'https://narwhals-whowhatwhereapi.herokuapp.com/users/login',
       data: state,
       success: function(data){
         console.log(data);
@@ -504,7 +504,7 @@ var LogIn = React.createClass({
     var state = this.state;
     $.ajax({
       method: 'post',
-      url: 'http://narwhals-whowhatwhereapi.herokuapp.com/users/signup',
+      url: 'https://narwhals-whowhatwhereapi.herokuapp.com/users/signup',
       data: state,
       success: function(data){
         console.log(data);
@@ -581,7 +581,7 @@ var LogOut = React.createClass({
   handleLogoutClick: function(event){
     $.ajax({
       method: 'get',
-      url: 'http://narwhals-whowhatwhereapi.herokuapp.com/users/logout',
+      url: 'https://narwhals-whowhatwhereapi.herokuapp.com/users/logout',
       error: function(err){
         console.log(err);
       }
