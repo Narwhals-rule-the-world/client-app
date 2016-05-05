@@ -57,7 +57,7 @@ var Container = React.createClass({
 
     $.ajax({
       method: 'post',
-      url: 'http://api.whowhatwhere.com/search',
+      url: 'http://localhost:3000/search',
       data: { lat: lat, lng: lng, radius: 10 },
       success: function(returnedLocations){
         state.locations = returnedLocations;
@@ -282,7 +282,7 @@ var Feed = React.createClass({
 
     $.ajax({
       method: 'post',
-      url: 'http://api.whowhatwhere.com/search',
+      url: 'http://localhost:3000/search',
       data: { lat: lat, lng: lng, radius: 10 },
       success: function(returnedLocations){
         var state = {};
@@ -387,7 +387,7 @@ var Post = React.createClass({
     if (this.props.loggedIn){
       $.ajax({
         method: 'post',
-        url: 'http://api.whowhatwhere.com/create', // whatever this route is supposed to be
+        url: 'http://localhost:3000/create', // whatever this route is supposed to be
         data: state,
         success: function(data){
           console.log(data);
@@ -396,7 +396,7 @@ var Post = React.createClass({
           self.setState(state);
         },
         error: function(err){
-          var state = sefl.state;
+          var state = self.state;
           state.message = "Something went wrong! Please make sure you are logged in and all your information is correct."
           self.setState(state);
           console.log(err);
@@ -482,7 +482,7 @@ var LogIn = React.createClass({
     var state = this.state;
     $.ajax({
       method: 'post',
-      url: 'http://api.whowhatwhere.com/users/login',
+      url: 'http://localhost:3000/users/login',
       data: state,
       success: function(data){
         console.log(data);
@@ -504,7 +504,7 @@ var LogIn = React.createClass({
     var state = this.state;
     $.ajax({
       method: 'post',
-      url: 'http://api.whowhatwhere.com/users/signup',
+      url: 'http://localhost:3000/users/signup',
       data: state,
       success: function(data){
         console.log(data);
@@ -581,7 +581,7 @@ var LogOut = React.createClass({
   handleLogoutClick: function(event){
     $.ajax({
       method: 'get',
-      url: 'http://api.whowhatwhere.com/users/logout',
+      url: 'http://localhost:3000/users/logout',
       error: function(err){
         console.log(err);
       }
